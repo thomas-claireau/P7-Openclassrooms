@@ -1,0 +1,40 @@
+{
+	"name": "p7-openclassrooms",
+	"version": "0.1.0",
+	"description": "Package projet 7 OpenClassrooms",
+	"main": "index.html",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/thomas-claireau/P6-Openclassrooms.git"
+	},
+	"author": "Thomas Claireau <thomas.claireau@gmail.com> (https://thomas-claireau.fr)",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/thomas-claireau/P6-Openclassrooms/issues"
+	},
+	"homepage": "https://github.com/thomas-claireau/P6-Openclassrooms#readme",
+	"devDependencies": {
+		"eslint": "^5.16.0",
+		"eslint-config-airbnb-base": "^13.2.0",
+		"eslint-config-prettier": "^6.0.0",
+		"eslint-plugin-import": "^2.18.2",
+		"eslint-plugin-prettier": "^3.1.0",
+		"gulp": "^4.0.2",
+		"gulp-babel": "^8.0.0",
+		"gulp-clean-css": "^4.2.0",
+		"gulp-concat": "^2.6.1",
+		"gulp-minify": "^3.1.0",
+		"gulp-sass": "^4.0.2",
+		"gulp-uglify": "^3.0.2",
+		"prettier": "^1.18.2"
+	},
+	"dependencies": {
+		"animejs": "^3.1.0",
+		"browser-sync": "^2.26.7",
+		"del": "^5.0.0",
+		"readable-stream": "^3.4.0"
+	}
+}

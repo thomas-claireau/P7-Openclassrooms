@@ -1,0 +1,49 @@
+@import 'vars';
+
+.oc-btn {
+	margin: 10px;
+	display: block;
+	outline: none;
+
+	&.--white-blue {
+		position: relative;
+		border: none;
+		padding: 15px;
+		box-shadow: 0 5px 15px -5px rgba(#cccccc, 0.8);
+		background-image: linear-gradient(135deg, #5efce8 10%, #736efe 100%);
+		border-radius: 5px;
+		cursor: pointer;
+		overflow: hidden;
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 101%;
+			height: 101%;
+			transition: 400ms ease;
+			background-color: #fefefe;
+			border-radius: 5px;
+			transform-origin: left center;
+			transform: translateZ(0) perspective(100px);
+		}
+
+		&:hover {
+			box-shadow: 0 5px 15px -5px rgba(#6aaef5, 0.8);
+			&::before {
+				transform: translateZ(0) perspective(100px) rotateY(10deg);
+				opacity: 0;
+			}
+			span {
+				color: #fefefe;
+			}
+		}
+
+		span {
+			position: relative;
+			color: #52616b;
+			transition: color 400ms ease;
+		}
+	}
+}

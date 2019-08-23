@@ -19,20 +19,18 @@ const paths = {
 const clean = () => del(['dist']);
 
 function scripts() {
-	return (
-		gulp
-			.src(paths.scripts.src, { sourcemaps: true })
-			// .pipe(babel())
-			.pipe(minify())
-			.pipe(gulp.dest(paths.scripts.dest))
-	);
+	return gulp
+		.src(paths.scripts.src, { sourcemaps: true })
+		.pipe(minify())
+		.pipe(gulp.dest(paths.scripts.dest));
 }
 
 function styles() {
 	return gulp
 		.src(paths.scss.src, { sourcemaps: true })
 		.pipe(sass())
-		.pipe(gulp.dest(paths.scss.dest));
+		.pipe(gulp.dest(paths.scss.dest))
+		.pipe(server.stream());
 }
 
 function reload(done) {
@@ -50,7 +48,8 @@ function serve(done) {
 	done();
 }
 
-const watch = () => gulp.watch(paths.scripts.src, gulp.series(scripts, styles, reload));
+const watch = () =>
+	gulp.watch([paths.scripts.src, paths.scss.src], gulp.series(clean, scripts, styles, reload));
 
 const dev = gulp.series(clean, scripts, styles, serve, watch);
 

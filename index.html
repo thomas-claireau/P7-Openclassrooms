@@ -20,12 +20,16 @@
 				<p>Je suis un <a href="#" class="oc-link">lien</a> dans un texte</p>
 			</div>
 		</section> -->
-		<section id="map"></section>
-		<script
-			src="https://maps.google.com/maps/api/js?key=AIzaSyDm7kRC5aHq0u65qceCA707WaYZhqwOPpQ"
-			type="text/javascript"
-		></script>
-		<script src="dist/js/MapTest.js"></script>
-		<script src="dist/js/app.js"></script>
+		<section class="container-map">
+			<div class="control">
+				<div>Test</div>
+				<img class="inject-me" src="assets/img/logo_airbnfood.svg" />
+			</div>
+			<div class="bg"></div>
+			<div id="map"></div>
+		</section>
+		<script src="svg-injector.min.js"></script>
+		<script src="dist/js/myMap.js"></script>
+		<script src="dist/js/app.js" type="module"></script>
 	</body>
 </html>

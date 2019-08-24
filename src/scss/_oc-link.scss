@@ -1,0 +1,26 @@
+@import 'vars';
+
+.oc-link {
+	color: $bleu;
+	text-decoration: none;
+	font-size: 105%;
+	position: relative;
+
+	&::before {
+		content: '';
+		position: absolute;
+		bottom: -2px;
+		left: 0;
+		height: 3px;
+		width: 0;
+		background-color: $bleu;
+		transition: all 0.2s ease-in-out;
+	}
+
+	&:hover {
+		&::before {
+			width: 100%;
+			transition: all 0.2s ease-in-out;
+		}
+	}
+}

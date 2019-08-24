@@ -1,4 +1,8 @@
+/* eslint-disable import/extensions */
 // import SVGInjector from 'svg-injector';
+import myMap from './myMap.js';
+
+myMap.test();
 
 document.addEventListener('DOMContentLoaded', () => {
 	// const lat = 48.852969;

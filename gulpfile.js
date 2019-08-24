@@ -1,7 +1,9 @@
 // const babel = require('gulp-babel');
 const del = require('del');
 const gulp = require('gulp');
-const minify = require('gulp-minify');
+const rename = require('gulp-rename');
+const uglify = require('gulp-uglify-es').default;
+const sourcemaps = require('gulp-sourcemaps');
 const sass = require('gulp-sass');
 const server = require('browser-sync').create();
 
@@ -19,10 +21,15 @@ const paths = {
 const clean = () => del(['dist']);
 
 function scripts() {
-	return gulp
-		.src(paths.scripts.src, { sourcemaps: true })
-		.pipe(minify())
-		.pipe(gulp.dest(paths.scripts.dest));
+	return (
+		gulp
+			.src(paths.scripts.src)
+			// .pipe(rename('app.min.js'))
+			.pipe(sourcemaps.init())
+			.pipe(uglify())
+			.pipe(sourcemaps.write())
+			.pipe(gulp.dest(paths.scripts.dest))
+	);
 }
 
 function styles() {

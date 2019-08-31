@@ -28,5 +28,6 @@ module.exports = {
 		overlay: true,
 		open: true,
 		host: keyFile.host,
+		https: true,
 	},
 };

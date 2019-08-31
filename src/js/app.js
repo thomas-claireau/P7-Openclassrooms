@@ -1,9 +1,6 @@
 /* eslint-disable import/extensions */
 import '../scss/styles.scss';
-import functions from './functions';
-import svgInjector from 'svg-injector';
 import { Map } from './map';
-// import { Geolocation } from './geolocation';
 
 window.addEventListener('DOMContentLoaded', () => {
 	const mapElement = document.getElementById('map');

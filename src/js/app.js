@@ -1,6 +1,7 @@
 /* eslint-disable import/extensions */
 import '../scss/styles.scss';
 import { Map } from './map';
+import { Front } from './front';
 
 window.addEventListener('DOMContentLoaded', () => {
 	const mapElement = document.getElementById('map');
@@ -11,11 +12,11 @@ window.addEventListener('DOMContentLoaded', () => {
 		const lng = position.coords.longitude;
 
 		// start googles maps api
-		Map.loadGoogleMapsApi().then(function(googleMaps) {
-			Map.createMap(googleMaps, mapElement, lat, lng);
+		Map.loadGoogleMapsApi().then(function() {
+			Map.createMap(mapElement, lat, lng);
 			Map.setMarkers();
 		});
 
-		Map.interactionMap();
+		Front.interactionMap();
 	});
 });

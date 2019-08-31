@@ -1,44 +1,50 @@
 {
-	"name": "p7-openclassrooms",
-	"version": "0.1.0",
-	"description": "Package projet 7 OpenClassrooms",
-	"main": "index.html",
+	"name": "P7-Openclassrooms",
+	"version": "0.0.1",
+	"description": "Vous avez choisi de vous lancer dans le business des avis de restaurants. Votre objectif : créer un service simple et utile qui permet d'avoir des avis sur des restaurants autour de soi.",
+	"main": ".eslintrc.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"prod": "webpack --config ./webpack/webpack.config.prod.js --mode=production",
+		"dev": "webpack --mode=development --config ./webpack/webpack.config.dev.js",
+		"serve": "webpack-dev-server --config ./webpack/webpack.config.serve.js --mode=development"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/thomas-claireau/P6-Openclassrooms.git"
+		"url": "git+https://github.com/thomas-claireau/P7-Openclassrooms.git"
 	},
-	"author": "Thomas Claireau <thomas.claireau@gmail.com> (https://thomas-claireau.fr)",
+	"keywords": [],
+	"author": "",
 	"license": "ISC",
 	"bugs": {
-		"url": "https://github.com/thomas-claireau/P6-Openclassrooms/issues"
+		"url": "https://github.com/thomas-claireau/P7-Openclassrooms/issues"
 	},
-	"homepage": "https://github.com/thomas-claireau/P6-Openclassrooms#readme",
+	"homepage": "https://github.com/thomas-claireau/P7-Openclassrooms#readme",
 	"devDependencies": {
-		"eslint": "^5.16.0",
-		"eslint-config-airbnb-base": "^13.2.0",
-		"eslint-config-prettier": "^6.0.0",
-		"eslint-plugin-import": "^2.18.2",
-		"eslint-plugin-prettier": "^3.1.0",
-		"gulp": "^4.0.2",
-		"gulp-babel": "^8.0.0",
-		"gulp-clean-css": "^4.2.0",
-		"gulp-concat": "^2.6.1",
-		"gulp-minify": "^3.1.0",
-		"gulp-rename": "^1.4.0",
-		"gulp-sass": "^4.0.2",
-		"gulp-sourcemaps": "^2.6.5",
-		"gulp-uglify": "^3.0.2",
-		"gulp-uglify-es": "^1.0.4",
-		"prettier": "^1.18.2"
+		"@babel/core": "^7.5.5",
+		"@babel/preset-env": "^7.5.5",
+		"@babel/preset-react": "^7.0.0",
+		"autoprefixer": "^9.6.1",
+		"babel-loader": "^8.0.6",
+		"babel-plugin-syntax-dynamic-import": "^6.18.0",
+		"clean-webpack-plugin": "^3.0.0",
+		"css-hot-loader": "^1.4.4",
+		"css-loader": "^3.2.0",
+		"html-webpack-plugin": "^3.2.0",
+		"mini-css-extract-plugin": "^0.8.0",
+		"minimist": "^1.2.0",
+		"node-sass": "^4.12.0",
+		"postcss-loader": "^3.0.0",
+		"sass-loader": "^8.0.0",
+		"style-loader": "^1.0.0",
+		"svg-injector": "^1.1.3",
+		"webpack": "^4.39.3",
+		"webpack-cli": "^3.3.7",
+		"webpack-dev-server": "^3.8.0"
 	},
-	"dependencies": {
-		"animejs": "^3.1.0",
-		"browser-sync": "^2.26.7",
-		"del": "^5.0.0",
-		"readable-stream": "^3.4.0",
-		"svg-injector": "^1.1.3"
-	}
+	"browserslist": [
+		"last 2 version",
+		"> 1%",
+		"IE 8"
+	]
 }

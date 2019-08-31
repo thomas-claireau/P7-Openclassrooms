@@ -1,5 +1,6 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const keyFile = require('../src/assets/data/key.json');
 
 module.exports = {
 	entry: './src/js/app.js',
@@ -26,5 +27,6 @@ module.exports = {
 		hotOnly: true,
 		overlay: true,
 		open: true,
+		host: keyFile.host,
 	},
 };

@@ -5,6 +5,9 @@
 # ignore dist directory
 dist
 
+# ignore key api google
+key.json
+
 ### Node ###
 # Logs
 logs

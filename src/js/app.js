@@ -1,28 +1,29 @@
 /* eslint-disable import/extensions */
 // import SVGInjector from 'svg-injector';
-import myMap from './myMap';
+import '../scss/styles.scss';
+// import loadKey from './loadKey';
+// import MyMap from './myMap';
 import functions from './functions';
 import config from './config';
-import '../scss/styles.scss';
-// import $ from 'jquery';
+import svgInjector from 'svg-injector';
+import { Map } from './map';
 
-myMap.test();
-
-document.addEventListener('DOMContentLoaded', () => {
-	console.log(config.name);
-	console.log('passe');
-	const btnjQuery = document.querySelector('.add-jquery');
-	btnjQuery.addEventListener('click', () => {
-		// import('jquery').then(({ default: $ }) => {
-		// 	$('body').css('backgroundColor', '#000');
-		// 	console.log('passe');
-		// });
-	});
+window.addEventListener('DOMContentLoaded', () => {
+	// loadKey.load(test);
+	// function test() {
 	// const lat = 48.852969;
 	// const lng = 2.349903;
+	// let map;
 	// const newMap = new MyMap(lat, lng);
+	// // newMap.load();
 	// newMap.initMap();
 	// newMap.interactionMap();
-	// new MyMap(lat, lng).initMap();
-	functions.injectSvg();
+	// new Map(lat, lng).initMap();
+	// }
+	// functions.injectSvg();
+	let mapElement = document.getElementById('map');
+
+	Map.loadGoogleMapsApi().then(function(googleMaps) {
+		Map.createMap(googleMaps, mapElement);
+	});
 });

@@ -13,6 +13,9 @@ window.addEventListener('DOMContentLoaded', () => {
 		// start googles maps api
 		Map.loadGoogleMapsApi().then(function(googleMaps) {
 			Map.createMap(googleMaps, mapElement, lat, lng);
+			Map.setMarkers();
 		});
+
+		Map.interactionMap();
 	});
 });

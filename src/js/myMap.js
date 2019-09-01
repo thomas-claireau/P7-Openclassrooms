@@ -38,32 +38,36 @@ class MyMap {
 			map: map,
 			title: title,
 		});
+
+		marker.set('id', title);
 		marker.setMap(map);
 
-		// if (arrayOfAllMarkers.length === 0) {
 		arrayOfAllMarkers.push(marker);
-		// }
 
-		return marker;
+		return arrayOfAllMarkers;
 	}
 
-	static compareMarkers(arrayOfAllMarkers) {
-		return new Set(arrayOfAllMarkers).size !== arrayOfAllMarkers.length;
+	static setMapOnAll(map, arrayOfAllMarkers) {
+		for (let i = 0; i < arrayOfAllMarkers.length; i++) {
+			arrayOfAllMarkers[i].setMap(map);
+		}
+	}
+
+	static clearMarkers(arrayOfAllMarkers) {
+		MyMap.setMapOnAll(null, arrayOfAllMarkers);
 	}
 
 	static deleteMarkers(arrayOfAllMarkers) {
-		for (i = 0; i < arrayOfAllMarkers.length; i++) {
-			arrayOfAllMarkers[i].setMap(null);
-		}
+		MyMap.clearMarkers(arrayOfAllMarkers);
+		arrayOfAllMarkers = [];
+		return arrayOfAllMarkers;
 	}
 
 	boundsChanged() {
-		if (this.allMarkers.length > 0) {
-			deleteMarkers(allMarkers);
-		}
 		const map = this.newMap;
 		const allMarkers = this.allMarkers;
 		google.maps.event.addListener(map, 'bounds_changed', function() {
+			MyMap.deleteMarkers(allMarkers);
 			const limite = map.getBounds();
 			const center = map.getCenter();
 			const centerLat = center.lat();
@@ -88,8 +92,6 @@ class MyMap {
 					);
 				}
 			});
-
-			console.log(allMarkers);
 		});
 	}
 }

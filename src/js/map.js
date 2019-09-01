@@ -16,14 +16,15 @@ class Map {
 			zoom: 14,
 			mapTypeId: google.maps.MapTypeId.ROADMAP,
 		});
-		google.maps.event.addListener(this.newMap, 'bounds_changed', function() {
-			var bounds = this.newMap.getBounds();
-			var ne = bounds.getNorthEast();
-			var sw = bounds.getSouthWest();
 
-			console.log(bounds);
-			//do whatever you want with those bounds
+		const markerCenter = new google.maps.Marker({
+			position: this.newMap.center,
+			map: this.newMap,
+			icon: {
+				url: '../assets/img/icon-here.png',
+			},
 		});
+
 		return this.newMap;
 	}
 
@@ -38,6 +39,10 @@ class Map {
 			marker.getClickable();
 			marker.setMap(this.newMap);
 		}
+	}
+
+	testBounds() {
+		console.log(this.newMap);
 	}
 }
 

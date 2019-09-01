@@ -18,5 +18,6 @@ window.addEventListener('DOMContentLoaded', () => {
 		});
 
 		Front.interactionMap();
+		new Map().testBounds();
 	});
 });

@@ -1,5 +1,5 @@
 class Front {
-	static interactionMap() {
+	interactionMap() {
 		const body = document.querySelector('body');
 		const myMap = document.querySelector('.container-map');
 

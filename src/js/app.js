@@ -1,7 +1,7 @@
 /* eslint-disable import/extensions */
 import '../scss/styles.scss';
-import { Map } from './map';
 import { Front } from './front';
+import { MyMap } from './myMap';
 
 window.addEventListener('DOMContentLoaded', () => {
 	const mapElement = document.getElementById('map');
@@ -12,12 +12,19 @@ window.addEventListener('DOMContentLoaded', () => {
 		const lng = position.coords.longitude;
 
 		// start googles maps api
-		Map.loadGoogleMapsApi().then(function() {
-			Map.createMap(mapElement, lat, lng);
-			Map.setMarkers();
+		const newMap = new MyMap(mapElement, lat, lng);
+		newMap.loadGoogleMapsApi().then(function() {
+			newMap.createMap();
+			// newMap.setMarkers();
+
+			// charger getBounds seulement au début de l'intéraction de l'utilisateur avec la carte
+			const bgMap = document.querySelector('.container-map .bg');
+			bgMap.addEventListener('click', function() {
+				newMap.boundsChanged();
+			});
 		});
 
-		Front.interactionMap();
-		new Map().testBounds();
+		const newMapFront = new Front();
+		newMapFront.interactionMap();
 	});
 });

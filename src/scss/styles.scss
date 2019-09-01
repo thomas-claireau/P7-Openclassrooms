@@ -75,7 +75,7 @@ body {
 		}
 
 		.control {
-			div:first-child {
+			> .list-restaurants {
 				background-color: #fff;
 				position: absolute;
 				top: 50%;

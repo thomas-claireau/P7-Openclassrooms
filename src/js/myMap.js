@@ -47,6 +47,90 @@ class MyMap {
 		return arrayOfAllMarkers;
 	}
 
+	static displayRestaurant(restaurantName, restaurantStars, restaurantAddresse) {
+		// container global
+		const containerRestaurants = document.querySelector(
+			'.container-map .control .list-restaurants'
+		);
+
+		// container of each restaurant
+		const containerRestaurant = document.createElement('div');
+		containerRestaurant.classList.add('restaurant');
+		containerRestaurant.setAttribute('data-id', restaurantName);
+
+		// left column inside container (flexbox)
+		const leftColumnContent = document.createElement('div');
+		leftColumnContent.classList.add('left');
+
+		// name of restaurant
+		const nameRestaurant = document.createElement('div');
+		nameRestaurant.classList.add('nameRestaurant');
+		nameRestaurant.innerHTML = `<h3>${restaurantName}</h3>`;
+
+		// number of stars (container)
+		const stars = document.createElement('div');
+		stars.classList.add('stars');
+
+		// add 5 container span and condition to display star active
+		for (let i = 1; i <= 5; i++) {
+			const star = document.createElement('span');
+			star.classList.add(`star-${i}`);
+
+			if (i <= restaurantStars) {
+				star.classList.add('active');
+			}
+
+			stars.appendChild(star);
+		}
+
+		// addresse of restaurant
+		const addresseRestaurant = document.createElement('div');
+		addresseRestaurant.classList.add('addresse');
+		addresseRestaurant.textContent = restaurantAddresse;
+
+		// right column inside container (flexbox)
+		const rightColumnContent = document.createElement('div');
+		rightColumnContent.classList.add('right');
+		const imgRestaurant = document.createElement('img');
+
+		imgRestaurant.src = `../assets/img/restaurants/${restaurantName
+			.split(' ')
+			.join('-')
+			.toLowerCase()}.jpg`;
+
+		rightColumnContent.appendChild(imgRestaurant);
+		leftColumnContent.appendChild(nameRestaurant);
+		leftColumnContent.appendChild(stars);
+		leftColumnContent.appendChild(addresseRestaurant);
+
+		containerRestaurant.appendChild(leftColumnContent);
+		containerRestaurant.appendChild(rightColumnContent);
+
+		containerRestaurants.appendChild(containerRestaurant);
+	}
+
+	reloadContentRestaurant() {
+		const containerRestaurants = document.querySelector(
+			'.container-map .control .list-restaurants'
+		);
+		containerRestaurants.innerHTML = '';
+	}
+
+	getAverageStars() {
+		// average stars
+		let nbRestaurants = 0;
+		let averageStars = 0;
+		for (const restaurant of restaurants) {
+			nbRestaurants++;
+			// console.log(restaurant.ratings[0].stars);
+			averageStars += restaurant.ratings[0].stars;
+		}
+
+		averageStars = averageStars / nbRestaurants;
+
+		console.log(averageStars);
+	}
+
 	static setMapOnAll(map, arrayOfAllMarkers) {
 		for (let i = 0; i < arrayOfAllMarkers.length; i++) {
 			arrayOfAllMarkers[i].setMap(map);
@@ -64,34 +148,37 @@ class MyMap {
 	}
 
 	boundsChanged() {
-		const map = this.newMap;
-		const allMarkers = this.allMarkers;
-		google.maps.event.addListener(map, 'bounds_changed', function() {
-			MyMap.deleteMarkers(allMarkers);
-			const limite = map.getBounds();
-			const center = map.getCenter();
+		const thisMap = this;
+		google.maps.event.addListener(thisMap.newMap, 'bounds_changed', function() {
+			MyMap.deleteMarkers(thisMap.allMarkers);
+			const limite = thisMap.newMap.getBounds();
+			const center = thisMap.newMap.getCenter();
 			const centerLat = center.lat();
 			const centerLng = center.lng();
 			const location = { lat: centerLat, lng: centerLng };
 
-			let posRestaurants = [];
+			thisMap.getAverageStars();
+
 			for (const restaurant of restaurants) {
-				const latLng = { lat: restaurant.lat, lng: restaurant.lng };
-				const restaurantName = restaurant.restaurantName;
+				const latLngRestaurant = { lat: restaurant.lat, lng: restaurant.lng };
 
-				posRestaurants.push({ latLng: latLng, restaurantName: restaurantName });
-			}
-
-			posRestaurants.forEach((posRestaurant) => {
-				if (limite.contains(posRestaurant.latLng)) {
+				if (limite.contains(latLngRestaurant)) {
 					MyMap.addMarker(
-						map,
-						posRestaurant.latLng,
-						posRestaurant.restaurantName,
-						allMarkers
+						thisMap.newMap,
+						latLngRestaurant,
+						restaurant.restaurantName,
+						thisMap.allMarkers
+					);
+
+					thisMap.reloadContentRestaurant();
+
+					MyMap.displayRestaurant(
+						restaurant.restaurantName,
+						restaurant.ratings[0].stars,
+						restaurant.address
 					);
 				}
-			});
+			}
 		});
 	}
 }

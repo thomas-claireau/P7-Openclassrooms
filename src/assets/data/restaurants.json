@@ -32,7 +32,7 @@
 		]
 	},
 	{
-		"restaurantName": "Les bouteilles / La Cantines",
+		"restaurantName": "La cantine",
 		"address": "11 Rue de Bel air, 44000 Nantes",
 		"lat": 47.225562,
 		"lng": -1.557963,
@@ -48,18 +48,18 @@
 		]
 	},
 	{
-		"restaurantName": "Rest'O Bio Nantes",
-		"address": "Avenue du Marché Commun, 44300 Nantes",
-		"lat": 47.263168,
-		"lng": -1.500435,
+		"restaurantName": "Le Fou du Roi",
+		"address": "2 Rue Premion, 44000 Nantes",
+		"lat": 47.220523,
+		"lng": -1.549839,
 		"ratings": [
 			{
 				"stars": 5,
-				"comment": "Trop, trop bon. Nous nous sommes régalé.  Cuisine traditionnelle mais très bonne. De plus on peut aussi bien manger avec viande où sans viande et moi cela me va."
+				"comment": "C'était vraiment très très bon. Ça vaut le détour, j'ai tout adoré entrée et plat. Malheureusement je nos pas pu prendre le désert trop rassasié. C'était vraiment excellent et les tarifs sont vraiment raisonnable pour une tel qualité."
 			},
 			{
-				"stars": 5,
-				"comment": "Juste trop méga bon..les saveurs des plats nous font voyager et les desserts sont juste excellents (et sans gluten, voir sans lactose  : ) ). Un vrai bonheur !!"
+				"stars": 4,
+				"comment": "Bien situé dans Nantes, personnel très chaleureux et aidant. La nourriture est très correcte. Pour une journée ensoleillée je trouve la salle intérieure un peu sombre mais pour tout autre moment elle est parfaite. Et sinon il vous reste la petite terrasse à l’extérieur"
 			}
 		]
 	},

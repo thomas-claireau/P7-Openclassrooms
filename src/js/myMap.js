@@ -91,14 +91,11 @@ class MyMap {
 		// right column inside container (flexbox)
 		const rightColumnContent = document.createElement('div');
 		rightColumnContent.classList.add('right');
-		const imgRestaurant = document.createElement('img');
-
-		imgRestaurant.src = `../assets/img/restaurants/${restaurantName
+		rightColumnContent.style.backgroundImage = `url('../assets/img/restaurants/${restaurantName
 			.split(' ')
 			.join('-')
-			.toLowerCase()}.jpg`;
+			.toLowerCase()}.jpg')`;
 
-		rightColumnContent.appendChild(imgRestaurant);
 		leftColumnContent.appendChild(nameRestaurant);
 		leftColumnContent.appendChild(stars);
 		leftColumnContent.appendChild(addresseRestaurant);
@@ -146,7 +143,7 @@ class MyMap {
 
 	boundsChanged() {
 		const thisMap = this;
-		google.maps.event.addListener(thisMap.newMap, 'bounds_changed', function() {
+		google.maps.event.addListener(thisMap.newMap, 'idle', function() {
 			MyMap.deleteMarkers(thisMap.allMarkers);
 			const limite = thisMap.newMap.getBounds();
 			const center = thisMap.newMap.getCenter();
@@ -155,6 +152,7 @@ class MyMap {
 			const location = { lat: centerLat, lng: centerLng };
 
 			thisMap.getAverageStars();
+			thisMap.reloadContentRestaurant();
 
 			for (const restaurant of restaurants) {
 				const latLngRestaurant = { lat: restaurant.lat, lng: restaurant.lng };
@@ -166,8 +164,6 @@ class MyMap {
 						restaurant.restaurantName,
 						thisMap.allMarkers
 					);
-
-					thisMap.reloadContentRestaurant();
 
 					MyMap.displayRestaurant(
 						restaurant.restaurantName,

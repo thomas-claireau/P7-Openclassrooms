@@ -98,21 +98,40 @@ body {
 		.control {
 			> .list-restaurants {
 				background-color: #fff;
-				position: absolute;
-				top: 50%;
-				left: 15%;
-				transform: translateY(-50%);
-				z-index: 2;
-				border-radius: 20px;
+				display: flex;
+				justify-content: flex-start;
+				align-content: center;
+				align-items: center;
+				flex-direction: column;
+				height: 100vh;
 
-				&.interaction {
-					border-radius: 0;
-					top: 0;
-					left: 0;
-					height: 100vh;
-					transform: none;
-					transition: all 0.3s ease-in-out;
+				.restaurant {
+					display: flex;
+					justify-content: center;
+					align-content: center;
+					align-items: center;
+
+					.left {
+						width: 200px;
+					}
+
+					.right {
+						width: 80px;
+						height: 80px;
+						background-size: cover;
+						background-position: center;
+						transition: all 0.3s ease-in-out;
+					}
 				}
+
+				// &.interaction {
+				// 	border-radius: 0;
+				// 	top: 0;
+				// 	left: 0;
+				// 	height: 100vh;
+				// 	transform: none;
+				// 	transition: all 0.3s ease-in-out;
+				// }
 			}
 		}
 

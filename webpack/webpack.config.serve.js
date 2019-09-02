@@ -11,7 +11,7 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.(ttf|eot|svg|gif)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+				test: /\.(ttf|eot|svg|gif|png)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
 				// include: './src';
 				use: {
 					loader: 'file-loader',

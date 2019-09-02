@@ -1,0 +1,52 @@
+@import 'vars';
+
+.typing {
+	position: relative;
+	width: 100%;
+	border-right: 4px solid #fff;
+	white-space: nowrap;
+	overflow: hidden;
+	padding: 12px 0;
+	height: 36px;
+
+	animation: typing 1.5s steps(15) 1s 1 normal both, blinkTextCursor 1s steps(15) infinite normal;
+
+	@keyframes typing {
+		from {
+			width: 0;
+		}
+		to {
+			width: 100%;
+		}
+	}
+	@keyframes blinkTextCursor {
+		from {
+			border-right-color: #fff;
+		}
+		to {
+			border-right-color: transparent;
+		}
+	}
+}
+
+.fade-color-logo {
+	path {
+		animation: color-fade 4s forwards;
+	}
+	@keyframes color-fade {
+		50% {
+			fill: #fff;
+		}
+		70% {
+			fill: $bleu;
+		}
+
+		80% {
+			fill: $rouge;
+		}
+
+		100% {
+			fill: #fff;
+		}
+	}
+}

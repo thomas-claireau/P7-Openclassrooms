@@ -11,6 +11,13 @@ module.exports = {
 	module: {
 		rules: [
 			{
+				test: /\.(ttf|eot|svg|gif)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+				// include: './src';
+				use: {
+					loader: 'file-loader',
+				},
+			},
+			{
 				test: /\.m?js$/,
 				exclude: /(node_modules|bower_components)/,
 				use: {

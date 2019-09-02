@@ -2,8 +2,10 @@
 import '../scss/styles.scss';
 import { Front } from './front';
 import { MyMap } from './myMap';
+import functions from './functions';
 
 window.addEventListener('DOMContentLoaded', () => {
+	functions.injectSvg();
 	const mapElement = document.getElementById('map');
 
 	// start geolocation api

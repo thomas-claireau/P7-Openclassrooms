@@ -1,4 +1,18 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+@font-face {
+	font-family: 'brown';
+	src: url('../assets/fonts/Brown-Bold.ttf') format('truetype');
+}
+
+// @font-face {
+// 	font-family: 'Bello';
+// 	src: url('../assets/fonts/Bello-Script.eot');
+// 	src: url('../assets/fonts/Bello-Script.eot?#iefix') format('embedded-opentype'),
+// 		url('../assets/fonts/Bello-Script.woff2') format('woff2'),
+// 		url('../assets/fonts/Bello-Script.woff') format('woff');
+// 	font-weight: normal;
+// 	font-style: normal;
+// }
 
 $break-ultra-large: 1340px;
 $break-large: 1240px;

@@ -122,13 +122,10 @@ class MyMap {
 		let averageStars = 0;
 		for (const restaurant of restaurants) {
 			nbRestaurants++;
-			// console.log(restaurant.ratings[0].stars);
 			averageStars += restaurant.ratings[0].stars;
 		}
 
 		averageStars = averageStars / nbRestaurants;
-
-		console.log(averageStars);
 	}
 
 	static setMapOnAll(map, arrayOfAllMarkers) {

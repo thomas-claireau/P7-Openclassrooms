@@ -36,8 +36,9 @@ body {
 	}
 
 	h3 {
-		font-size: 25px;
+		font-size: 20px;
 		font-weight: 400;
+		margin-bottom: 0px;
 	}
 
 	p {
@@ -110,9 +111,38 @@ body {
 					justify-content: center;
 					align-content: center;
 					align-items: center;
+					width: 100%;
+					position: relative;
+					padding-bottom: 20px;
 
 					.left {
-						width: 200px;
+						width: 250px;
+
+						.stars {
+							display: flex;
+							justify-content: flex-start;
+							align-content: center;
+							align-items: center;
+							margin-bottom: 15px;
+
+							span {
+								background-image: url('../../assets/img/star-inactive.png');
+								background-position: center;
+								background-size: cover;
+								width: 20px;
+								height: 20px;
+								// display: block;
+
+								&.active {
+									background-image: url('../../assets/img/star-active.png');
+								}
+							}
+						}
+
+						.addresse {
+							font-size: 15px;
+							font-weight: 300;
+						}
 					}
 
 					.right {
@@ -122,16 +152,16 @@ body {
 						background-position: center;
 						transition: all 0.3s ease-in-out;
 					}
-				}
 
-				// &.interaction {
-				// 	border-radius: 0;
-				// 	top: 0;
-				// 	left: 0;
-				// 	height: 100vh;
-				// 	transform: none;
-				// 	transition: all 0.3s ease-in-out;
-				// }
+					&:not(:last-child) {
+						border-bottom: 2px solid #f2f2f2;
+					}
+
+					&:hover {
+						background-color: #f2f2f2;
+						cursor: pointer;
+					}
+				}
 			}
 		}
 

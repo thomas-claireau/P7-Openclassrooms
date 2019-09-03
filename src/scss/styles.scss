@@ -83,6 +83,13 @@ body {
 			display: grid;
 			grid-template-columns: 20vw 80vw;
 			transition: all 0.3s ease-in-out;
+
+			.control {
+				position: initial;
+				opacity: 1;
+				z-index: inherit;
+				transition: all 0.3s ease-in-out;
+			}
 		}
 
 		.bg {
@@ -97,6 +104,9 @@ body {
 		}
 
 		.control {
+			position: absolute;
+			opacity: 0;
+			z-index: -1;
 			> .list-restaurants {
 				background-color: #fff;
 				display: flex;
@@ -160,6 +170,45 @@ body {
 					&:hover {
 						background-color: #f2f2f2;
 						cursor: pointer;
+					}
+				}
+			}
+
+			.filter-stars {
+				// padding: 20px;
+				background-color: $bleu;
+				width: 100%;
+				height: 100%;
+
+				h3 {
+					margin: 0;
+					padding-top: 20px;
+					padding-left: 20px;
+					color: #fff;
+				}
+
+				.filter {
+					display: flex;
+					justify-content: space-between;
+					align-content: center;
+					align-items: center;
+					padding: 0 20px;
+
+					.dismiss {
+						background-color: #fff;
+						border-radius: 100px;
+						width: 40px;
+						height: 40px;
+						display: flex;
+						justify-content: center;
+						align-content: center;
+						align-items: center;
+						cursor: pointer;
+
+						svg {
+							width: 30px;
+							height: 30px;
+						}
 					}
 				}
 			}

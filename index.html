@@ -14,12 +14,20 @@
 		</section>
 		<section class="container-map">
 			<div class="control">
+				<section class="filter-stars">
+					<h3>Filtrer les restaurants visibles</h3>
+					<div class="filter">
+						<input type="range" id="stars" min="0" max="5" />
+						<div class="dismiss">
+							<img class="js-inject-me" src="./assets/img/cross.svg" alt="" />
+						</div>
+					</div>
+				</section>
 				<div class="list-restaurants"></div>
 			</div>
 			<div class="bg"></div>
 			<div id="map"></div>
 		</section>
-		<!-- <script src="" async defer class="apiKey"></script> -->
 		<script src="dist/app.js" type="module"></script>
 	</body>
 </html>

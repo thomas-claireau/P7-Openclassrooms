@@ -167,10 +167,6 @@ class MyMap {
 		google.maps.event.addListener(thisMap.newMap, 'idle', function() {
 			MyMap.deleteMarkers(thisMap.allMarkers);
 			const limite = thisMap.newMap.getBounds();
-			const center = thisMap.newMap.getCenter();
-			const centerLat = center.lat();
-			const centerLng = center.lng();
-			const location = { lat: centerLat, lng: centerLng };
 
 			thisMap.getAverageStars();
 			thisMap.reloadContentRestaurant();

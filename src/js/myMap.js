@@ -1,6 +1,7 @@
 import loadGoogleMapsApi from 'load-google-maps-api';
 import keyData from '../assets/data/key.json';
 import restaurants from '../assets/data/restaurants.json';
+import { Front } from './front.js';
 
 class MyMap {
 	constructor(mapElement, lat, lng) {
@@ -33,6 +34,10 @@ class MyMap {
 	}
 
 	static addMarker(map, latLng, title, arrayOfAllMarkers) {
+		title = title
+			.split(' ')
+			.join('-')
+			.toLowerCase();
 		const marker = new google.maps.Marker({
 			position: latLng,
 			map: map,
@@ -172,6 +177,11 @@ class MyMap {
 					);
 				}
 			}
+		});
+
+		google.maps.event.addListener(thisMap.newMap, 'center_changed', function() {
+			const newMapFront = new Front();
+			newMapFront.addIdMarker();
 		});
 	}
 }

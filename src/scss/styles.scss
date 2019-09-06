@@ -2,6 +2,7 @@
 @import 'oc-btn';
 @import 'oc-link';
 @import 'animations';
+@import 'range';
 
 body {
 	font-family: $mainFont;
@@ -175,39 +176,72 @@ body {
 			}
 
 			.filter-stars {
-				// padding: 20px;
 				background-color: $bleu;
 				width: 100%;
 				height: 100%;
+				padding: 20px;
 
 				h3 {
 					margin: 0;
-					padding-top: 20px;
-					padding-left: 20px;
 					color: #fff;
 				}
 
 				.filter {
 					display: flex;
-					justify-content: space-between;
+					justify-content: flex-start;
 					align-content: center;
 					align-items: center;
-					padding: 0 20px;
+					margin-top: 20px;
 
 					.dismiss {
 						background-color: #fff;
 						border-radius: 100px;
-						width: 40px;
-						height: 40px;
+						width: 30px;
+						height: 30px;
 						display: flex;
 						justify-content: center;
 						align-content: center;
 						align-items: center;
 						cursor: pointer;
+						margin-left: 40px;
+						opacity: 0;
+						transition: all 0.3s ease-in-out;
+
+						&.active {
+							opacity: 1;
+							transition: all 0.3s ease-in-out;
+						}
 
 						svg {
-							width: 30px;
-							height: 30px;
+							width: 20px;
+							height: 20px;
+						}
+					}
+
+					.output-stars {
+						display: flex;
+						justify-content: center;
+						align-content: center;
+						align-items: center;
+						background-color: #fff;
+						padding: 5px 8px;
+						border-radius: 8px;
+						position: relative;
+						margin-left: 17px;
+
+						img {
+							width: 15px;
+							height: 15px;
+							margin-left: 6px;
+						}
+
+						&:before {
+							content: '\A';
+							border-style: solid;
+							border-width: 10px 15px 10px 0;
+							border-color: transparent #fff transparent transparent;
+							position: absolute;
+							left: -8px;
 						}
 					}
 				}

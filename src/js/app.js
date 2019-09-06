@@ -28,5 +28,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
 		const newMapFront = new Front();
 		newMapFront.interactionMap();
+		newMapFront.updateRangeStars();
 	});
 });

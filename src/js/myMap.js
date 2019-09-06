@@ -52,7 +52,26 @@ class MyMap {
 		return arrayOfAllMarkers;
 	}
 
-	static displayRestaurant(restaurantName, restaurantStars, restaurantAddresse) {
+	static getImgStreetView(lat, lng, container) {
+		const location = `${lat}, ${lng}`;
+		const params = {
+			size: '600x600',
+			location: location,
+			key: keyData.key,
+		};
+
+		const urlImg = `https://maps.googleapis.com/maps/api/streetview?size=${params.size}&location=${params.location}&key=${params.key}`;
+
+		container.style.backgroundImage = `url("${urlImg}")`;
+	}
+
+	static displayRestaurant(
+		restaurantName,
+		restaurantStars,
+		restaurantAddresse,
+		restaurantLat,
+		restaurantLng
+	) {
 		// container global
 		const containerRestaurants = document.querySelector(
 			'.container-map .control .list-restaurants'
@@ -95,11 +114,8 @@ class MyMap {
 
 		// right column inside container (flexbox)
 		const rightColumnContent = document.createElement('div');
+		MyMap.getImgStreetView(restaurantLat, restaurantLng, rightColumnContent);
 		rightColumnContent.classList.add('right');
-		rightColumnContent.style.backgroundImage = `url('../assets/img/restaurants/${restaurantName
-			.split(' ')
-			.join('-')
-			.toLowerCase()}.jpg')`;
 
 		leftColumnContent.appendChild(nameRestaurant);
 		leftColumnContent.appendChild(stars);
@@ -173,7 +189,9 @@ class MyMap {
 					MyMap.displayRestaurant(
 						restaurant.restaurantName,
 						restaurant.ratings[0].stars,
-						restaurant.address
+						restaurant.address,
+						restaurant.lat,
+						restaurant.lng
 					);
 				}
 			}

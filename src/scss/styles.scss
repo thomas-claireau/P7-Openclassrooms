@@ -108,6 +108,136 @@ body {
 			position: absolute;
 			opacity: 0;
 			z-index: -1;
+
+			&.comment {
+				.filter-stars,
+				.list-restaurants {
+					display: none;
+				}
+
+				.container-restaurant {
+					background-color: #fff;
+					display: flex;
+					justify-content: flex-start;
+					align-content: center;
+					align-items: flex-start;
+					flex-direction: column;
+					height: 100vh;
+					position: relative;
+
+					.back-to-list {
+						font-size: 0;
+						width: 30px;
+						height: 30px;
+						position: absolute;
+						top: 20px;
+						left: 20px;
+					}
+
+					.img-restaurant {
+						width: 100%;
+						height: 200px;
+						background-size: cover;
+						background-position: center;
+					}
+
+					.container-inf-restaurant {
+						padding: 20px;
+
+						.name-restaurant {
+							margin-bottom: 10px;
+						}
+
+						.address-restaurant {
+							font-weight: 300;
+						}
+
+						.average-ratings {
+							margin: 20px 0;
+							display: flex;
+							justify-content: flex-start;
+							align-content: center;
+							align-items: center;
+
+							.title-average {
+								font-size: 20px;
+								margin-right: 40px;
+								font-weight: 300;
+							}
+
+							.ratings {
+								display: flex;
+								justify-content: flex-start;
+								align-items: center;
+								align-content: center;
+								flex-direction: column;
+
+								.average {
+									font-size: 50px;
+									font-weight: 600;
+								}
+
+								.stars {
+									display: flex;
+									justify-content: flex-start;
+									align-content: center;
+									align-items: center;
+
+									span {
+										background-image: url('../../assets/img/star-inactive.png');
+										background-position: center;
+										background-size: cover;
+										width: 20px;
+										height: 20px;
+										// display: block;
+
+										&.active {
+											background-image: url('../../assets/img/star-active.png');
+										}
+									}
+								}
+
+								.nb-ratings {
+									margin-top: 7px;
+									font-weight: 300;
+									font-size: 14px;
+									text-decoration: underline;
+									cursor: pointer;
+								}
+							}
+						}
+
+						.comments-restaurant {
+							.container-comment {
+								.container-avatar {
+									display: flex;
+									justify-content: flex-start;
+									align-items: center;
+									align-content: center;
+									margin-bottom: 10px;
+
+									.avatar {
+										height: 32px;
+										width: 32px;
+										background-size: cover;
+										background-position: center;
+										border-radius: 50%;
+										margin-right: 15px;
+									}
+								}
+
+								.comment {
+									font-size: 15px;
+									font-weight: 300;
+									margin-bottom: 21px;
+									padding-right: 20px;
+								}
+							}
+						}
+					}
+				}
+			}
+
 			> .list-restaurants {
 				background-color: #fff;
 				display: flex;

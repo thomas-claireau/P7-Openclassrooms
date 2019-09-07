@@ -145,6 +145,7 @@ class MyMap {
 			averageRatingRestaurant = averageRatingRestaurant / nbRatings;
 
 			restaurant.averageRatings = averageRatingRestaurant;
+			restaurant.nbRatings = nbRatings;
 		});
 	}
 
@@ -262,7 +263,6 @@ class MyMap {
 
 	displayCommentRestaurant() {
 		const dataRestaurants = restaurants;
-		console.log(dataRestaurants);
 		const containerControl = document.querySelector('.container-map .control');
 		const listrestaurants = document.querySelector('.list-restaurants');
 
@@ -277,9 +277,124 @@ class MyMap {
 
 					dataRestaurants.forEach((dataRestaurant) => {
 						if (restaurantId === dataRestaurant.restaurantName) {
-							const nameRestaurant = dataRestaurants.restaurantName;
-							const starsRestaurant = dataRestaurants.rating;
-							const addressRestaurant = dataRestaurants.address;
+							const latRestaurant = dataRestaurant.lat;
+							const lngRestaurant = dataRestaurant.lng;
+							const nameRestaurant = dataRestaurant.restaurantName;
+							const averageRatingsRestaurant = dataRestaurant.averageRatings;
+							const nbRatings = dataRestaurant.nbRatings;
+							const addressRestaurant = dataRestaurant.address;
+							const allComments = dataRestaurant.ratings;
+
+							const containerRestaurant = document.createElement('div');
+							containerRestaurant.classList.add('container-restaurant');
+
+							// btn back to list of restaurants
+							const btnBack = document.createElement('button');
+							const iconBack = document.createElement('img');
+							iconBack.classList.add('js-inject-me');
+							iconBack.src = '../../assets/img/chevron-left.svg';
+							// SVGInjector(iconBack);
+							btnBack.appendChild(iconBack);
+							btnBack.classList.add('back-to-list');
+							btnBack.textContent = 'Retour à la liste des restaurants';
+
+							const containerInfRestaurant = document.createElement('div');
+							containerInfRestaurant.classList.add('container-inf-restaurant');
+
+							// image restaurant
+							const containerImgRestaurant = document.createElement('div');
+							containerImgRestaurant.classList.add('img-restaurant');
+							MyMap.getImgStreetView(
+								latRestaurant,
+								lngRestaurant,
+								containerImgRestaurant
+							);
+
+							// name restaurant
+							const containerTitleRestaurant = document.createElement('div');
+							containerTitleRestaurant.classList.add('name-restaurant');
+							const titleRestaurant = document.createElement('h3');
+							titleRestaurant.textContent = nameRestaurant;
+							containerTitleRestaurant.appendChild(titleRestaurant);
+
+							// address restaurant
+							const containerAddressRestaurant = document.createElement('div');
+							containerAddressRestaurant.classList.add('address-restaurant');
+							containerAddressRestaurant.textContent = addressRestaurant;
+
+							// average ratings restaurant
+							const containerAverageRatings = document.createElement('div');
+							containerAverageRatings.classList.add('average-ratings');
+							const titleAverageRatings = document.createElement('div');
+							const containerRatings = document.createElement('div');
+							containerRatings.classList.add('ratings');
+							titleAverageRatings.classList.add('title-average');
+							titleAverageRatings.textContent = 'Moyenne des avis';
+							const averageRatings = document.createElement('span');
+							averageRatings.classList.add('average');
+							const containerStars = document.createElement('div');
+							containerStars.classList.add('stars');
+							const containerNbRatings = document.createElement('span');
+							containerNbRatings.classList.add('nb-ratings');
+
+							averageRatings.textContent = averageRatingsRestaurant;
+
+							for (let i = 1; i <= 5; i++) {
+								const star = document.createElement('span');
+								star.classList.add(`star-${i}`);
+
+								if (i <= averageRatingsRestaurant) {
+									star.classList.add('active');
+								}
+								containerStars.appendChild(star);
+							}
+
+							containerNbRatings.textContent = `${nbRatings} avis`;
+
+							containerRatings.appendChild(averageRatings);
+							containerRatings.appendChild(containerStars);
+							containerRatings.appendChild(containerNbRatings);
+							containerAverageRatings.appendChild(titleAverageRatings);
+							containerAverageRatings.appendChild(containerRatings);
+
+							// display all comments of restaurant
+							const containerCommentsRestaurant = document.createElement('div');
+							containerCommentsRestaurant.classList.add('comments-restaurant');
+
+							allComments.forEach((comment) => {
+								const containerComment = document.createElement('div');
+								containerComment.classList.add('container-comment');
+								const containerAvatar = document.createElement('div');
+								containerAvatar.classList.add('container-avatar');
+
+								const avatar = document.createElement('div');
+								avatar.classList.add('avatar');
+								avatar.style.backgroundImage = `url("../../assets/img/unknow.png")`;
+
+								const nameAuthor = document.createElement('div');
+								nameAuthor.classList.add('name-author');
+								nameAuthor.textContent = 'unknow';
+
+								const commentText = document.createElement('div');
+								commentText.classList.add('comment');
+								commentText.textContent = comment.comment;
+
+								containerAvatar.appendChild(avatar);
+								containerAvatar.appendChild(nameAuthor);
+								containerComment.appendChild(containerAvatar);
+								containerComment.appendChild(commentText);
+								containerCommentsRestaurant.appendChild(containerComment);
+							});
+
+							// multiple insertion in HTML
+							containerRestaurant.appendChild(btnBack);
+							containerRestaurant.appendChild(containerImgRestaurant);
+							containerInfRestaurant.appendChild(containerTitleRestaurant);
+							containerInfRestaurant.appendChild(containerAddressRestaurant);
+							containerInfRestaurant.appendChild(containerAverageRatings);
+							containerInfRestaurant.appendChild(containerCommentsRestaurant);
+							containerRestaurant.appendChild(containerInfRestaurant);
+							containerControl.appendChild(containerRestaurant);
 						}
 					});
 				});

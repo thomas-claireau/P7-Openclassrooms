@@ -33,14 +33,14 @@ class MyMap {
 		return this.newMap;
 	}
 
-	static addMarker(map, latLng, title, arrayOfAllMarkers) {
+	static addMarker(map, latLng, title, stars, arrayOfAllMarkers) {
 		const marker = new google.maps.Marker({
 			position: latLng,
 			map: map,
 			title: title,
+			stars: stars,
 		});
 
-		marker.set('id', title);
 		marker.setMap(map);
 
 		arrayOfAllMarkers.push(marker);
@@ -159,14 +159,22 @@ class MyMap {
 	}
 
 	static filterMarker(listrestaurants, map, limiteMap) {
+		MyMap.deleteMarkers(map.allMarkers);
 		for (const restaurant of listrestaurants) {
 			const latLngRestaurant = { lat: restaurant.lat, lng: restaurant.lng };
+			const rangeStars = document.querySelector('input#stars').value;
+			const restaurantStars = restaurant.ratings[0].stars;
 
-			if (limiteMap.contains(latLngRestaurant)) {
+			if (
+				limiteMap.contains(latLngRestaurant) &&
+				restaurantStars > 0 &&
+				restaurantStars <= rangeStars
+			) {
 				MyMap.addMarker(
 					map.newMap,
 					latLngRestaurant,
 					restaurant.restaurantName,
+					restaurant.ratings[0].stars,
 					map.allMarkers
 				);
 
@@ -183,15 +191,24 @@ class MyMap {
 
 	boundsChanged() {
 		const thisMap = this;
+		let limite;
 		google.maps.event.addListener(thisMap.newMap, 'idle', function() {
-			MyMap.deleteMarkers(thisMap.allMarkers);
-			const limite = thisMap.newMap.getBounds();
+			limite = thisMap.newMap.getBounds();
 
 			thisMap.getAverageStars();
 			thisMap.reloadContentRestaurant();
 
 			MyMap.filterMarker(restaurants, thisMap, limite);
 		});
+
+		const rangeStars = document.querySelector('input#stars');
+		const outputStars = document.querySelector('.output-stars .nb');
+
+		rangeStars.oninput = () => {
+			outputStars.innerHTML = rangeStars.value;
+			thisMap.reloadContentRestaurant();
+			MyMap.filterMarker(restaurants, thisMap, limite);
+		};
 	}
 }
 

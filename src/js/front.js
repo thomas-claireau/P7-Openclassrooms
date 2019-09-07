@@ -15,15 +15,6 @@ class Front {
 			});
 		}
 	}
-
-	updateRangeStars() {
-		const rangeStars = document.querySelector('input#stars');
-		const outputStars = document.querySelector('.output-stars .nb');
-
-		rangeStars.oninput = () => {
-			outputStars.innerHTML = rangeStars.value;
-		};
-	}
 }
 
 export { Front };

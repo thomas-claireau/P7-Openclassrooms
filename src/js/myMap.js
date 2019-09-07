@@ -39,6 +39,7 @@ class MyMap {
 			map: map,
 			title: title,
 			stars: stars,
+			icon: '../../assets/img/marker-food.png',
 		});
 
 		marker.setMap(map);
@@ -132,14 +133,19 @@ class MyMap {
 
 	getAverageStars() {
 		// average stars
-		let nbRestaurants = 0;
-		let averageStars = 0;
-		for (const restaurant of restaurants) {
-			nbRestaurants++;
-			averageStars += restaurant.ratings[0].stars;
-		}
+		restaurants.forEach((restaurant) => {
+			let averageRatingRestaurant = 0;
+			let nbRatings = 0;
 
-		averageStars = averageStars / nbRestaurants;
+			restaurant.ratings.forEach((ratingRestaurant) => {
+				nbRatings++;
+				averageRatingRestaurant += ratingRestaurant.stars;
+			});
+
+			averageRatingRestaurant = averageRatingRestaurant / nbRatings;
+
+			restaurant.averageRatings = averageRatingRestaurant;
+		});
 	}
 
 	static setMapOnAll(map, arrayOfAllMarkers) {
@@ -150,6 +156,7 @@ class MyMap {
 
 	static clearMarkers(arrayOfAllMarkers) {
 		MyMap.setMapOnAll(null, arrayOfAllMarkers);
+		arrayOfAllMarkers.splice(0, arrayOfAllMarkers.length);
 	}
 
 	static deleteMarkers(arrayOfAllMarkers) {
@@ -190,25 +197,94 @@ class MyMap {
 	}
 
 	boundsChanged() {
+		const containerControl = document.querySelector('.control');
 		const thisMap = this;
 		let limite;
+
 		google.maps.event.addListener(thisMap.newMap, 'idle', function() {
-			limite = thisMap.newMap.getBounds();
+			if (!containerControl.classList.contains('comment')) {
+				limite = thisMap.newMap.getBounds();
 
-			thisMap.getAverageStars();
-			thisMap.reloadContentRestaurant();
-
-			MyMap.filterMarker(restaurants, thisMap, limite);
+				thisMap.getAverageStars();
+				thisMap.reloadContentRestaurant();
+				MyMap.filterMarker(restaurants, thisMap, limite);
+				thisMap.changeColorMarkerOnHover();
+				thisMap.displayCommentRestaurant();
+			}
 		});
 
 		const rangeStars = document.querySelector('input#stars');
 		const outputStars = document.querySelector('.output-stars .nb');
 
 		rangeStars.oninput = () => {
-			outputStars.innerHTML = rangeStars.value;
-			thisMap.reloadContentRestaurant();
-			MyMap.filterMarker(restaurants, thisMap, limite);
+			if (!containerControl.classList.contains('comment')) {
+				outputStars.innerHTML = rangeStars.value;
+				thisMap.reloadContentRestaurant();
+				MyMap.filterMarker(restaurants, thisMap, limite);
+				thisMap.changeColorMarkerOnHover();
+			}
 		};
+	}
+
+	changeColorMarkerOnHover() {
+		const listrestaurants = document.querySelector('.list-restaurants');
+
+		if (listrestaurants) {
+			const restaurants = listrestaurants.querySelectorAll('.restaurant');
+
+			restaurants.forEach((restaurant) => {
+				restaurant.addEventListener('mouseover', () => {
+					const restaurantId = restaurant.dataset.id;
+
+					this.allMarkers.forEach((marker) => {
+						if (restaurantId === marker.title) {
+							marker.setIcon({
+								url: '../../assets/img/marker-food-hover.png',
+							});
+						}
+					});
+				});
+
+				restaurant.addEventListener('mouseout', () => {
+					const restaurantId = restaurant.dataset.id;
+
+					this.allMarkers.forEach((marker) => {
+						if (restaurantId === marker.title) {
+							marker.setIcon({
+								url: '../../assets/img/marker-food.png',
+							});
+						}
+					});
+				});
+			});
+		}
+	}
+
+	displayCommentRestaurant() {
+		const dataRestaurants = restaurants;
+		console.log(dataRestaurants);
+		const containerControl = document.querySelector('.container-map .control');
+		const listrestaurants = document.querySelector('.list-restaurants');
+
+		if (listrestaurants) {
+			const restaurants = listrestaurants.querySelectorAll('.restaurant');
+			const thisMap = this;
+			restaurants.forEach((restaurant) => {
+				restaurant.addEventListener('click', () => {
+					containerControl.classList.add('comment');
+					thisMap.reloadContentRestaurant();
+					const restaurantId = restaurant.dataset.id;
+
+					dataRestaurants.forEach((dataRestaurant) => {
+						if (restaurantId === dataRestaurant.restaurantName) {
+							const nameRestaurant = dataRestaurants.restaurantName;
+							const starsRestaurant = dataRestaurants.rating;
+							const addressRestaurant = dataRestaurants.address;
+						}
+					});
+				});
+			});
+		}
 	}
 }
 

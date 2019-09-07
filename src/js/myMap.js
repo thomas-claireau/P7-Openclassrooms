@@ -158,6 +158,29 @@ class MyMap {
 		return arrayOfAllMarkers;
 	}
 
+	static filterMarker(listrestaurants, map, limiteMap) {
+		for (const restaurant of listrestaurants) {
+			const latLngRestaurant = { lat: restaurant.lat, lng: restaurant.lng };
+
+			if (limiteMap.contains(latLngRestaurant)) {
+				MyMap.addMarker(
+					map.newMap,
+					latLngRestaurant,
+					restaurant.restaurantName,
+					map.allMarkers
+				);
+
+				MyMap.displayRestaurant(
+					restaurant.restaurantName,
+					restaurant.ratings[0].stars,
+					restaurant.address,
+					restaurant.lat,
+					restaurant.lng
+				);
+			}
+		}
+	}
+
 	boundsChanged() {
 		const thisMap = this;
 		google.maps.event.addListener(thisMap.newMap, 'idle', function() {
@@ -167,31 +190,7 @@ class MyMap {
 			thisMap.getAverageStars();
 			thisMap.reloadContentRestaurant();
 
-			for (const restaurant of restaurants) {
-				const latLngRestaurant = { lat: restaurant.lat, lng: restaurant.lng };
-
-				if (limite.contains(latLngRestaurant)) {
-					MyMap.addMarker(
-						thisMap.newMap,
-						latLngRestaurant,
-						restaurant.restaurantName,
-						thisMap.allMarkers
-					);
-
-					MyMap.displayRestaurant(
-						restaurant.restaurantName,
-						restaurant.ratings[0].stars,
-						restaurant.address,
-						restaurant.lat,
-						restaurant.lng
-					);
-				}
-			}
-		});
-
-		google.maps.event.addListener(thisMap.newMap, 'center_changed', function() {
-			const newMapFront = new Front();
-			newMapFront.addIdMarker();
+			MyMap.filterMarker(restaurants, thisMap, limite);
 		});
 	}
 }

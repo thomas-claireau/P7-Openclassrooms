@@ -170,7 +170,7 @@ class MyMap {
 		for (const restaurant of listrestaurants) {
 			const latLngRestaurant = { lat: restaurant.lat, lng: restaurant.lng };
 			const rangeStars = document.querySelector('input#stars').value;
-			const restaurantStars = restaurant.ratings[0].stars;
+			const restaurantStars = restaurant.averageRatings;
 
 			if (
 				limiteMap.contains(latLngRestaurant) &&
@@ -181,13 +181,13 @@ class MyMap {
 					map.newMap,
 					latLngRestaurant,
 					restaurant.restaurantName,
-					restaurant.ratings[0].stars,
+					restaurant.averageRatings,
 					map.allMarkers
 				);
 
 				MyMap.displayRestaurant(
 					restaurant.restaurantName,
-					restaurant.ratings[0].stars,
+					restaurant.averageRatings,
 					restaurant.address,
 					restaurant.lat,
 					restaurant.lng

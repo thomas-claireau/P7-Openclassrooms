@@ -205,7 +205,6 @@ class MyMap {
 		google.maps.event.addListener(thisMap.newMap, 'idle', function() {
 			if (!containerControl.classList.contains('comment')) {
 				limite = thisMap.newMap.getBounds();
-
 				thisMap.getAverageStars();
 				thisMap.reloadContentRestaurant();
 				MyMap.filterMarker(restaurants, thisMap, limite);
@@ -217,14 +216,17 @@ class MyMap {
 		const rangeStars = document.querySelector('input#stars');
 		const outputStars = document.querySelector('.output-stars .nb');
 
-		rangeStars.oninput = () => {
-			if (!containerControl.classList.contains('comment')) {
-				outputStars.innerHTML = rangeStars.value;
-				thisMap.reloadContentRestaurant();
-				MyMap.filterMarker(restaurants, thisMap, limite);
-				thisMap.changeColorMarkerOnHover();
-			}
-		};
+		if (rangeStars) {
+			rangeStars.oninput = () => {
+				if (!containerControl.classList.contains('comment')) {
+					outputStars.innerHTML = rangeStars.value;
+					thisMap.reloadContentRestaurant();
+					MyMap.filterMarker(restaurants, thisMap, limite);
+					thisMap.changeColorMarkerOnHover();
+					thisMap.displayCommentRestaurant();
+				}
+			};
+		}
 	}
 
 	changeColorMarkerOnHover() {
@@ -294,6 +296,10 @@ class MyMap {
 							const iconBack = document.createElement('img');
 							iconBack.src = '../../assets/img/chevron-left.png';
 							btnBack.appendChild(iconBack);
+
+							btnBack.addEventListener('click', () => {
+								this.backToList();
+							});
 
 							const containerInfRestaurant = document.createElement('div');
 							containerInfRestaurant.classList.add('container-inf-restaurant');
@@ -411,6 +417,13 @@ class MyMap {
 				});
 			});
 		}
+	}
+
+	backToList() {
+		const control = document.querySelector('.control');
+		control.classList.remove('comment');
+		control.querySelector('.container-restaurant').remove();
+		this.boundsChanged();
 	}
 }
 

@@ -138,7 +138,6 @@ class Front {
 					thisFront.reloadContentRestaurant();
 					const restaurantId = restaurant.dataset.id;
 
-					console.log(dataRestaurants);
 					dataRestaurants.forEach((dataRestaurant) => {
 						if (restaurantId === dataRestaurant.restaurantName) {
 							const latRestaurant = dataRestaurant.lat;

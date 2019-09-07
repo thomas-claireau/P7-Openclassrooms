@@ -62,75 +62,6 @@ class MyMap {
 		container.style.backgroundImage = `url("${urlImg}")`;
 	}
 
-	static displayRestaurant(
-		restaurantName,
-		restaurantStars,
-		restaurantAddresse,
-		restaurantLat,
-		restaurantLng
-	) {
-		// container global
-		const containerRestaurants = document.querySelector(
-			'.container-map .control .list-restaurants'
-		);
-
-		// container of each restaurant
-		const containerRestaurant = document.createElement('div');
-		containerRestaurant.classList.add('restaurant');
-		containerRestaurant.setAttribute('data-id', restaurantName);
-
-		// left column inside container (flexbox)
-		const leftColumnContent = document.createElement('div');
-		leftColumnContent.classList.add('left');
-
-		// name of restaurant
-		const nameRestaurant = document.createElement('div');
-		nameRestaurant.classList.add('nameRestaurant');
-		nameRestaurant.innerHTML = `<h3>${restaurantName}</h3>`;
-
-		// number of stars (container)
-		const stars = document.createElement('div');
-		stars.classList.add('stars');
-
-		// add 5 container span and condition to display star active
-		for (let i = 1; i <= 5; i++) {
-			const star = document.createElement('span');
-			star.classList.add(`star-${i}`);
-
-			if (i <= restaurantStars) {
-				star.classList.add('active');
-			}
-
-			stars.appendChild(star);
-		}
-
-		// addresse of restaurant
-		const addresseRestaurant = document.createElement('div');
-		addresseRestaurant.classList.add('addresse');
-		addresseRestaurant.textContent = restaurantAddresse;
-
-		// right column inside container (flexbox)
-		const rightColumnContent = document.createElement('div');
-		MyMap.getImgStreetView(restaurantLat, restaurantLng, rightColumnContent);
-		rightColumnContent.classList.add('right');
-
-		leftColumnContent.appendChild(nameRestaurant);
-		leftColumnContent.appendChild(stars);
-		leftColumnContent.appendChild(addresseRestaurant);
-
-		containerRestaurant.appendChild(leftColumnContent);
-		containerRestaurant.appendChild(rightColumnContent);
-
-		containerRestaurants.appendChild(containerRestaurant);
-	}
-
-	reloadContentRestaurant() {
-		const containerRestaurants = document.querySelector(
-			'.container-map .control .list-restaurants'
-		);
-		containerRestaurants.innerHTML = '';
-	}
-
 	getAverageStars() {
 		// average stars
 		restaurants.forEach((restaurant) => {
@@ -186,7 +117,7 @@ class MyMap {
 					map.allMarkers
 				);
 
-				MyMap.displayRestaurant(
+				Front.displayRestaurant(
 					restaurant.restaurantName,
 					restaurant.averageRatings,
 					restaurant.address,
@@ -200,16 +131,18 @@ class MyMap {
 	boundsChanged() {
 		const containerControl = document.querySelector('.control');
 		const thisMap = this;
+		const thisFront = new Front();
+		const arrayOfMarker = this.allMarkers;
 		let limite;
 
 		google.maps.event.addListener(thisMap.newMap, 'idle', function() {
 			if (!containerControl.classList.contains('comment')) {
 				limite = thisMap.newMap.getBounds();
 				thisMap.getAverageStars();
-				thisMap.reloadContentRestaurant();
+				thisFront.reloadContentRestaurant();
 				MyMap.filterMarker(restaurants, thisMap, limite);
-				thisMap.changeColorMarkerOnHover();
-				thisMap.displayCommentRestaurant();
+				Front.changeColorMarkerOnHover(arrayOfMarker);
+				thisFront.displayCommentRestaurant();
 			}
 		});
 
@@ -220,211 +153,177 @@ class MyMap {
 			rangeStars.oninput = () => {
 				if (!containerControl.classList.contains('comment')) {
 					outputStars.innerHTML = rangeStars.value;
-					thisMap.reloadContentRestaurant();
+					thisFront.reloadContentRestaurant();
 					MyMap.filterMarker(restaurants, thisMap, limite);
-					thisMap.changeColorMarkerOnHover();
-					thisMap.displayCommentRestaurant();
+					Front.changeColorMarkerOnHover(arrayOfMarker);
+					thisFront.displayCommentRestaurant();
 				}
 			};
 		}
 	}
 
-	changeColorMarkerOnHover() {
-		const listrestaurants = document.querySelector('.list-restaurants');
+	// displayCommentRestaurant() {
+	// 	const dataRestaurants = restaurants;
+	// 	const containerControl = document.querySelector('.container-map .control');
+	// 	const listrestaurants = document.querySelector('.list-restaurants');
 
-		if (listrestaurants) {
-			const restaurants = listrestaurants.querySelectorAll('.restaurant');
+	// 	if (listrestaurants) {
+	// 		const restaurants = listrestaurants.querySelectorAll('.restaurant');
+	// 		const thisFront = new Front();
+	// 		restaurants.forEach((restaurant) => {
+	// 			restaurant.addEventListener('click', () => {
+	// 				containerControl.classList.add('comment');
+	// 				thisFront.reloadContentRestaurant();
+	// 				const restaurantId = restaurant.dataset.id;
 
-			restaurants.forEach((restaurant) => {
-				restaurant.addEventListener('mouseover', () => {
-					const restaurantId = restaurant.dataset.id;
+	// 				dataRestaurants.forEach((dataRestaurant) => {
+	// 					if (restaurantId === dataRestaurant.restaurantName) {
+	// 						const latRestaurant = dataRestaurant.lat;
+	// 						const lngRestaurant = dataRestaurant.lng;
+	// 						const nameRestaurant = dataRestaurant.restaurantName;
+	// 						const averageRatingsRestaurant = dataRestaurant.averageRatings;
+	// 						const nbRatings = dataRestaurant.nbRatings;
+	// 						const addressRestaurant = dataRestaurant.address;
+	// 						const allComments = dataRestaurant.ratings;
 
-					this.allMarkers.forEach((marker) => {
-						if (restaurantId === marker.title) {
-							marker.setIcon({
-								url: '../../assets/img/marker-food-hover.png',
-							});
-						}
-					});
-				});
+	// 						const containerRestaurant = document.createElement('div');
+	// 						containerRestaurant.classList.add('container-restaurant');
 
-				restaurant.addEventListener('mouseout', () => {
-					const restaurantId = restaurant.dataset.id;
+	// 						// btn back to list of restaurants
+	// 						const btnBack = document.createElement('div');
+	// 						btnBack.classList.add('back-to-list');
+	// 						const iconBack = document.createElement('img');
+	// 						iconBack.src = '../../assets/img/chevron-left.png';
+	// 						btnBack.appendChild(iconBack);
 
-					this.allMarkers.forEach((marker) => {
-						if (restaurantId === marker.title) {
-							marker.setIcon({
-								url: '../../assets/img/marker-food.png',
-							});
-						}
-					});
-				});
-			});
-		}
-	}
+	// 						btnBack.addEventListener('click', () => {
+	// 							this.backToList();
+	// 						});
 
-	displayCommentRestaurant() {
-		const dataRestaurants = restaurants;
-		const containerControl = document.querySelector('.container-map .control');
-		const listrestaurants = document.querySelector('.list-restaurants');
+	// 						const containerInfRestaurant = document.createElement('div');
+	// 						containerInfRestaurant.classList.add('container-inf-restaurant');
 
-		if (listrestaurants) {
-			const restaurants = listrestaurants.querySelectorAll('.restaurant');
-			const thisMap = this;
-			restaurants.forEach((restaurant) => {
-				restaurant.addEventListener('click', () => {
-					containerControl.classList.add('comment');
-					thisMap.reloadContentRestaurant();
-					const restaurantId = restaurant.dataset.id;
+	// 						// image restaurant
+	// 						const containerImgRestaurant = document.createElement('div');
+	// 						containerImgRestaurant.classList.add('img-restaurant');
+	// 						MyMap.getImgStreetView(
+	// 							latRestaurant,
+	// 							lngRestaurant,
+	// 							containerImgRestaurant
+	// 						);
 
-					dataRestaurants.forEach((dataRestaurant) => {
-						if (restaurantId === dataRestaurant.restaurantName) {
-							const latRestaurant = dataRestaurant.lat;
-							const lngRestaurant = dataRestaurant.lng;
-							const nameRestaurant = dataRestaurant.restaurantName;
-							const averageRatingsRestaurant = dataRestaurant.averageRatings;
-							const nbRatings = dataRestaurant.nbRatings;
-							const addressRestaurant = dataRestaurant.address;
-							const allComments = dataRestaurant.ratings;
+	// 						// name restaurant
+	// 						const containerTitleRestaurant = document.createElement('div');
+	// 						containerTitleRestaurant.classList.add('name-restaurant');
+	// 						const titleRestaurant = document.createElement('h3');
+	// 						titleRestaurant.textContent = nameRestaurant;
+	// 						containerTitleRestaurant.appendChild(titleRestaurant);
 
-							const containerRestaurant = document.createElement('div');
-							containerRestaurant.classList.add('container-restaurant');
+	// 						// address restaurant
+	// 						const containerAddressRestaurant = document.createElement('div');
+	// 						containerAddressRestaurant.classList.add('address-restaurant');
+	// 						containerAddressRestaurant.textContent = addressRestaurant;
 
-							// btn back to list of restaurants
-							const btnBack = document.createElement('div');
-							btnBack.classList.add('back-to-list');
-							const iconBack = document.createElement('img');
-							iconBack.src = '../../assets/img/chevron-left.png';
-							btnBack.appendChild(iconBack);
+	// 						// average ratings restaurant
+	// 						const containerAverageRatings = document.createElement('div');
+	// 						containerAverageRatings.classList.add('average-ratings');
+	// 						const titleAverageRatings = document.createElement('div');
+	// 						const containerRatings = document.createElement('div');
+	// 						containerRatings.classList.add('ratings');
+	// 						titleAverageRatings.classList.add('title-average');
+	// 						titleAverageRatings.textContent = 'Moyenne des avis';
+	// 						const averageRatings = document.createElement('span');
+	// 						averageRatings.classList.add('average');
+	// 						const containerStars = document.createElement('div');
+	// 						containerStars.classList.add('stars');
+	// 						const containerNbRatings = document.createElement('span');
+	// 						containerNbRatings.classList.add('nb-ratings');
 
-							btnBack.addEventListener('click', () => {
-								this.backToList();
-							});
+	// 						averageRatings.textContent = averageRatingsRestaurant;
 
-							const containerInfRestaurant = document.createElement('div');
-							containerInfRestaurant.classList.add('container-inf-restaurant');
+	// 						for (let i = 1; i <= 5; i++) {
+	// 							const star = document.createElement('span');
+	// 							star.classList.add(`star-${i}`);
 
-							// image restaurant
-							const containerImgRestaurant = document.createElement('div');
-							containerImgRestaurant.classList.add('img-restaurant');
-							MyMap.getImgStreetView(
-								latRestaurant,
-								lngRestaurant,
-								containerImgRestaurant
-							);
+	// 							if (i <= averageRatingsRestaurant) {
+	// 								star.classList.add('active');
+	// 							}
+	// 							containerStars.appendChild(star);
+	// 						}
 
-							// name restaurant
-							const containerTitleRestaurant = document.createElement('div');
-							containerTitleRestaurant.classList.add('name-restaurant');
-							const titleRestaurant = document.createElement('h3');
-							titleRestaurant.textContent = nameRestaurant;
-							containerTitleRestaurant.appendChild(titleRestaurant);
+	// 						containerNbRatings.textContent = `${nbRatings} avis`;
 
-							// address restaurant
-							const containerAddressRestaurant = document.createElement('div');
-							containerAddressRestaurant.classList.add('address-restaurant');
-							containerAddressRestaurant.textContent = addressRestaurant;
+	// 						containerRatings.appendChild(averageRatings);
+	// 						containerRatings.appendChild(containerStars);
+	// 						containerRatings.appendChild(containerNbRatings);
+	// 						containerAverageRatings.appendChild(titleAverageRatings);
+	// 						containerAverageRatings.appendChild(containerRatings);
 
-							// average ratings restaurant
-							const containerAverageRatings = document.createElement('div');
-							containerAverageRatings.classList.add('average-ratings');
-							const titleAverageRatings = document.createElement('div');
-							const containerRatings = document.createElement('div');
-							containerRatings.classList.add('ratings');
-							titleAverageRatings.classList.add('title-average');
-							titleAverageRatings.textContent = 'Moyenne des avis';
-							const averageRatings = document.createElement('span');
-							averageRatings.classList.add('average');
-							const containerStars = document.createElement('div');
-							containerStars.classList.add('stars');
-							const containerNbRatings = document.createElement('span');
-							containerNbRatings.classList.add('nb-ratings');
+	// 						// display all comments of restaurant (and note)
+	// 						const containerCommentsRestaurant = document.createElement('div');
+	// 						containerCommentsRestaurant.classList.add('comments-restaurant');
 
-							averageRatings.textContent = averageRatingsRestaurant;
+	// 						allComments.forEach((comment) => {
+	// 							const containerComment = document.createElement('div');
+	// 							containerComment.classList.add('container-comment');
+	// 							const containerAvatar = document.createElement('div');
+	// 							containerAvatar.classList.add('container-avatar');
 
-							for (let i = 1; i <= 5; i++) {
-								const star = document.createElement('span');
-								star.classList.add(`star-${i}`);
+	// 							const avatar = document.createElement('div');
+	// 							avatar.classList.add('avatar');
+	// 							avatar.style.backgroundImage = `url("../../assets/img/unknow.png")`;
 
-								if (i <= averageRatingsRestaurant) {
-									star.classList.add('active');
-								}
-								containerStars.appendChild(star);
-							}
+	// 							const nameAuthor = document.createElement('div');
+	// 							nameAuthor.classList.add('name-author');
+	// 							nameAuthor.textContent = 'unknow';
 
-							containerNbRatings.textContent = `${nbRatings} avis`;
+	// 							const note = document.createElement('div');
+	// 							note.classList.add('note');
 
-							containerRatings.appendChild(averageRatings);
-							containerRatings.appendChild(containerStars);
-							containerRatings.appendChild(containerNbRatings);
-							containerAverageRatings.appendChild(titleAverageRatings);
-							containerAverageRatings.appendChild(containerRatings);
+	// 							for (let i = 1; i <= 5; i++) {
+	// 								const star = document.createElement('span');
+	// 								star.classList.add(`star-${i}`);
 
-							// display all comments of restaurant (and note)
-							const containerCommentsRestaurant = document.createElement('div');
-							containerCommentsRestaurant.classList.add('comments-restaurant');
+	// 								if (i <= comment.stars) {
+	// 									star.classList.add('active');
+	// 								}
+	// 								note.appendChild(star);
+	// 							}
 
-							allComments.forEach((comment) => {
-								const containerComment = document.createElement('div');
-								containerComment.classList.add('container-comment');
-								const containerAvatar = document.createElement('div');
-								containerAvatar.classList.add('container-avatar');
+	// 							const commentText = document.createElement('div');
+	// 							commentText.classList.add('comment');
+	// 							commentText.textContent = comment.comment;
 
-								const avatar = document.createElement('div');
-								avatar.classList.add('avatar');
-								avatar.style.backgroundImage = `url("../../assets/img/unknow.png")`;
+	// 							containerAvatar.appendChild(avatar);
+	// 							containerAvatar.appendChild(nameAuthor);
+	// 							containerComment.appendChild(containerAvatar);
+	// 							containerComment.appendChild(note);
+	// 							containerComment.appendChild(commentText);
+	// 							containerCommentsRestaurant.appendChild(containerComment);
+	// 						});
 
-								const nameAuthor = document.createElement('div');
-								nameAuthor.classList.add('name-author');
-								nameAuthor.textContent = 'unknow';
+	// 						// multiple insertion in HTML
+	// 						containerRestaurant.appendChild(btnBack);
+	// 						containerRestaurant.appendChild(containerImgRestaurant);
+	// 						containerInfRestaurant.appendChild(containerTitleRestaurant);
+	// 						containerInfRestaurant.appendChild(containerAddressRestaurant);
+	// 						containerInfRestaurant.appendChild(containerAverageRatings);
+	// 						containerInfRestaurant.appendChild(containerCommentsRestaurant);
+	// 						containerRestaurant.appendChild(containerInfRestaurant);
+	// 						containerControl.appendChild(containerRestaurant);
+	// 					}
+	// 				});
+	// 			});
+	// 		});
+	// 	}
+	// }
 
-								const note = document.createElement('div');
-								note.classList.add('note');
-
-								for (let i = 1; i <= 5; i++) {
-									const star = document.createElement('span');
-									star.classList.add(`star-${i}`);
-
-									if (i <= comment.stars) {
-										star.classList.add('active');
-									}
-									note.appendChild(star);
-								}
-
-								const commentText = document.createElement('div');
-								commentText.classList.add('comment');
-								commentText.textContent = comment.comment;
-
-								containerAvatar.appendChild(avatar);
-								containerAvatar.appendChild(nameAuthor);
-								containerComment.appendChild(containerAvatar);
-								containerComment.appendChild(note);
-								containerComment.appendChild(commentText);
-								containerCommentsRestaurant.appendChild(containerComment);
-							});
-
-							// multiple insertion in HTML
-							containerRestaurant.appendChild(btnBack);
-							containerRestaurant.appendChild(containerImgRestaurant);
-							containerInfRestaurant.appendChild(containerTitleRestaurant);
-							containerInfRestaurant.appendChild(containerAddressRestaurant);
-							containerInfRestaurant.appendChild(containerAverageRatings);
-							containerInfRestaurant.appendChild(containerCommentsRestaurant);
-							containerRestaurant.appendChild(containerInfRestaurant);
-							containerControl.appendChild(containerRestaurant);
-						}
-					});
-				});
-			});
-		}
-	}
-
-	backToList() {
-		const control = document.querySelector('.control');
-		control.classList.remove('comment');
-		control.querySelector('.container-restaurant').remove();
-		this.boundsChanged();
-	}
+	// backToList() {
+	// 	const control = document.querySelector('.control');
+	// 	control.classList.remove('comment');
+	// 	control.querySelector('.container-restaurant').remove();
+	// 	this.boundsChanged();
+	// }
 }
 
 export { MyMap };

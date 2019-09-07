@@ -289,14 +289,11 @@ class MyMap {
 							containerRestaurant.classList.add('container-restaurant');
 
 							// btn back to list of restaurants
-							const btnBack = document.createElement('button');
-							const iconBack = document.createElement('img');
-							iconBack.classList.add('js-inject-me');
-							iconBack.src = '../../assets/img/chevron-left.svg';
-							// SVGInjector(iconBack);
-							btnBack.appendChild(iconBack);
+							const btnBack = document.createElement('div');
 							btnBack.classList.add('back-to-list');
-							btnBack.textContent = 'Retour à la liste des restaurants';
+							const iconBack = document.createElement('img');
+							iconBack.src = '../../assets/img/chevron-left.png';
+							btnBack.appendChild(iconBack);
 
 							const containerInfRestaurant = document.createElement('div');
 							containerInfRestaurant.classList.add('container-inf-restaurant');
@@ -357,7 +354,7 @@ class MyMap {
 							containerAverageRatings.appendChild(titleAverageRatings);
 							containerAverageRatings.appendChild(containerRatings);
 
-							// display all comments of restaurant
+							// display all comments of restaurant (and note)
 							const containerCommentsRestaurant = document.createElement('div');
 							containerCommentsRestaurant.classList.add('comments-restaurant');
 
@@ -375,6 +372,19 @@ class MyMap {
 								nameAuthor.classList.add('name-author');
 								nameAuthor.textContent = 'unknow';
 
+								const note = document.createElement('div');
+								note.classList.add('note');
+
+								for (let i = 1; i <= 5; i++) {
+									const star = document.createElement('span');
+									star.classList.add(`star-${i}`);
+
+									if (i <= comment.stars) {
+										star.classList.add('active');
+									}
+									note.appendChild(star);
+								}
+
 								const commentText = document.createElement('div');
 								commentText.classList.add('comment');
 								commentText.textContent = comment.comment;
@@ -382,6 +392,7 @@ class MyMap {
 								containerAvatar.appendChild(avatar);
 								containerAvatar.appendChild(nameAuthor);
 								containerComment.appendChild(containerAvatar);
+								containerComment.appendChild(note);
 								containerComment.appendChild(commentText);
 								containerCommentsRestaurant.appendChild(containerComment);
 							});

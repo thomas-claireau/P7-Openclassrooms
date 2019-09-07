@@ -126,12 +126,46 @@ body {
 					position: relative;
 
 					.back-to-list {
-						font-size: 0;
-						width: 30px;
-						height: 30px;
+						width: 40px;
+						height: 40px;
 						position: absolute;
 						top: 20px;
 						left: 20px;
+						background-color: #fff;
+						border-radius: 100px;
+						display: flex;
+						justify-content: center;
+						align-content: center;
+						align-items: center;
+						cursor: pointer;
+
+						img {
+							width: 20px;
+							height: 20px;
+							position: relative;
+							left: -2px;
+						}
+					}
+
+					.stars,
+					.note {
+						display: flex;
+						justify-content: flex-start;
+						align-content: center;
+						align-items: center;
+
+						span {
+							background-image: url('../../assets/img/star-inactive.png');
+							background-position: center;
+							background-size: cover;
+							width: 20px;
+							height: 20px;
+							// display: block;
+
+							&.active {
+								background-image: url('../../assets/img/star-active.png');
+							}
+						}
 					}
 
 					.img-restaurant {
@@ -177,26 +211,6 @@ body {
 									font-weight: 600;
 								}
 
-								.stars {
-									display: flex;
-									justify-content: flex-start;
-									align-content: center;
-									align-items: center;
-
-									span {
-										background-image: url('../../assets/img/star-inactive.png');
-										background-position: center;
-										background-size: cover;
-										width: 20px;
-										height: 20px;
-										// display: block;
-
-										&.active {
-											background-image: url('../../assets/img/star-active.png');
-										}
-									}
-								}
-
 								.nb-ratings {
 									margin-top: 7px;
 									font-weight: 300;
@@ -230,6 +244,7 @@ body {
 									font-size: 15px;
 									font-weight: 300;
 									margin-bottom: 21px;
+									margin-top: 10px;
 									padding-right: 20px;
 								}
 							}

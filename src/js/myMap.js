@@ -141,6 +141,7 @@ class MyMap {
 				thisMap.getAverageStars();
 				thisFront.reloadContentRestaurant();
 				MyMap.filterMarker(restaurants, thisMap, limite);
+				thisFront.enableScrollContent();
 				Front.changeColorMarkerOnHover(arrayOfMarker);
 				thisFront.displayCommentRestaurant();
 			}

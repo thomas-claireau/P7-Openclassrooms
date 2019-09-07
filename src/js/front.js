@@ -90,6 +90,20 @@ class Front {
 		containerRestaurants.innerHTML = '';
 	}
 
+	enableScrollContent() {
+		const containerListRestaurants = document.querySelector('.list-restaurants');
+
+		if (containerListRestaurants) {
+			const restaurants = containerListRestaurants.querySelectorAll('.restaurant');
+
+			if (restaurants.length > 6) {
+				containerListRestaurants.classList.add('scrolled');
+			} else {
+				containerListRestaurants.classList.remove('scrolled');
+			}
+		}
+	}
+
 	static changeColorMarkerOnHover(arrayOfMarkers) {
 		const listrestaurants = document.querySelector('.list-restaurants');
 
@@ -278,13 +292,28 @@ class Front {
 							containerControl.appendChild(containerRestaurant);
 						}
 					});
+					this.enableScrollComment();
 				});
 			});
 		}
 	}
 
+	enableScrollComment() {
+		const containerComments = document.querySelector('.comments-restaurant');
+
+		if (containerComments) {
+			if (containerComments.offsetHeight > 600) {
+				containerComments.classList.add('scrolled-comment');
+			} else {
+				containerComments.classList.remove('scrolled-comment');
+			}
+		}
+	}
+
 	backToList() {
 		const control = document.querySelector('.control');
+		const containerListRestaurants = document.querySelector('.list-restaurants');
+		containerListRestaurants.classList.remove('scrolled');
 		control.classList.remove('comment');
 		control.querySelector('.container-restaurant').remove();
 	}

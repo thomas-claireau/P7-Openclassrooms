@@ -34,10 +34,6 @@ class MyMap {
 	}
 
 	static addMarker(map, latLng, title, arrayOfAllMarkers) {
-		title = title
-			.split(' ')
-			.join('-')
-			.toLowerCase();
 		const marker = new google.maps.Marker({
 			position: latLng,
 			map: map,

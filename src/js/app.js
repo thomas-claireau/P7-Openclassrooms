@@ -25,7 +25,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			});
 		});
 
-		const newMapFront = new Front();
+		const newMapFront = new Front(newMap);
 		newMapFront.interactionMap();
 	});
 });

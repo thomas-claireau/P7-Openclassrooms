@@ -11,6 +11,7 @@ class MyMap {
 		this.lat = lat;
 		this.lng = lng;
 	}
+
 	loadGoogleMapsApi() {
 		return loadGoogleMapsApi({ key: keyData.key });
 	}
@@ -62,7 +63,7 @@ class MyMap {
 		container.style.backgroundImage = `url("${urlImg}")`;
 	}
 
-	getAverageStars() {
+	static getAverageStars() {
 		// average stars
 		restaurants.forEach((restaurant) => {
 			let averageRatingRestaurant = 0;
@@ -74,6 +75,7 @@ class MyMap {
 			});
 
 			averageRatingRestaurant = averageRatingRestaurant / nbRatings;
+			averageRatingRestaurant = averageRatingRestaurant.toFixed(1);
 
 			restaurant.averageRatings = averageRatingRestaurant;
 			restaurant.nbRatings = nbRatings;
@@ -138,7 +140,7 @@ class MyMap {
 		google.maps.event.addListener(thisMap.newMap, 'idle', function() {
 			if (!containerControl.classList.contains('comment')) {
 				limite = thisMap.newMap.getBounds();
-				thisMap.getAverageStars();
+				MyMap.getAverageStars();
 				thisFront.reloadContentRestaurant();
 				MyMap.filterMarker(restaurants, thisMap, limite);
 				thisFront.enableScrollContent();

@@ -529,6 +529,10 @@ body {
 								color: $rouge;
 								font-weight: 600;
 							}
+
+							&:focus {
+								outline: none;
+							}
 						}
 					}
 

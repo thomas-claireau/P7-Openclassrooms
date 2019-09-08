@@ -6,10 +6,12 @@
 		"lng": 2.3501649,
 		"ratings": [
 			{
+				"user": "unknow",
 				"stars": 4,
 				"comment": "Un excellent restaurant, j'y reviendrai ! Par contre il vaut mieux aimer la viande."
 			},
 			{
+				"user": "unknow",
 				"stars": 2,
 				"comment": "Tout simplement mon restaurant préféré !"
 			}
@@ -22,10 +24,12 @@
 		"lng": 2.3442197,
 		"ratings": [
 			{
+				"user": "unknow",
 				"stars": 5,
 				"comment": "Une minuscule pizzeria délicieuse cachée juste à côté du Sacré choeur !"
 			},
 			{
+				"user": "unknow",
 				"stars": 3,
 				"comment": "J'ai trouvé ça correct, sans plus"
 			}
@@ -38,10 +42,12 @@
 		"lng": -1.557963,
 		"ratings": [
 			{
+				"user": "unknow",
 				"stars": 3,
 				"comment": "Le restaurant est dans un cadre très sympa. Mais beaucoup trop d'attente entre les plats. Les plats sont cependant de qualité."
 			},
 			{
+				"user": "unknow",
 				"stars": 4,
 				"comment": "Notre restaurant préféré à Nantes et dans toute la région. Les conseils de Mickaël et de son épouse concernant le vin sont toujours très pointus, et le repas est toujours plein de saveurs et original. Nous on adore !"
 			}
@@ -54,10 +60,12 @@
 		"lng": -1.549839,
 		"ratings": [
 			{
+				"user": "unknow",
 				"stars": 5,
 				"comment": "C'était vraiment très très bon. Ça vaut le détour, j'ai tout adoré entrée et plat. Malheureusement je nos pas pu prendre le désert trop rassasié. C'était vraiment excellent et les tarifs sont vraiment raisonnable pour une tel qualité."
 			},
 			{
+				"user": "unknow",
 				"stars": 4,
 				"comment": "Bien situé dans Nantes, personnel très chaleureux et aidant. La nourriture est très correcte. Pour une journée ensoleillée je trouve la salle intérieure un peu sombre mais pour tout autre moment elle est parfaite. Et sinon il vous reste la petite terrasse à l’extérieur"
 			}
@@ -70,10 +78,12 @@
 		"lng": 4.861245,
 		"ratings": [
 			{
+				"user": "unknow",
 				"stars": 5,
 				"comment": "Une très belle expérience. Des saveurs pleines et surprenantes pour certaines. Une mention pour le sommelier qui a su marier les vins avec nos plats. L'accueil est professionnel mais reste chaleureux. Bref, un restaurant qui mérite sa réputation."
 			},
 			{
+				"user": "unknow",
 				"stars": 5,
 				"comment": "Du grand art. De l’inventivité dans l’assiette sans tomber dans l’excès. Beaucoup de fraîcheur dans le menu estival. L’accord mets et vins vous permettra de découvrir de nouveaux vins, cela change des classiques."
 			}
@@ -86,10 +96,12 @@
 		"lng": 4.833864,
 		"ratings": [
 			{
+				"user": "unknow",
 				"stars": 5,
 				"comment": "Une ambiance cosy et reposante pour pouvoir apprécier les goûts et les saveurs dans une valse à l'équilibre parfait Une partition sans fausse note de l'entrée au dessert"
 			},
 			{
+				"user": "unknow",
 				"stars": 5,
 				"comment": "Le top du top ce resto. Nous avons ADORE, les prix sont corrects, et la soirée a été parfaite. Mille mercis au chef et au personnel !!!"
 			}
@@ -102,10 +114,12 @@
 		"lng": 5.372876,
 		"ratings": [
 			{
+				"user": "unknow",
 				"stars": 5,
 				"comment": "Très bon resto! Première fois que je laisse un avis pour un établissement. Deuxième fois que je viens et toujours aussi contente. Plats de qualité, très bon service (rapide et chaleureux). Malgré le nombre de restaurant que j’ai fais sur Paris, ce restaurant marseillais est mon coup de cœur."
 			},
 			{
+				"user": "unknow",
 				"stars": 5,
 				"comment": "Le meilleur restaurant latino de Marseille ! Vous ne serez pas déçus ! Les saveurs sont au rendez-vous et la margarita passion est excellente !"
 			}
@@ -118,10 +132,12 @@
 		"lng": 5.3902,
 		"ratings": [
 			{
+				"user": "unknow",
 				"stars": 5,
 				"comment": "Nous sommes venu déjeuner un midi avec des collègues de bureau. Un très bon restaurant. Le cadre intérieur est très beau. Les plats sont tout simplement aussi raffiné que délicieux."
 			},
 			{
+				"user": "unknow",
 				"stars": 5,
 				"comment": "Agréablement surpris ! Je n’ai pas eu l’occasion de tout goûter mais j’y suis aller plusieurs fois et tout ce que j’ai pris étais vraiment très bon et bien présenté avec leur touche personnel."
 			}

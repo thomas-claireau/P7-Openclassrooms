@@ -97,7 +97,10 @@ class MyMap {
 			});
 
 			averageRatingRestaurant = averageRatingRestaurant / nbRatings;
-			averageRatingRestaurant = averageRatingRestaurant.toFixed(1);
+
+			if (averageRatingRestaurant % 1 !== 0) {
+				averageRatingRestaurant = averageRatingRestaurant.toFixed(1);
+			}
 
 			restaurant.averageRatings = averageRatingRestaurant;
 			restaurant.nbRatings = nbRatings;
@@ -127,6 +130,9 @@ class MyMap {
 			const latLngRestaurant = { lat: restaurant.lat, lng: restaurant.lng };
 			const rangeStars = document.querySelector('input#stars').value;
 			const restaurantStars = restaurant.averageRatings;
+
+			console.log(rangeStars);
+			console.log(restaurantStars);
 
 			if (
 				limiteMap.contains(latLngRestaurant) &&
@@ -305,109 +311,7 @@ class MyMap {
 		// }
 	}
 
-	test() {
-		btnAddComment.addEventListener('click', () => {
-			const idRestaurant = btnAddComment.getAttribute('id-restaurant');
-			restaurants.forEach((restaurant) => {
-				if (restaurant.restaurantName === idRestaurant) {
-					const nameRestaurant = restaurant.restaurantName;
-					const restaurantLat = restaurant.lat;
-					const restaurantLng = restaurant.lng;
-					bg.classList.remove('hide');
-					// container modal
-					const modalAddComment = document.createElement('div');
-					modalAddComment.classList.add('modal-add-comment');
-					modalAddComment.setAttribute('data-id', restaurant.restaurantName);
-					// left content
-					const leftColumn = document.createElement('div');
-					leftColumn.classList.add('left-column');
-					// name of restaurant
-					const containerNameRestaurant = document.createElement('div');
-					containerNameRestaurant.classList.add('name-restaurant');
-					const name = document.createElement('h3');
-					const sousTitre = document.createElement('span');
-					sousTitre.textContent = 'Ajouter un avis';
-					name.textContent = nameRestaurant;
-					name.appendChild(sousTitre);
-					// input fields
-					const inputFields = document.createElement('div');
-					inputFields.classList.add('input-fields');
-					// create form
-					const formInputFields = document.createElement('form');
-					// name of user
-					const containerNameUser = document.createElement('div');
-					containerNameUser.classList.add('container-name-user');
-					const labelNameUser = document.createElement('label');
-					labelNameUser.setAttribute('for', 'name-user');
-					labelNameUser.textContent = 'Votre nom : ';
-					const nameUser = document.createElement('input');
-					nameUser.type = 'text';
-					nameUser.setAttribute('required', '');
-					nameUser.setAttribute('maxLength', '55');
-					nameUser.id = 'name-user';
-					containerNameUser.appendChild(labelNameUser);
-					containerNameUser.appendChild(nameUser);
-					// note of user
-					const containerNote = document.createElement('div');
-					containerNote.classList.add('container-note');
-					const textNote = document.createElement('label');
-					textNote.textContent = 'Votre note :';
-					containerNote.appendChild(textNote);
-					for (let i = 1; i <= 5; i++) {
-						const star = document.createElement('span');
-						star.classList.add('star');
-						if (i === 1) star.classList.add('selected');
-						star.setAttribute('data-note', i);
-						containerNote.appendChild(star);
-					}
-					// comment of user
-					const containerCommentUser = document.createElement('div');
-					containerCommentUser.classList.add('container-comment-user');
-					const labelCommentUser = document.createElement('label');
-					labelCommentUser.setAttribute('for', 'comment-user');
-					labelCommentUser.textContent = 'Votre commentaire : ';
-					const commentUser = document.createElement('textarea');
-					commentUser.id = 'comment-user';
-					commentUser.setAttribute('required', '');
-					// btn submit
-					const containerBtnSubmit = document.createElement('div');
-					containerBtnSubmit.classList.add('submit-comment');
-					const btnSubmit = document.createElement('input');
-					btnSubmit.type = 'submit';
-					containerBtnSubmit.appendChild(btnSubmit);
-					containerCommentUser.appendChild(labelCommentUser);
-					containerCommentUser.appendChild(commentUser);
-					formInputFields.appendChild(containerNameUser);
-					formInputFields.appendChild(containerNote);
-					formInputFields.appendChild(containerCommentUser);
-					formInputFields.appendChild(containerBtnSubmit);
-					inputFields.appendChild(formInputFields);
-					// insection left content
-					containerNameRestaurant.appendChild(name);
-					leftColumn.appendChild(containerNameRestaurant);
-					leftColumn.appendChild(inputFields);
-					// right content
-					const rightColumn = document.createElement('div');
-					rightColumn.classList.add('right-column');
-					// get image street view
-					import('./myMap').then((MyMap) => {
-						MyMap.MyMap.getImgStreetView(restaurantLat, restaurantLng, rightColumn);
-					});
-					modalAddComment.appendChild(leftColumn);
-					modalAddComment.appendChild(rightColumn);
-					containerMap.appendChild(modalAddComment);
-				}
-			});
-			bg.addEventListener('click', () => {
-				const modalAddComment = document.querySelectorAll('.modal-add-comment');
-				modalAddComment.forEach((modal) => {
-					modal.remove();
-				});
-			});
-			this.updateNoteChoice();
-			this.addCommentFromModal();
-		});
-	}
+	addRestaurant() {}
 }
 
 export { MyMap };

@@ -238,6 +238,15 @@ class Front {
 							containerAverageRatings.appendChild(titleAverageRatings);
 							containerAverageRatings.appendChild(containerRatings);
 
+							// display btn add comment
+							const containerAddComment = document.createElement('div');
+							containerAddComment.classList.add('container-add-comment');
+							const btnAddComment = document.createElement('button');
+							btnAddComment.classList.add('add-comment');
+							btnAddComment.setAttribute('id-restaurant', restaurantId);
+							btnAddComment.textContent = 'Ajouter un avis';
+							containerAddComment.appendChild(btnAddComment);
+
 							// display all comments of restaurant (and note)
 							const containerCommentsRestaurant = document.createElement('div');
 							containerCommentsRestaurant.classList.add('comments-restaurant');
@@ -287,12 +296,14 @@ class Front {
 							containerInfRestaurant.appendChild(containerTitleRestaurant);
 							containerInfRestaurant.appendChild(containerAddressRestaurant);
 							containerInfRestaurant.appendChild(containerAverageRatings);
+							containerInfRestaurant.appendChild(containerAddComment);
 							containerInfRestaurant.appendChild(containerCommentsRestaurant);
 							containerRestaurant.appendChild(containerInfRestaurant);
 							containerControl.appendChild(containerRestaurant);
 						}
 					});
 					this.enableScrollComment();
+					this.addCommentRestaurant();
 				});
 			});
 		}
@@ -302,7 +313,7 @@ class Front {
 		const containerComments = document.querySelector('.comments-restaurant');
 
 		if (containerComments) {
-			if (containerComments.offsetHeight > 600) {
+			if (containerComments.offsetHeight > 500) {
 				containerComments.classList.add('scrolled-comment');
 			} else {
 				containerComments.classList.remove('scrolled-comment');
@@ -316,6 +327,171 @@ class Front {
 		containerListRestaurants.classList.remove('scrolled');
 		control.classList.remove('comment');
 		control.querySelector('.container-restaurant').remove();
+	}
+
+	addCommentRestaurant() {
+		const containerMap = document.querySelector('.container-map');
+		const btnAddComment = document.querySelector('.container-add-comment .add-comment');
+		const bg = document.querySelector('.bg');
+
+		btnAddComment.addEventListener('click', () => {
+			const idRestaurant = btnAddComment.getAttribute('id-restaurant');
+			restaurants.forEach((restaurant) => {
+				if (restaurant.restaurantName === idRestaurant) {
+					const nameRestaurant = restaurant.restaurantName;
+					const restaurantLat = restaurant.lat;
+					const restaurantLng = restaurant.lng;
+					bg.classList.remove('hide');
+
+					// container modal
+					const modalAddComment = document.createElement('div');
+					modalAddComment.classList.add('modal-add-comment');
+
+					// left content
+					const leftColumn = document.createElement('div');
+					leftColumn.classList.add('left-column');
+
+					// name of restaurant
+					const containerNameRestaurant = document.createElement('div');
+					containerNameRestaurant.classList.add('name-restaurant');
+					const name = document.createElement('h3');
+					name.textContent = nameRestaurant;
+
+					// input fields
+					const inputFields = document.createElement('div');
+					inputFields.classList.add('input-fields');
+
+					// create form
+					const formInputFields = document.createElement('form');
+
+					// name of user
+					const containerNameUser = document.createElement('div');
+					containerNameUser.classList.add('container-name-user');
+					const labelNameUser = document.createElement('label');
+					labelNameUser.setAttribute('for', 'name-user');
+					labelNameUser.textContent = 'Votre nom : ';
+					const nameUser = document.createElement('input');
+					nameUser.type = 'text';
+					nameUser.setAttribute('required', '');
+					nameUser.setAttribute('maxLength', '55');
+					nameUser.id = 'name-user';
+
+					containerNameUser.appendChild(labelNameUser);
+					containerNameUser.appendChild(nameUser);
+
+					// note of user
+					const containerNote = document.createElement('div');
+					containerNote.classList.add('container-note');
+					const textNote = document.createElement('label');
+					textNote.textContent = 'Votre note :';
+
+					containerNote.appendChild(textNote);
+
+					for (let i = 1; i <= 5; i++) {
+						const star = document.createElement('span');
+						star.classList.add('star');
+						if (i === 1) star.classList.add('selected');
+						star.setAttribute('data-note', i);
+						containerNote.appendChild(star);
+					}
+
+					// comment of user
+					const containerCommentUser = document.createElement('div');
+					containerCommentUser.classList.add('container-comment-user');
+					const labelCommentUser = document.createElement('label');
+					labelCommentUser.setAttribute('for', 'comment-user');
+					labelCommentUser.textContent = 'Votre commentaire : ';
+					const commentUser = document.createElement('textarea');
+					commentUser.id = 'comment-user';
+					commentUser.setAttribute('required', '');
+
+					// btn submit
+					const containerBtnSubmit = document.createElement('div');
+					containerBtnSubmit.classList.add('submit-comment');
+					const btnSubmit = document.createElement('input');
+					btnSubmit.type = 'submit';
+
+					containerBtnSubmit.appendChild(btnSubmit);
+
+					containerCommentUser.appendChild(labelCommentUser);
+					containerCommentUser.appendChild(commentUser);
+
+					formInputFields.appendChild(containerNameUser);
+					formInputFields.appendChild(containerNote);
+					formInputFields.appendChild(containerCommentUser);
+					formInputFields.appendChild(containerBtnSubmit);
+
+					inputFields.appendChild(formInputFields);
+
+					// insection left content
+					containerNameRestaurant.appendChild(name);
+					leftColumn.appendChild(containerNameRestaurant);
+					leftColumn.appendChild(inputFields);
+
+					// right content
+					const rightColumn = document.createElement('div');
+					rightColumn.classList.add('right-column');
+
+					// get image street view
+					import('./myMap').then((MyMap) => {
+						MyMap.MyMap.getImgStreetView(restaurantLat, restaurantLng, rightColumn);
+					});
+
+					modalAddComment.appendChild(leftColumn);
+					modalAddComment.appendChild(rightColumn);
+					containerMap.appendChild(modalAddComment);
+				}
+			});
+
+			bg.addEventListener('click', () => {
+				const modalAddComment = document.querySelector('.modal-add-comment');
+				modalAddComment.remove();
+			});
+
+			this.updateNoteChoice();
+		});
+	}
+
+	updateNoteChoice() {
+		const modalAddComment = document.querySelector('.modal-add-comment');
+
+		if (modalAddComment) {
+			const notes = document.querySelectorAll('.container-note .star');
+
+			notes.forEach((note) => {
+				note.addEventListener('mouseover', () => {
+					const dataNote = note.getAttribute('data-note');
+
+					notes.forEach((note) => {
+						note.classList.remove('selected');
+						if (note.getAttribute('data-note') <= dataNote) {
+							note.classList.add('active');
+							note.classList.add('selected');
+						} else {
+							note.classList.remove('active');
+						}
+					});
+				});
+
+				note.addEventListener('mouseout', () => {
+					const dataNote = note.getAttribute('data-note');
+
+					notes.forEach((note) => {
+						if (note.getAttribute('data-note') < dataNote) {
+							note.classList.remove('selected');
+						}
+					});
+				});
+
+				note.addEventListener('click', () => {
+					notes.forEach((note) => {
+						note.classList.remove('selected');
+					});
+
+					note.classList.add('selected');
+				});
+			});
+		}
 	}
 }
 

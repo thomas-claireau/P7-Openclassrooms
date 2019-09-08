@@ -342,6 +342,7 @@ class Front {
 
 					// container modal
 					const modalAddComment = document.createElement('div');
+					modalAddComment.classList.add('modal');
 					modalAddComment.classList.add('modal-add-comment');
 					modalAddComment.setAttribute('data-id', restaurant.restaurantName);
 

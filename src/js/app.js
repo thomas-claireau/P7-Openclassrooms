@@ -22,6 +22,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			const bgMap = document.querySelector('.container-map .bg');
 			bgMap.addEventListener('click', function() {
 				newMap.boundsChanged();
+				newMap.displayModalAddRestaurant();
 			});
 		});
 

@@ -5,8 +5,8 @@
 	"main": ".eslintrc.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"prod": "webpack --config ./webpack/webpack.config.prod.js --mode=production",
-		"dev": "webpack --mode=development --config ./webpack/webpack.config.dev.js",
+		"prod": "webpack-dev-server --config ./webpack/webpack.config.prod.js --mode=production",
+		"dev": "webpack-dev-server --mode=development --config ./webpack/webpack.config.dev.js",
 		"serve": "webpack-dev-server -d --config ./webpack/webpack.config.serve.js --mode=development"
 	},
 	"repository": {

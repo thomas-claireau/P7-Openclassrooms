@@ -1,5 +1,3 @@
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const keyFile = require('../src/assets/data/key.json');
 
 module.exports = {
@@ -12,7 +10,6 @@ module.exports = {
 		rules: [
 			{
 				test: /\.(ttf|eot|svg|gif|png)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-				// include: './src';
 				use: {
 					loader: 'file-loader',
 				},

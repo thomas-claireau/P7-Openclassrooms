@@ -303,7 +303,7 @@ class Front {
 						}
 					});
 					this.enableScrollComment();
-					this.addCommentRestaurant();
+					this.displayModalAddComment();
 				});
 			});
 		}
@@ -329,7 +329,7 @@ class Front {
 		control.querySelector('.container-restaurant').remove();
 	}
 
-	addCommentRestaurant() {
+	displayModalAddComment() {
 		const containerMap = document.querySelector('.container-map');
 		const btnAddComment = document.querySelector('.container-add-comment .add-comment');
 		const bg = document.querySelector('.bg');
@@ -355,7 +355,11 @@ class Front {
 					const containerNameRestaurant = document.createElement('div');
 					containerNameRestaurant.classList.add('name-restaurant');
 					const name = document.createElement('h3');
+					const sousTitre = document.createElement('span');
+					sousTitre.textContent = 'Ajouter un avis';
 					name.textContent = nameRestaurant;
+
+					name.appendChild(sousTitre);
 
 					// input fields
 					const inputFields = document.createElement('div');

@@ -299,7 +299,7 @@ body {
 
 				&.scrolled {
 					overflow-y: scroll;
-					height: 85vh;
+					height: 88vh;
 				}
 
 				.restaurant {
@@ -455,6 +455,19 @@ body {
 
 			.left-column {
 				padding: 10px 30px;
+
+				.name-restaurant {
+					h3 {
+						display: flex;
+						justify-content: flex-start;
+						align-items: center;
+					}
+					span {
+						font-weight: 300;
+						margin-left: 20px;
+						font-size: 13px;
+					}
+				}
 
 				.input-fields {
 					.container-name-user,

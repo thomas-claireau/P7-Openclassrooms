@@ -131,9 +131,6 @@ class MyMap {
 			const rangeStars = document.querySelector('input#stars').value;
 			const restaurantStars = restaurant.averageRatings;
 
-			console.log(rangeStars);
-			console.log(restaurantStars);
-
 			if (
 				limiteMap.contains(latLngRestaurant) &&
 				restaurantStars > 0 &&

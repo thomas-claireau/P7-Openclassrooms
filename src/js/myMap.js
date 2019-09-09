@@ -22,7 +22,7 @@ class MyMap {
 			`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latLng}&key=${keyData.keyGeocoding}`
 		);
 
-		this.reverseGeocoding = fetch(myRequest)
+		const reverseGeocoding = fetch(myRequest)
 			.then(function(response) {
 				return response.json();
 			})
@@ -31,6 +31,7 @@ class MyMap {
 					const addressClick = data.results[0].formatted_address;
 					if (isForm) {
 						container.value = addressClick;
+						container.setAttribute('data-place-id', data.results[0].place_id);
 					} else {
 						container.textContent = addressClick;
 					}
@@ -102,8 +103,10 @@ class MyMap {
 				averageRatingRestaurant = averageRatingRestaurant.toFixed(1);
 			}
 
-			restaurant.averageRatings = averageRatingRestaurant;
-			restaurant.nbRatings = nbRatings;
+			if (restaurant.averageRatings !== 0) {
+				restaurant.averageRatings = averageRatingRestaurant;
+				restaurant.nbRatings = nbRatings;
+			}
 		});
 	}
 
@@ -133,7 +136,7 @@ class MyMap {
 
 			if (
 				limiteMap.contains(latLngRestaurant) &&
-				restaurantStars > 0 &&
+				restaurantStars >= 0 &&
 				restaurantStars <= rangeStars
 			) {
 				MyMap.addMarker(
@@ -257,6 +260,7 @@ class MyMap {
 			inputAddressRestaurant.type = 'text';
 			inputAddressRestaurant.setAttribute('required', '');
 			inputAddressRestaurant.setAttribute('maxLength', '100');
+			inputAddressRestaurant.setAttribute('disabled', '');
 			inputAddressRestaurant.id = 'address-restaurant';
 
 			MyMap.displayReverseGeocoding(latClick, lngClick, inputAddressRestaurant, true);
@@ -297,6 +301,9 @@ class MyMap {
 					modal.remove();
 				});
 			});
+
+			// console.log(thisMap.allMarkers);
+			MyMap.addRestaurant(latClick, lngClick, thisMap.allMarkers);
 		});
 
 		// function placeMarker(position, map) {
@@ -308,7 +315,52 @@ class MyMap {
 		// }
 	}
 
-	addRestaurant() {}
+	static addRestaurant(latClick, lngClick, arrayOfAllMarkers) {
+		const modalAddRestaurant = document.querySelector('.modal-add-restaurant');
+
+		if (modalAddRestaurant) {
+			const inputNameRestaurant = modalAddRestaurant.querySelector('input#name-restaurant');
+			const inputAddressRestaurant = modalAddRestaurant.querySelector(
+				'input#address-restaurant'
+			);
+			const btnSubmit = modalAddRestaurant.querySelector('input[type="submit"]');
+
+			const thisMap = this;
+
+			btnSubmit.addEventListener('click', (e) => {
+				if (inputNameRestaurant.value !== '' && inputAddressRestaurant.value !== '') {
+					e.preventDefault();
+
+					const nameRestaurant = inputNameRestaurant.value;
+					const addressRestaurant = inputAddressRestaurant.value;
+					const latRestaurant = latClick;
+					const lngRestaurant = lngClick;
+					const latLngRestaurant = { lat: latRestaurant, lng: lngRestaurant };
+					const averageRatingsDefault = 0;
+
+					const jsonDataRestaurant = {
+						restaurantName: nameRestaurant,
+						address: addressRestaurant,
+						lat: latRestaurant,
+						lng: lngRestaurant,
+						averageRatings: averageRatingsDefault,
+						nbRatings: 0,
+						ratings: [],
+					};
+
+					restaurants.push(jsonDataRestaurant);
+
+					MyMap.addMarker(
+						thisMap.newMap,
+						latLngRestaurant,
+						nameRestaurant,
+						averageRatingsDefault,
+						arrayOfAllMarkers
+					);
+				}
+			});
+		}
+	}
 }
 
 export { MyMap };

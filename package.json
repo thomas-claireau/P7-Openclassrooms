@@ -1,6 +1,6 @@
 {
 	"name": "P7-Openclassrooms",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"description": "Vous avez choisi de vous lancer dans le business des avis de restaurants. Votre objectif : créer un service simple et utile qui permet d'avoir des avis sur des restaurants autour de soi.",
 	"main": ".eslintrc.js",
 	"scripts": {

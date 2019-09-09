@@ -57,7 +57,7 @@ class MyMap {
 		return this.newMap;
 	}
 
-	static addMarker(map, latLng, title, stars, arrayOfAllMarkers) {
+	static addMarker(map, latLng, title, stars, arrayOfAllMarkers, isAdd = false) {
 		const marker = new google.maps.Marker({
 			position: latLng,
 			map: map,
@@ -67,6 +67,10 @@ class MyMap {
 		});
 
 		marker.setMap(map);
+
+		if (isAdd) {
+			map.panTo(latLng);
+		}
 
 		arrayOfAllMarkers.push(marker);
 
@@ -92,21 +96,21 @@ class MyMap {
 			let averageRatingRestaurant = 0;
 			let nbRatings = 0;
 
-			restaurant.ratings.forEach((ratingRestaurant) => {
-				nbRatings++;
-				averageRatingRestaurant += ratingRestaurant.stars;
-			});
+			if (restaurant.ratings.length > 0) {
+				restaurant.ratings.forEach((ratingRestaurant) => {
+					nbRatings++;
+					averageRatingRestaurant += ratingRestaurant.stars;
+				});
 
-			averageRatingRestaurant = averageRatingRestaurant / nbRatings;
+				averageRatingRestaurant = averageRatingRestaurant / nbRatings;
+			}
 
 			if (averageRatingRestaurant % 1 !== 0) {
 				averageRatingRestaurant = averageRatingRestaurant.toFixed(1);
 			}
 
-			if (restaurant.averageRatings !== 0) {
-				restaurant.averageRatings = averageRatingRestaurant;
-				restaurant.nbRatings = nbRatings;
-			}
+			restaurant.averageRatings = averageRatingRestaurant;
+			restaurant.nbRatings = nbRatings;
 		});
 	}
 
@@ -302,20 +306,11 @@ class MyMap {
 				});
 			});
 
-			// console.log(thisMap.allMarkers);
-			MyMap.addRestaurant(latClick, lngClick, thisMap.allMarkers);
+			MyMap.addRestaurant(thisMap.newMap, latClick, lngClick, thisMap.allMarkers);
 		});
-
-		// function placeMarker(position, map) {
-		// 	var marker = new google.maps.Marker({
-		// 		position: position,
-		// 		map: map,
-		// 	});
-		// 	map.panTo(position);
-		// }
 	}
 
-	static addRestaurant(latClick, lngClick, arrayOfAllMarkers) {
+	static addRestaurant(map, latClick, lngClick, arrayOfAllMarkers) {
 		const modalAddRestaurant = document.querySelector('.modal-add-restaurant');
 
 		if (modalAddRestaurant) {
@@ -336,7 +331,7 @@ class MyMap {
 					const latRestaurant = latClick;
 					const lngRestaurant = lngClick;
 					const latLngRestaurant = { lat: latRestaurant, lng: lngRestaurant };
-					const averageRatingsDefault = 0;
+					const averageRatingsDefault = 1;
 
 					const jsonDataRestaurant = {
 						restaurantName: nameRestaurant,
@@ -351,12 +346,18 @@ class MyMap {
 					restaurants.push(jsonDataRestaurant);
 
 					MyMap.addMarker(
-						thisMap.newMap,
+						map,
 						latLngRestaurant,
 						nameRestaurant,
 						averageRatingsDefault,
-						arrayOfAllMarkers
+						arrayOfAllMarkers,
+						true
 					);
+
+					modalAddRestaurant.remove();
+
+					const bg = document.querySelector('.bg');
+					bg.classList.add('hide');
 				}
 			});
 		}

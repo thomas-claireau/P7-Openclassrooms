@@ -18,6 +18,12 @@
 		padding: 10px 30px;
 	}
 
+	.right-column {
+		@media screen and (max-width: $break-tablet) {
+			display: none;
+		}
+	}
+
 	.input-fields {
 		input,
 		textarea {
@@ -72,6 +78,14 @@
 			top: -20px;
 			left: 0;
 		}
+	}
+
+	@media screen and (max-width: $break-medium) {
+		width: 95%;
+	}
+
+	@media screen and (max-width: $break-tablet) {
+		grid-template-columns: 1fr;
 	}
 }
 

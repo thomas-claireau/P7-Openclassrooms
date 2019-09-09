@@ -89,6 +89,28 @@ body {
 				opacity: 1;
 				z-index: inherit;
 				transition: all 0.3s ease-in-out;
+
+				@media screen and (max-width: $break-tablet) {
+					position: absolute;
+					top: 70px;
+					left: 50%;
+					transform: translateX(-50%);
+					width: 95%;
+					height: 500px;
+					z-index: 1;
+				}
+			}
+
+			@media screen and (max-width: $break-ultra-large) {
+				grid-template-columns: 30vw 70vw;
+			}
+
+			@media screen and (max-width: $break-medium) {
+				grid-template-columns: 40vw 60vw;
+			}
+
+			@media screen and (max-width: $break-tablet) {
+				grid-template-columns: 1fr;
 			}
 		}
 
@@ -172,6 +194,12 @@ body {
 						height: 200px;
 						background-size: cover;
 						background-position: center;
+
+						@media screen and (max-width: $break-tablet) {
+							border-top-left-radius: 20px;
+							border-top-right-radius: 20px;
+							overflow: hidden;
+						}
 					}
 
 					.container-inf-restaurant {
@@ -283,6 +311,16 @@ body {
 								}
 							}
 						}
+
+						@media screen and (max-width: $break-tablet) {
+							height: 250px;
+							overflow-y: scroll;
+						}
+					}
+
+					@media screen and (max-width: $break-tablet) {
+						height: auto;
+						border-radius: 20px;
 					}
 				}
 			}
@@ -313,6 +351,7 @@ body {
 
 					.left {
 						width: 250px;
+						margin-left: 10px;
 
 						.stars {
 							display: flex;
@@ -348,6 +387,7 @@ body {
 						background-size: cover;
 						background-position: center;
 						transition: all 0.3s ease-in-out;
+						margin-right: 10px;
 					}
 
 					&:not(:last-child) {
@@ -359,17 +399,31 @@ body {
 						cursor: pointer;
 					}
 				}
+
+				@media screen and (max-width: $break-tablet) {
+					height: 265px;
+					overflow-y: scroll;
+					border-bottom-left-radius: 20px;
+					border-bottom-right-radius: 20px;
+				}
 			}
 
 			.filter-stars {
 				background-color: $bleu;
 				width: 100%;
 				height: auto;
-				padding: 20px;
+
+				.container-filter-stars {
+					padding: 20px;
+				}
 
 				h3 {
 					margin: 0;
 					color: #fff;
+
+					@media screen and (max-width: $break-tablet) {
+						display: none;
+					}
 				}
 
 				.filter {
@@ -430,6 +484,16 @@ body {
 							left: -8px;
 						}
 					}
+
+					@media screen and (max-width: $break-tablet) {
+						justify-content: center;
+						margin-top: 0;
+					}
+				}
+
+				@media screen and (max-width: $break-tablet) {
+					border-top-left-radius: 20px;
+					border-top-right-radius: 20px;
 				}
 			}
 		}

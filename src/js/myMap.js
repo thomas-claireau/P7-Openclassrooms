@@ -19,7 +19,7 @@ class MyMap {
 	static displayReverseGeocoding(lat, lng, container = false, isForm = false) {
 		const latLng = `${lat}, ${lng}`;
 		const myRequest = new Request(
-			`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latLng}&key=${keyData.keyGeocoding}`
+			`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latLng}&key=${keyData.keyGeocodingPlaces}`
 		);
 
 		const reverseGeocoding = fetch(myRequest)

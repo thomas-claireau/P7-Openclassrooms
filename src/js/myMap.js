@@ -39,6 +39,37 @@ class MyMap {
 			});
 	}
 
+	static loadDataPlacesWithNearbySearch(lat, lng) {
+		const myRequest = new Request(
+			`https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=1500&type=restaurant&key=${keyData.keyGeocodingPlaces}`
+		);
+
+		var test;
+
+		const NearbySearchPlaces = fetch(myRequest)
+			.then(function(response) {
+				let success = true;
+				return response.json();
+			})
+			.then(function(data) {
+				const results = data.results;
+				console.log(results);
+
+				test = results;
+
+				results.forEach((result) => {
+					const latResult = result.geometry.location.lat;
+					const lngResult = result.geometry.location.lng;
+					const latLng = { lat: latResult, lng: lngResult };
+					const nameRestaurant = result.name;
+
+					console.log(latResult);
+					console.log(lngResult);
+				});
+			});
+		console.log(test);
+	}
+
 	createMap() {
 		this.newMap = new google.maps.Map(this.mapElement, {
 			zoom: 14,
@@ -172,6 +203,11 @@ class MyMap {
 		google.maps.event.addListener(thisMap.newMap, 'idle', function() {
 			if (!containerControl.classList.contains('comment')) {
 				limite = thisMap.newMap.getBounds();
+
+				const centerLat = limite.getCenter().lat();
+				const centerLng = limite.getCenter().lng();
+				MyMap.loadDataPlacesWithNearbySearch(centerLat, centerLng, thisMap);
+
 				MyMap.getAverageStars();
 				thisFront.reloadContentRestaurant();
 				MyMap.filterMarker(restaurants, thisMap, limite);

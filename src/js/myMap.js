@@ -10,17 +10,29 @@ class MyMap {
 		this.mapElement = mapElement;
 		this.lat = lat;
 		this.lng = lng;
+		this.dataPlaces;
 	}
 
 	loadGoogleMapsApi() {
 		return loadGoogleMapsApi({ key: keyData.key });
 	}
 
-	static displayReverseGeocoding(lat, lng, container = false, isForm = false) {
+	static loadGeocoding(
+		lat,
+		lng,
+		isReverse = false,
+		obj = false,
+		container = false,
+		isForm = false
+	) {
 		const latLng = `${lat}, ${lng}`;
-		const myRequest = new Request(
-			`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latLng}&key=${keyData.keyGeocodingPlaces}`
-		);
+		let myRequest;
+
+		if (isReverse) {
+			myRequest = new Request(
+				`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latLng}&key=${keyData.keyGeocodingPlaces}`
+			);
+		}
 
 		const reverseGeocoding = fetch(myRequest)
 			.then(function(response) {
@@ -35,39 +47,100 @@ class MyMap {
 					} else {
 						container.textContent = addressClick;
 					}
+				} else {
+					if (obj) {
+						MyMap.getAddressWithFetchGeocoding(data, obj);
+					}
 				}
 			});
 	}
+
+	static loadPlaceDetails(placeId, obj) {
+		const myRequest = new Request(
+			`https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeId}&fields=name,rating,reviews&key=${keyData.keyGeocodingPlaces}`
+		);
+
+		const placeDetails = fetch(myRequest)
+			.then(function(response) {
+				return response.json();
+			})
+			.then(function(data) {
+				MyMap.getReviewsWithFetchPlaceDetails(data, obj);
+			});
+	}
+
+	static loadPlacePhotos() {}
 
 	static loadDataPlacesWithNearbySearch(lat, lng) {
 		const myRequest = new Request(
 			`https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=1500&type=restaurant&key=${keyData.keyGeocodingPlaces}`
 		);
 
-		var test;
-
 		const NearbySearchPlaces = fetch(myRequest)
 			.then(function(response) {
-				let success = true;
 				return response.json();
 			})
 			.then(function(data) {
-				const results = data.results;
-				console.log(results);
-
-				test = results;
-
-				results.forEach((result) => {
-					const latResult = result.geometry.location.lat;
-					const lngResult = result.geometry.location.lng;
-					const latLng = { lat: latResult, lng: lngResult };
-					const nameRestaurant = result.name;
-
-					console.log(latResult);
-					console.log(lngResult);
-				});
+				MyMap.addRestaurantsPlacesToRestaurantsJson(data);
 			});
-		console.log(test);
+	}
+
+	static getAddressWithFetchGeocoding(dataGoogle, obj) {
+		const address = dataGoogle.results[0].formatted_address;
+		obj.address = address;
+	}
+
+	static getReviewsWithFetchPlaceDetails(dataGoogle, obj) {
+		// console.log(dataGoogle);
+		// console.log(obj);
+		const dataReviews = dataGoogle.result.reviews;
+		const ratings = [];
+		let user, rating, text, objRatings;
+
+		dataReviews.forEach((review) => {
+			user = review.author_name;
+			rating = review.rating;
+			text = review.text;
+
+			objRatings = {
+				user: user,
+				stars: rating,
+				comment: text,
+			};
+
+			ratings.push(objRatings);
+
+			obj.ratings = ratings;
+		});
+	}
+
+	static addRestaurantsPlacesToRestaurantsJson(dataGoogle) {
+		const results = dataGoogle.results;
+		const dataRestaurantsJson = restaurants;
+		let objAddRestaurant, latResult, lngResult, latLng, nameRestaurant, placeId;
+
+		results.forEach((result) => {
+			latResult = result.geometry.location.lat;
+			lngResult = result.geometry.location.lng;
+			latLng = { lat: latResult, lng: lngResult };
+			nameRestaurant = result.name;
+			placeId = result.place_id;
+
+			objAddRestaurant = {
+				restaurantName: nameRestaurant,
+				address: '',
+				lat: latResult,
+				lng: lngResult,
+				ratings: '',
+			};
+			this.loadGeocoding(latResult, lngResult, true, objAddRestaurant);
+
+			this.loadPlaceDetails(placeId, objAddRestaurant);
+
+			dataRestaurantsJson.push(objAddRestaurant);
+
+			console.log(dataRestaurantsJson);
+		});
 	}
 
 	createMap() {
@@ -206,7 +279,7 @@ class MyMap {
 
 				const centerLat = limite.getCenter().lat();
 				const centerLng = limite.getCenter().lng();
-				MyMap.loadDataPlacesWithNearbySearch(centerLat, centerLng, thisMap);
+				MyMap.loadDataPlacesWithNearbySearch(centerLat, centerLng);
 
 				MyMap.getAverageStars();
 				thisFront.reloadContentRestaurant();
@@ -303,7 +376,7 @@ class MyMap {
 			inputAddressRestaurant.setAttribute('disabled', '');
 			inputAddressRestaurant.id = 'address-restaurant';
 
-			MyMap.displayReverseGeocoding(latClick, lngClick, inputAddressRestaurant, true);
+			MyMap.loadGeocoding(latClick, lngClick, true, false, inputAddressRestaurant, true);
 
 			containerAddressRestaurant.appendChild(labelAddressRestaurant);
 			containerAddressRestaurant.appendChild(inputAddressRestaurant);

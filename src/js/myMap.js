@@ -57,7 +57,7 @@ class MyMap {
 
 	static loadPlaceDetails(placeId, obj) {
 		const myRequest = new Request(
-			`https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeId}&fields=name,rating,reviews&key=${keyData.keyGeocodingPlaces}`
+			`https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeId}&fields=name,rating,reviews&key=${keyData.keyGeocodingPlaces}`
 		);
 
 		const placeDetails = fetch(myRequest)
@@ -73,7 +73,7 @@ class MyMap {
 
 	static loadDataPlacesWithNearbySearch(lat, lng) {
 		const myRequest = new Request(
-			`https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=1500&type=restaurant&key=${keyData.keyGeocodingPlaces}`
+			`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=1500&type=restaurant&key=${keyData.keyGeocodingPlaces}`
 		);
 
 		const NearbySearchPlaces = fetch(myRequest)
@@ -91,8 +91,6 @@ class MyMap {
 	}
 
 	static getReviewsWithFetchPlaceDetails(dataGoogle, obj) {
-		// console.log(dataGoogle);
-		// console.log(obj);
 		const dataReviews = dataGoogle.result.reviews;
 		const ratings = [];
 		let user, rating, text, objRatings;
@@ -116,7 +114,11 @@ class MyMap {
 
 	static addRestaurantsPlacesToRestaurantsJson(dataGoogle) {
 		const results = dataGoogle.results;
-		const dataRestaurantsJson = restaurants;
+		let dataRestaurantsJson = restaurants;
+
+		if (dataRestaurantsJson.length > 0) {
+			dataRestaurantsJson = [];
+		}
 		let objAddRestaurant, latResult, lngResult, latLng, nameRestaurant, placeId;
 
 		results.forEach((result) => {
@@ -138,8 +140,6 @@ class MyMap {
 			this.loadPlaceDetails(placeId, objAddRestaurant);
 
 			dataRestaurantsJson.push(objAddRestaurant);
-
-			console.log(dataRestaurantsJson);
 		});
 	}
 

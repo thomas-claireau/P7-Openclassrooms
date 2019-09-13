@@ -14,7 +14,7 @@ class MyMap {
 	}
 
 	loadGoogleMapsApi() {
-		return loadGoogleMapsApi({ key: keyData.key });
+		return loadGoogleMapsApi({ key: keyData.key, libraries: ['places'] });
 	}
 
 	static loadGeocoding(
@@ -49,99 +49,99 @@ class MyMap {
 					}
 				} else {
 					if (obj) {
-						MyMap.getAddressWithFetchGeocoding(data, obj);
+						// MyMap.getAddressWithFetchGeocoding(data, obj);
 					}
 				}
 			});
 	}
 
-	static loadPlaceDetails(placeId, obj) {
-		const myRequest = new Request(
-			`https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeId}&fields=name,rating,reviews&key=${keyData.keyGeocodingPlaces}`
-		);
+	// static loadPlaceDetails(placeId, obj) {
+	// 	const myRequest = new Request(
+	// 		`https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeId}&fields=name,rating,reviews&key=${keyData.keyGeocodingPlaces}`
+	// 	);
 
-		const placeDetails = fetch(myRequest)
-			.then(function(response) {
-				return response.json();
-			})
-			.then(function(data) {
-				MyMap.getReviewsWithFetchPlaceDetails(data, obj);
-			});
-	}
+	// 	const placeDetails = fetch(myRequest)
+	// 		.then(function(response) {
+	// 			return response.json();
+	// 		})
+	// 		.then(function(data) {
+	// 			MyMap.getReviewsWithFetchPlaceDetails(data, obj);
+	// 		});
+	// }
 
-	static loadPlacePhotos() {}
+	// static loadPlacePhotos() {}
 
-	static loadDataPlacesWithNearbySearch(lat, lng) {
-		const myRequest = new Request(
-			`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=1500&type=restaurant&key=${keyData.keyGeocodingPlaces}`
-		);
+	// static loadDataPlacesWithNearbySearch(lat, lng) {
+	// 	const myRequest = new Request(
+	// 		`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=1500&type=restaurant&key=${keyData.keyGeocodingPlaces}`
+	// 	);
 
-		const NearbySearchPlaces = fetch(myRequest)
-			.then(function(response) {
-				return response.json();
-			})
-			.then(function(data) {
-				MyMap.addRestaurantsPlacesToRestaurantsJson(data);
-			});
-	}
+	// 	const NearbySearchPlaces = fetch(myRequest)
+	// 		.then(function(response) {
+	// 			return response.json();
+	// 		})
+	// 		.then(function(data) {
+	// 			MyMap.addRestaurantsPlacesToRestaurantsJson(data);
+	// 		});
+	// }
 
-	static getAddressWithFetchGeocoding(dataGoogle, obj) {
-		const address = dataGoogle.results[0].formatted_address;
-		obj.address = address;
-	}
+	// static getAddressWithFetchGeocoding(dataGoogle, obj) {
+	// 	const address = dataGoogle.results[0].formatted_address;
+	// 	obj.address = address;
+	// }
 
-	static getReviewsWithFetchPlaceDetails(dataGoogle, obj) {
-		const dataReviews = dataGoogle.result.reviews;
-		const ratings = [];
-		let user, rating, text, objRatings;
+	// static getReviewsWithFetchPlaceDetails(dataGoogle, obj) {
+	// 	const dataReviews = dataGoogle.result.reviews;
+	// 	const ratings = [];
+	// 	let user, rating, text, objRatings;
 
-		dataReviews.forEach((review) => {
-			user = review.author_name;
-			rating = review.rating;
-			text = review.text;
+	// 	dataReviews.forEach((review) => {
+	// 		user = review.author_name;
+	// 		rating = review.rating;
+	// 		text = review.text;
 
-			objRatings = {
-				user: user,
-				stars: rating,
-				comment: text,
-			};
+	// 		objRatings = {
+	// 			user: user,
+	// 			stars: rating,
+	// 			comment: text,
+	// 		};
 
-			ratings.push(objRatings);
+	// 		ratings.push(objRatings);
 
-			obj.ratings = ratings;
-		});
-	}
+	// 		obj.ratings = ratings;
+	// 	});
+	// }
 
-	static addRestaurantsPlacesToRestaurantsJson(dataGoogle) {
-		const results = dataGoogle.results;
-		let dataRestaurantsJson = restaurants;
+	// static addRestaurantsPlacesToRestaurantsJson(dataGoogle) {
+	// 	const results = dataGoogle.results;
+	// 	let dataRestaurantsJson = restaurants;
 
-		if (dataRestaurantsJson.length > 0) {
-			dataRestaurantsJson = [];
-		}
-		let objAddRestaurant, latResult, lngResult, latLng, nameRestaurant, placeId;
+	// 	if (dataRestaurantsJson.length > 0) {
+	// 		dataRestaurantsJson = [];
+	// 	}
+	// 	let objAddRestaurant, latResult, lngResult, latLng, nameRestaurant, placeId;
 
-		results.forEach((result) => {
-			latResult = result.geometry.location.lat;
-			lngResult = result.geometry.location.lng;
-			latLng = { lat: latResult, lng: lngResult };
-			nameRestaurant = result.name;
-			placeId = result.place_id;
+	// 	results.forEach((result) => {
+	// 		latResult = result.geometry.location.lat;
+	// 		lngResult = result.geometry.location.lng;
+	// 		latLng = { lat: latResult, lng: lngResult };
+	// 		nameRestaurant = result.name;
+	// 		placeId = result.place_id;
 
-			objAddRestaurant = {
-				restaurantName: nameRestaurant,
-				address: '',
-				lat: latResult,
-				lng: lngResult,
-				ratings: '',
-			};
-			this.loadGeocoding(latResult, lngResult, true, objAddRestaurant);
+	// 		objAddRestaurant = {
+	// 			restaurantName: nameRestaurant,
+	// 			address: '',
+	// 			lat: latResult,
+	// 			lng: lngResult,
+	// 			ratings: '',
+	// 		};
+	// 		this.loadGeocoding(latResult, lngResult, true, objAddRestaurant);
 
-			this.loadPlaceDetails(placeId, objAddRestaurant);
+	// 		this.loadPlaceDetails(placeId, objAddRestaurant);
 
-			dataRestaurantsJson.push(objAddRestaurant);
-		});
-	}
+	// 		dataRestaurantsJson.push(objAddRestaurant);
+	// 	});
+	// }
 
 	createMap() {
 		this.newMap = new google.maps.Map(this.mapElement, {
@@ -279,7 +279,7 @@ class MyMap {
 
 				const centerLat = limite.getCenter().lat();
 				const centerLng = limite.getCenter().lng();
-				MyMap.loadDataPlacesWithNearbySearch(centerLat, centerLng);
+				// MyMap.loadDataPlacesWithNearbySearch(centerLat, centerLng);
 
 				MyMap.getAverageStars();
 				thisFront.reloadContentRestaurant();

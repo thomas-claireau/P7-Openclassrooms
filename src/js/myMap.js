@@ -94,8 +94,8 @@ class MyMap {
 
 				MyMap.addReviewsRestaurantFromSearchDetails(thisMap.newMap);
 				MyMap.filterMarker(restaurants, thisMap, limite);
-				thisFront.enableScrollContent();
 				thisFront.displayCommentRestaurant();
+				thisFront.enableScrollContent();
 			}
 		});
 	}
@@ -276,6 +276,7 @@ class MyMap {
 		let limite;
 
 		google.maps.event.addListener(thisMap.newMap, 'idle', function() {
+			console.log('passe');
 			if (!containerControl.classList.contains('comment')) {
 				limite = thisMap.newMap.getBounds();
 				const centerLat = limite.getCenter().lat();
@@ -286,6 +287,7 @@ class MyMap {
 				thisFront.reloadContentRestaurant();
 				thisFront.enableScrollContent();
 				Front.changeColorMarkerOnHover(arrayOfMarker);
+				// thisFront.displayCommentRestaurant();
 			}
 		});
 

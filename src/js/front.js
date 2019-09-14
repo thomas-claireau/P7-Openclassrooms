@@ -138,6 +138,7 @@ class Front {
 
 	displayCommentRestaurant() {
 		const dataRestaurants = restaurants;
+		console.log(dataRestaurants);
 		const containerControl = document.querySelector('.container-map .control');
 		const listeRestaurants = document.querySelector('.list-restaurants');
 
@@ -318,10 +319,16 @@ class Front {
 
 	backToList() {
 		const control = document.querySelector('.control');
-		const containerlisteRestaurants = document.querySelector('.list-restaurants');
-		containerlisteRestaurants.classList.remove('scrolled');
-		control.classList.remove('comment');
-		control.querySelector('.container-restaurant').remove();
+
+		if (control) {
+			const containerlisteRestaurants = control.querySelector('.list-restaurants');
+			const containerRestaurants = control.querySelectorAll('.container-restaurant');
+			containerlisteRestaurants.classList.remove('scrolled');
+			control.classList.remove('comment');
+			containerRestaurants.forEach((containerRestaurant) => {
+				containerRestaurant.remove();
+			});
+		}
 	}
 
 	displayModalAddComment() {
@@ -500,13 +507,17 @@ class Front {
 
 	addCommentFromModal() {
 		const dataRestaurants = restaurants;
+		console.log(dataRestaurants);
 		const modalAddComment = document.querySelector('.modal-add-comment');
 
 		if (modalAddComment) {
+			// console.log('passe');
 			const btnSubmit = modalAddComment.querySelector('input[type="submit"]');
 			const idRestaurantTarget = modalAddComment.dataset.id;
 
 			btnSubmit.addEventListener('click', (e) => {
+				console.log('passe');
+				e.preventDefault();
 				const nameValue = modalAddComment.querySelector('input#name-user').value;
 				const noteValue = modalAddComment
 					.querySelector('.star.selected')
@@ -514,7 +525,6 @@ class Front {
 				const commentValue = modalAddComment.querySelector('textarea#comment-user').value;
 
 				if (nameValue !== '' && commentValue !== '') {
-					e.preventDefault();
 					dataRestaurants.forEach((restaurant) => {
 						if (restaurant.restaurantName === idRestaurantTarget) {
 							const allComments = restaurant.ratings;

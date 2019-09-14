@@ -12,6 +12,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	navigator.geolocation.getCurrentPosition(function(position) {
 		const lat = position.coords.latitude;
 		const lng = position.coords.longitude;
+		const latLng = { lat: lat, lng: lng };
 
 		// start googles maps api
 		const newMap = new MyMap(mapElement, lat, lng);

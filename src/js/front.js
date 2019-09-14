@@ -91,24 +91,22 @@ class Front {
 	}
 
 	enableScrollContent() {
-		const containerListRestaurants = document.querySelector('.list-restaurants');
+		const containerlisteRestaurants = document.querySelector('.list-restaurants');
 
-		if (containerListRestaurants) {
-			const restaurants = containerListRestaurants.querySelectorAll('.restaurant');
-
-			if (restaurants.length > 6) {
-				containerListRestaurants.classList.add('scrolled');
+		if (containerlisteRestaurants) {
+			if (containerlisteRestaurants.offsetHeight > 500) {
+				containerlisteRestaurants.classList.add('scrolled');
 			} else {
-				containerListRestaurants.classList.remove('scrolled');
+				containerlisteRestaurants.classList.remove('scrolled');
 			}
 		}
 	}
 
 	static changeColorMarkerOnHover(arrayOfMarkers) {
-		const listrestaurants = document.querySelector('.list-restaurants');
+		const listeRestaurants = document.querySelector('.list-restaurants');
 
-		if (listrestaurants) {
-			const restaurants = listrestaurants.querySelectorAll('.restaurant');
+		if (listeRestaurants) {
+			const restaurants = listeRestaurants.querySelectorAll('.restaurant');
 
 			restaurants.forEach((restaurant) => {
 				restaurant.addEventListener('mouseover', () => {
@@ -141,11 +139,11 @@ class Front {
 	displayCommentRestaurant() {
 		const dataRestaurants = restaurants;
 		const containerControl = document.querySelector('.container-map .control');
-		const listrestaurants = document.querySelector('.list-restaurants');
+		const listeRestaurants = document.querySelector('.list-restaurants');
 
-		if (listrestaurants) {
-			const restaurants = listrestaurants.querySelectorAll('.restaurant');
-			const thisFront = new Front();
+		if (listeRestaurants) {
+			const restaurants = document.querySelectorAll('.restaurant');
+			const thisFront = this;
 			restaurants.forEach((restaurant) => {
 				restaurant.addEventListener('click', () => {
 					containerControl.classList.add('comment');
@@ -320,8 +318,8 @@ class Front {
 
 	backToList() {
 		const control = document.querySelector('.control');
-		const containerListRestaurants = document.querySelector('.list-restaurants');
-		containerListRestaurants.classList.remove('scrolled');
+		const containerlisteRestaurants = document.querySelector('.list-restaurants');
+		containerlisteRestaurants.classList.remove('scrolled');
 		control.classList.remove('comment');
 		control.querySelector('.container-restaurant').remove();
 	}
@@ -517,7 +515,6 @@ class Front {
 
 				if (nameValue !== '' && commentValue !== '') {
 					e.preventDefault();
-
 					dataRestaurants.forEach((restaurant) => {
 						if (restaurant.restaurantName === idRestaurantTarget) {
 							const allComments = restaurant.ratings;
@@ -573,7 +570,7 @@ class Front {
 					containerCommentsRestaurant.appendChild(containerComment);
 
 					import('./myMap').then((MyMap) => {
-						MyMap.MyMap.getAverageStars();
+						MyMap.MyMap.getAverageStars(restaurants);
 
 						const averageRatings = document.querySelector('.average-ratings');
 

@@ -94,48 +94,68 @@ class MyMap {
 					restaurants.push(objAddRestaurant);
 				});
 
-				MyMap.addReviewsRestaurantFromSearchDetails(thisMap.newMap);
 				MyMap.filterMarker(restaurants, thisMap, limite);
-				thisFront.displayCommentRestaurant();
 				thisFront.enableScrollContent();
+				thisFront.displayContainerCommentRestaurant();
+
+				// setTimeout(() => {
+				const restaurantsFront = document.querySelectorAll('.list-restaurants .restaurant');
+				let restaurantFrontId;
+
+				restaurantsFront.forEach((restaurantFront) => {
+					restaurantFront.addEventListener('click', () => {
+						restaurantFrontId = restaurantFront.dataset.id;
+						MyMap.addReviewsRestaurantFromSearchDetails(
+							thisMap.newMap,
+							restaurantFrontId
+						);
+					});
+				});
+				// }, 4000);
 			}
 		});
 	}
 
-	static addReviewsRestaurantFromSearchDetails(thisMap) {
+	static addReviewsRestaurantFromSearchDetails(thisMap, restaurantId) {
 		const searchDetailsRestaurant = new google.maps.places.PlacesService(thisMap);
+		console.log(restaurantId);
+		const thisFront = new Front(restaurantId);
 
 		restaurants.forEach((restaurant) => {
-			const request = {
-				placeId: restaurant.placeId,
-				fields: ['name', 'rating', 'reviews'],
-			};
+			if (restaurantId === restaurant.restaurantName) {
+				const request = {
+					placeId: restaurant.placeId,
+					fields: ['name', 'rating', 'reviews'],
+				};
 
-			searchDetailsRestaurant.getDetails(request, (place) => {
-				let averageRatings, userReview, starsReview, commentReview, objAddReview;
-				if (place !== null) {
-					if (restaurant.restaurantName === place.name) {
-						if (place.reviews !== undefined) {
-							place.reviews.forEach((review) => {
-								userReview = review.author_name;
-								starsReview = review.rating;
-								commentReview = review.text;
-								averageRatings = review.rating;
+				searchDetailsRestaurant.getDetails(request, (place, status) => {
+					console.log(status);
+					let averageRatings, userReview, starsReview, commentReview, objAddReview;
+					if (place !== null) {
+						if (restaurant.restaurantName === place.name) {
+							if (place.reviews !== undefined) {
+								place.reviews.forEach((review) => {
+									userReview = review.author_name;
+									starsReview = review.rating;
+									commentReview = review.text;
+									averageRatings = review.rating;
 
-								objAddReview = {
-									user: userReview,
-									stars: starsReview,
-									comment: commentReview,
-								};
+									objAddReview = {
+										user: userReview,
+										stars: starsReview,
+										comment: commentReview,
+									};
 
-								restaurant.averageRatings = averageRatings;
-								restaurant.nbRatings = place.reviews.length;
-								restaurant.ratings.push(objAddReview);
-							});
+									restaurant.averageRatings = averageRatings;
+									restaurant.nbRatings = place.reviews.length;
+									restaurant.ratings.push(objAddReview);
+								});
+							}
 						}
 					}
-				}
-			});
+					thisFront.displayCommentRestaurant();
+				});
+			}
 		});
 	}
 
@@ -278,19 +298,22 @@ class MyMap {
 		const thisFront = new Front();
 		const arrayOfMarker = this.allMarkers;
 		let limite;
+		const listEventsMap = ['dragend', 'zoom_changed'];
 
-		google.maps.event.addListener(thisMap.newMap, 'dragend', function() {
-			if (!containerControl.classList.contains('comment')) {
-				limite = thisMap.newMap.getBounds();
-				const centerLat = limite.getCenter().lat();
-				const centerLng = limite.getCenter().lng();
-				const centerLatLng = new google.maps.LatLng(centerLat, centerLng);
-				thisMap.deleteRestaurantsData();
-				MyMap.addRestaurantFromNearbySearch(thisMap, centerLatLng, limite);
-				thisFront.reloadContentRestaurant();
-				thisFront.enableScrollContent();
-				thisFront.displayCommentRestaurant();
-			}
+		listEventsMap.forEach((event) => {
+			google.maps.event.addListener(thisMap.newMap, event, function() {
+				if (!containerControl.classList.contains('comment')) {
+					limite = thisMap.newMap.getBounds();
+					const centerLat = limite.getCenter().lat();
+					const centerLng = limite.getCenter().lng();
+					const centerLatLng = new google.maps.LatLng(centerLat, centerLng);
+					thisMap.deleteRestaurantsData();
+					MyMap.addRestaurantFromNearbySearch(thisMap, centerLatLng, limite);
+					thisFront.reloadContentRestaurant();
+					thisFront.enableScrollContent();
+					thisFront.displayContainerCommentRestaurant();
+				}
+			});
 		});
 
 		const rangeStars = document.querySelector('input#stars');
@@ -304,7 +327,7 @@ class MyMap {
 					MyMap.filterMarker(restaurants, thisMap, limite);
 					thisFront.enableScrollContent();
 					Front.changeColorMarkerOnHover(arrayOfMarker);
-					thisFront.displayCommentRestaurant();
+					thisFront.displayContainerCommentRestaurant();
 				}
 			};
 		}

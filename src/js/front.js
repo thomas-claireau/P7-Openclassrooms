@@ -31,6 +31,8 @@ class Front {
 		);
 
 		// container of each restaurant
+		const containerRestaurantExist = document.querySelector('.restaurant');
+
 		const containerRestaurant = document.createElement('div');
 		containerRestaurant.classList.add('restaurant');
 		containerRestaurant.setAttribute('data-id', restaurantName);
@@ -90,6 +92,13 @@ class Front {
 		containerRestaurants.innerHTML = '';
 	}
 
+	hideContentRestaurantWhenCommentsDisplay() {
+		const containerRestaurants = document.querySelector(
+			'.container-map .control .list-restaurants'
+		);
+		containerRestaurants.classList.add('hide');
+	}
+
 	enableScrollContent() {
 		const containerlisteRestaurants = document.querySelector('.list-restaurants');
 
@@ -138,7 +147,6 @@ class Front {
 
 	displayCommentRestaurant() {
 		const dataRestaurants = restaurants;
-		console.log(dataRestaurants);
 		const containerControl = document.querySelector('.container-map .control');
 		const listeRestaurants = document.querySelector('.list-restaurants');
 
@@ -148,7 +156,7 @@ class Front {
 			restaurants.forEach((restaurant) => {
 				restaurant.addEventListener('click', () => {
 					containerControl.classList.add('comment');
-					thisFront.reloadContentRestaurant();
+					thisFront.hideContentRestaurantWhenCommentsDisplay();
 					const restaurantId = restaurant.dataset.id;
 
 					dataRestaurants.forEach((dataRestaurant) => {
@@ -323,7 +331,7 @@ class Front {
 		if (control) {
 			const containerlisteRestaurants = control.querySelector('.list-restaurants');
 			const containerRestaurants = control.querySelectorAll('.container-restaurant');
-			containerlisteRestaurants.classList.remove('scrolled');
+			containerlisteRestaurants.classList.remove('hide');
 			control.classList.remove('comment');
 			containerRestaurants.forEach((containerRestaurant) => {
 				containerRestaurant.remove();
@@ -507,16 +515,13 @@ class Front {
 
 	addCommentFromModal() {
 		const dataRestaurants = restaurants;
-		console.log(dataRestaurants);
 		const modalAddComment = document.querySelector('.modal-add-comment');
 
 		if (modalAddComment) {
-			// console.log('passe');
 			const btnSubmit = modalAddComment.querySelector('input[type="submit"]');
 			const idRestaurantTarget = modalAddComment.dataset.id;
 
 			btnSubmit.addEventListener('click', (e) => {
-				console.log('passe');
 				e.preventDefault();
 				const nameValue = modalAddComment.querySelector('input#name-user').value;
 				const noteValue = modalAddComment
@@ -580,7 +585,7 @@ class Front {
 					containerCommentsRestaurant.appendChild(containerComment);
 
 					import('./myMap').then((MyMap) => {
-						MyMap.MyMap.getAverageStars(restaurants);
+						MyMap.MyMap.getAverageStars(restaurants, noteValue);
 
 						const averageRatings = document.querySelector('.average-ratings');
 

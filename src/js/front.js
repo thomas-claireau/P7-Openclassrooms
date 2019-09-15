@@ -153,6 +153,7 @@ class Front {
 		if (listeRestaurants) {
 			const restaurants = document.querySelectorAll('.restaurant');
 			const thisFront = this;
+
 			restaurants.forEach((restaurant) => {
 				restaurant.addEventListener('click', () => {
 					containerControl.classList.add('comment');

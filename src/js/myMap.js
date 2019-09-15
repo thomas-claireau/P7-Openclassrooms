@@ -60,6 +60,7 @@ class MyMap {
 			fields: ['rating'],
 		};
 		const thisFront = new Front();
+		const arrayOfMarker = this.allMarkers;
 		nearbySearchRestaurant.nearbySearch(request, (results) => {
 			let nameRestaurant,
 				addressRestaurant,
@@ -87,6 +88,7 @@ class MyMap {
 						averageRatings: averageRatings,
 						nbRatings: 0,
 						ratings: [],
+						type: null,
 					};
 
 					restaurants.push(objAddRestaurant);
@@ -188,28 +190,29 @@ class MyMap {
 		container.style.backgroundImage = `url("${urlImg}")`;
 	}
 
-	static getAverageStars(dataRestaurants) {
+	static getAverageStars() {
 		// average stars
-		// console.log(dataRestaurant);
-		let averageRatingRestaurant, nbRatings;
+		restaurants.forEach((restaurant) => {
+			let averageRatingRestaurant = 0;
+			let nbRatings = 0;
 
-		dataRestaurants.forEach((dataRestaurant, note) => {
-			averageRatingRestaurant = dataRestaurant.averageRatings;
-			nbRatings = dataRestaurant.nbRatings;
-			if (dataRestaurant.ratings.length > 0) {
-				nbRatings++;
-				averageRatingRestaurant += note;
+			if (restaurant.ratings.length > 0) {
+				restaurant.ratings.forEach((ratingRestaurant) => {
+					nbRatings++;
+					averageRatingRestaurant += ratingRestaurant.stars;
+				});
+
+				averageRatingRestaurant = averageRatingRestaurant / nbRatings;
 			}
+
+			if (averageRatingRestaurant % 1 !== 0) {
+				averageRatingRestaurant = averageRatingRestaurant.toFixed(1);
+			}
+
+			restaurant.averageRatings = averageRatingRestaurant;
+			restaurant.nbRatings = nbRatings;
+			restaurant.type = 'add';
 		});
-
-		averageRatingRestaurant = averageRatingRestaurant / nbRatings;
-
-		if (averageRatingRestaurant % 1 !== 0) {
-			averageRatingRestaurant = averageRatingRestaurant.toFixed(1);
-		}
-
-		dataRestaurant.averageRatings = averageRatingRestaurant;
-		dataRestaurant.nbRatings = nbRatings;
 	}
 
 	static setMapOnAll(map, arrayOfAllMarkers) {
@@ -230,6 +233,7 @@ class MyMap {
 	}
 
 	deleteRestaurantsData() {
+		console.log(restaurants);
 		while (restaurants.length > 0) {
 			restaurants.pop();
 		}
@@ -264,6 +268,8 @@ class MyMap {
 				);
 			}
 		}
+
+		Front.changeColorMarkerOnHover(map.allMarkers);
 	}
 
 	boundsChanged() {
@@ -274,7 +280,6 @@ class MyMap {
 		let limite;
 
 		google.maps.event.addListener(thisMap.newMap, 'dragend', function() {
-			console.log('passe');
 			if (!containerControl.classList.contains('comment')) {
 				limite = thisMap.newMap.getBounds();
 				const centerLat = limite.getCenter().lat();
@@ -282,10 +287,8 @@ class MyMap {
 				const centerLatLng = new google.maps.LatLng(centerLat, centerLng);
 				thisMap.deleteRestaurantsData();
 				MyMap.addRestaurantFromNearbySearch(thisMap, centerLatLng, limite);
-				// MyMap.filterMarker(restaurants, thisMap, limite);
 				thisFront.reloadContentRestaurant();
 				thisFront.enableScrollContent();
-				Front.changeColorMarkerOnHover(arrayOfMarker);
 				thisFront.displayCommentRestaurant();
 			}
 		});

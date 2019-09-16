@@ -8,6 +8,7 @@ dist
 # ignore key api google
 key.json
 instructions_mentor.txt
+*.zip
 
 ### Node ###
 # Logs

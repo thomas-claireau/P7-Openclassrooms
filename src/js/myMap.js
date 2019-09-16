@@ -234,9 +234,9 @@ class MyMap {
 	}
 
 	static setMapOnAll(map, arrayOfAllMarkers) {
-		for (let i = 0; i < arrayOfAllMarkers.length; i++) {
-			arrayOfAllMarkers[i].setMap(map);
-		}
+		arrayOfAllMarkers.forEach((marker) => {
+			marker.setMap(map);
+		});
 	}
 
 	static clearMarkers(arrayOfAllMarkers) {
@@ -319,7 +319,7 @@ class MyMap {
 		if (rangeStars) {
 			rangeStars.oninput = () => {
 				if (!containerControl.classList.contains('comment')) {
-					outputStars.innerHTML = rangeStars.value;
+					outputStars.textContent = rangeStars.value;
 					thisFront.reloadContentRestaurant();
 					MyMap.filterMarker(restaurants, thisMap, limite);
 					thisFront.enableScrollContent();

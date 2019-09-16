@@ -47,7 +47,10 @@ class Front {
 		// name of restaurant
 		const nameRestaurant = document.createElement('div');
 		nameRestaurant.classList.add('nameRestaurant');
-		nameRestaurant.innerHTML = `<h3>${restaurantName}</h3>`;
+		const title = document.createElement('h3');
+		title.textContent = restaurantName;
+
+		nameRestaurant.appendChild(title);
 
 		// number of stars (container)
 		const stars = document.createElement('div');

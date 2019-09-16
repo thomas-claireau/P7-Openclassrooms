@@ -20,7 +20,7 @@ Créez un fichier `key.json` dans `./src/assets/data` avec la structure suivante
 {
 	"key": "API_KEY",
 	"keyGeocodingPlaces": "API_KEY_NO_RESTRICTED",
-	"host": "HOST_URL" // par exemple : localhost
+	"host": "HOST_URL"
 }
 ````
 

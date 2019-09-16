@@ -118,7 +118,6 @@ class MyMap {
 
 	static addReviewsRestaurantFromSearchDetails(thisMap, restaurantId) {
 		const searchDetailsRestaurant = new google.maps.places.PlacesService(thisMap);
-		console.log(restaurantId);
 		const thisFront = new Front(restaurantId);
 
 		restaurants.forEach((restaurant) => {
@@ -129,7 +128,6 @@ class MyMap {
 				};
 
 				searchDetailsRestaurant.getDetails(request, (place, status) => {
-					console.log(status);
 					let averageRatings, userReview, starsReview, commentReview, objAddReview;
 					if (place !== null) {
 						if (restaurant.restaurantName === place.name) {
@@ -170,7 +168,7 @@ class MyMap {
 			position: this.newMap.center,
 			map: this.newMap,
 			icon: {
-				url: '../assets/img/icon-here.png',
+				url: '../src/assets/img/icon-here.png',
 			},
 		});
 
@@ -183,7 +181,7 @@ class MyMap {
 			map: map,
 			title: title,
 			stars: stars,
-			icon: '../../assets/img/marker-food.png',
+			icon: '../../src/assets/img/marker-food.png',
 		});
 
 		marker.setMap(map);
@@ -253,7 +251,6 @@ class MyMap {
 	}
 
 	deleteRestaurantsData() {
-		console.log(restaurants);
 		while (restaurants.length > 0) {
 			restaurants.pop();
 		}

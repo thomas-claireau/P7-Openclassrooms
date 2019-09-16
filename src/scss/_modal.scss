@@ -160,7 +160,7 @@
 				align-items: center;
 
 				.star {
-					background-image: url('../../assets/img/star-inactive.png');
+					background-image: url('../../src/assets/img/star-inactive.png');
 					background-position: center;
 					background-size: cover;
 					width: 27px;
@@ -170,7 +170,7 @@
 					&:hover,
 					&.active,
 					&.selected {
-						background-image: url('../../assets/img/star-active.png');
+						background-image: url('../../src/assets/img/star-active.png');
 					}
 				}
 			}

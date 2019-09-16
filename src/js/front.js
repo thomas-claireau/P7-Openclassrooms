@@ -127,7 +127,7 @@ class Front {
 					arrayOfMarkers.forEach((marker) => {
 						if (restaurantId === marker.title) {
 							marker.setIcon({
-								url: '../../assets/img/marker-food-hover.png',
+								url: '../../src/assets/img/marker-food-hover.png',
 							});
 						}
 					});
@@ -139,7 +139,7 @@ class Front {
 					arrayOfMarkers.forEach((marker) => {
 						if (restaurantId === marker.title) {
 							marker.setIcon({
-								url: '../../assets/img/marker-food.png',
+								url: '../../src/assets/img/marker-food.png',
 							});
 						}
 					});
@@ -190,7 +190,7 @@ class Front {
 				const btnBack = document.createElement('div');
 				btnBack.classList.add('back-to-list');
 				const iconBack = document.createElement('img');
-				iconBack.src = '../../assets/img/chevron-left.png';
+				iconBack.src = '../../src/assets/img/chevron-left.png';
 				btnBack.appendChild(iconBack);
 
 				btnBack.addEventListener('click', () => {
@@ -280,7 +280,7 @@ class Front {
 
 					const avatar = document.createElement('div');
 					avatar.classList.add('avatar');
-					avatar.style.backgroundImage = `url("../../assets/img/unknow.png")`;
+					avatar.style.backgroundImage = `url("../../src/assets/img/unknow.png")`;
 
 					const nameAuthor = document.createElement('div');
 					nameAuthor.classList.add('name-author');
@@ -565,7 +565,7 @@ class Front {
 
 					const avatar = document.createElement('div');
 					avatar.classList.add('avatar');
-					avatar.style.backgroundImage = `url("../../assets/img/unknow.png")`;
+					avatar.style.backgroundImage = `url("../../src/assets/img/unknow.png")`;
 
 					const nameAuthor = document.createElement('div');
 					nameAuthor.classList.add('name-author');

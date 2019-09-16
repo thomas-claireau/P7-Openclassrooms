@@ -1,5 +1,7 @@
 # P7-Openclassrooms - Lancez votre propre site d'avis de restaurants
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/3e8b57f9f2184b3285987b2de9c4b31c)](https://www.codacy.com/manual/thomas-claireau/P7-Openclassrooms?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=thomas-claireau/P7-Openclassrooms&amp;utm_campaign=Badge_Grade)
+
 ## Brief du projet
 
 Vous avez choisi de vous lancer dans le business des avis de restaurants. Votre objectif : créer un service simple et utile qui permet d'avoir des avis sur des restaurants autour de soi.

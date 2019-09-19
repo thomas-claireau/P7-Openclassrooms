@@ -1,9 +1,18 @@
 import restaurants from '../assets/data/restaurants.json';
 
 class Front {
+	/**
+	 * Create the front of the application (interactions with the map)
+	 * @param {string} restaurantIdClick - id of restaurant clicking
+	 */
 	constructor(restaurantIdClick) {
 		this.restaurantIdClick = restaurantIdClick;
 	}
+
+	/**
+	 * Display background opacity. When clicking on the background, application start
+	 * @return {HTMLElement} - Application
+	 */
 	interactionMap() {
 		const myMap = document.querySelector('.container-map');
 		const sectionLogo = document.querySelector('.logo');
@@ -21,6 +30,14 @@ class Front {
 		}
 	}
 
+	/**
+	 * Display restaurant's informations on the left column of the application
+	 * @param {string} restaurantName - Name of the restaurant
+	 * @param {number} restaurantStars - Rating of the restaurant
+	 * @param {string} restaurantAddresse - Address of the restaurant
+	 * @param {number} restaurantLat - Lat position of the restaurant
+	 * @param {number} restaurantLng - Lng position of the restaurant
+	 */
 	static displayRestaurant(
 		restaurantName,
 		restaurantStars,
@@ -91,6 +108,10 @@ class Front {
 		containerRestaurants.appendChild(containerRestaurant);
 	}
 
+	/**
+	 * Clear content of the left column after changes
+	 * @return {HTMLElement} - Empty left column
+	 */
 	reloadContentRestaurant() {
 		const containerRestaurants = document.querySelector(
 			'.container-map .control .list-restaurants'
@@ -98,6 +119,10 @@ class Front {
 		containerRestaurants.innerHTML = '';
 	}
 
+	/**
+	 * Hide content restaurant on the left column when comment of a restaurant display
+	 * @return {HTMLElement} - Left column content of restaurant hide
+	 */
 	hideContentRestaurantWhenCommentsDisplay() {
 		const containerRestaurants = document.querySelector(
 			'.container-map .control .list-restaurants'
@@ -105,6 +130,10 @@ class Front {
 		containerRestaurants.classList.add('hide');
 	}
 
+	/**
+	 * Enable scroll content of restaurant when height of content exceeds 500px of height
+	 * @return {HTMLElement} - Left column content with class scrolled
+	 */
 	enableScrollContent() {
 		const containerlisteRestaurants = document.querySelector('.list-restaurants');
 
@@ -117,6 +146,10 @@ class Front {
 		}
 	}
 
+	/**
+	 * Change design of marker when mouseover each restaurant container (on the left column)
+	 * @param {array} arrayOfMarkers - Array of all markers on the map
+	 */
 	static changeColorMarkerOnHover(arrayOfMarkers) {
 		const listeRestaurants = document.querySelector('.list-restaurants');
 
@@ -151,6 +184,10 @@ class Front {
 		}
 	}
 
+	/**
+	 * Display container which contains details of the restaurant (include comments)
+	 * @return {HTMLElement} - Container which include details of the restaurant clicking
+	 */
 	displayContainerCommentRestaurant() {
 		const dataRestaurants = restaurants;
 		const containerControl = document.querySelector('.container-map .control');
@@ -169,6 +206,10 @@ class Front {
 		}
 	}
 
+	/**
+	 * Display comments inside the container of restaurant
+	 * @return {HTMLElement} - Comments of the restaurant clicking
+	 */
 	displayCommentRestaurant() {
 		const dataRestaurants = restaurants;
 		const containerControl = document.querySelector('.container-map .control');
@@ -330,6 +371,10 @@ class Front {
 		this.displayModalAddComment();
 	}
 
+	/**
+	 * Enable scroll content of the list of comments when height exceeds 400px of height
+	 * @return {HTMLElement} - List comments content with class scrolled-comment
+	 */
 	enableScrollComment() {
 		const containerComments = document.querySelector('.comments-restaurant');
 		if (containerComments) {
@@ -339,6 +384,10 @@ class Front {
 		}
 	}
 
+	/**
+	 * Back to the list of the restaurants when clicking button back
+	 * @return {HTMLElement} - List of the restaurant inside the left column content
+	 */
 	backToList() {
 		const control = document.querySelector('.control');
 
@@ -353,6 +402,10 @@ class Front {
 		}
 	}
 
+	/**
+	 * display modal for add comment on the restaurant
+	 * @return {HTMLElement} - Modal add comment
+	 */
 	displayModalAddComment() {
 		const containerMap = document.querySelector('.container-map');
 		const btnAddComment = document.querySelector('.container-add-comment .add-comment');
@@ -485,6 +538,10 @@ class Front {
 		});
 	}
 
+	/**
+	 * Update rating of the restaurant inside the modal add comment
+	 * @return {HTMLElement} - Updated rating
+	 */
 	updateNoteChoice() {
 		const modalAddComment = document.querySelector('.modal-add-comment');
 
@@ -527,6 +584,10 @@ class Front {
 		}
 	}
 
+	/**
+	 * Front controller which displayed comment adding on the actual list of comment
+	 * @return {HTMLElement} - new comment on the list
+	 */
 	addCommentFromModal() {
 		const dataRestaurants = restaurants;
 		const modalAddComment = document.querySelector('.modal-add-comment');

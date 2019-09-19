@@ -94,3 +94,5 @@ Lorsqu'on clique sur un restaurant, la liste des avis enregistrés s'affiche ave
 Un outil de filtre permet d'afficher uniquement les restaurants ayant entre X et Y étoiles. La mise à jour de la carte s'effectue en temps réel.
 
 ### -> Etape 2 : ajoutez des restaurants et des avis ! ([lien](https://github.com/thomas-claireau/P7-Openclassrooms/tree/etape-2))
+
+### -> Etape 3 : intégration avec l'API de Google Places ([lien](https://github.com/thomas-claireau/P7-Openclassrooms/tree/etape-3))

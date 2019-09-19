@@ -2,7 +2,6 @@ import loadGoogleMapsApi from 'load-google-maps-api';
 import keyData from '../assets/data/key.json';
 import restaurants from '../assets/data/restaurants.json';
 import { Front } from './front.js';
-import { promises } from 'fs';
 
 class MyMap {
 	/**

@@ -35,7 +35,7 @@ Vous avez choisi de vous lancer dans le business des avis de restaurants. Votre 
 
 Pour ce projet, vous allez devoir apprendre à utiliser des API externes, telles que celles de Google Maps et de Google Places (votre plus gros concurrent). Et ce n'est pas tout : vous allez devoir orchestrer toutes ces informations de manière cohérente dans votre application !
 
-### Etape 1 : la carte des restaurants
+### Etape 1 : la carte des restaurants ([lien](https://github.com/thomas-claireau/P7-Openclassrooms/tree/etape-1))
 
 Commencez par les fondations de votre application. Il y aura 2 sections principales :
 
@@ -93,7 +93,7 @@ Lorsqu'on clique sur un restaurant, la liste des avis enregistrés s'affiche ave
 
 Un outil de filtre permet d'afficher uniquement les restaurants ayant entre X et Y étoiles. La mise à jour de la carte s'effectue en temps réel.
 
-### Etape 2 : ajoutez des restaurants et des avis !
+### Etape 2 : ajoutez des restaurants et des avis ! ([lien](https://github.com/thomas-claireau/P7-Openclassrooms/tree/etape-2))
 
 Vos visiteurs aimeraient eux aussi donner leur avis sur des restaurants !Proposez-leur :
 
@@ -104,7 +104,7 @@ Une fois un avis ou un restaurant ajouté, il apparaît immédiatement sur la ca
 
 Les informations ne seront pas sauvegardées si on quitte la page (elles restent juste en mémoire le temps de la visite).
 
-### Etape 3 : intégration avec l'API de Google Places
+### Etape 3 : intégration avec l'API de Google Places ([lien](https://github.com/thomas-claireau/P7-Openclassrooms/tree/etape-3))
 
 Pour l'instant, il n'y a pas beaucoup de restaurants et pas beaucoup d'avis. Heureusement, Google Places propose une API pour récupérer des restaurants et des avis. Servez-vous en pour afficher des restaurants et avis supplémentaires sur votre carte ! Ici la documentation : https://developers.google.com/places/
 

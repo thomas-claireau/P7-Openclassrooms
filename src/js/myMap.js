@@ -4,6 +4,12 @@ import restaurants from '../assets/data/restaurants.json';
 import { Front } from './front.js';
 
 class MyMap {
+	/**
+	 * Create a map and interactions with her
+	 * @param {object} mapElement - Map object create from Google Maps Api
+	 * @param {number} lat - Lat of the map
+	 * @param {number} lng - Lng of the map
+	 */
 	constructor(mapElement, lat, lng) {
 		this.newMap;
 		this.allMarkers = [];
@@ -13,10 +19,23 @@ class MyMap {
 		this.dataPlaces;
 	}
 
+	/**
+	 * Load the googles maps api and places libraries
+	 * @return {promises} The promise of Google Maps Api
+	 */
 	loadGoogleMapsApi() {
 		return loadGoogleMapsApi({ key: keyData.key, libraries: ['places'] });
 	}
 
+	/**
+	 * Use a Geocoding (and reverse geocoding) from Google Maps Api
+	 * @param {number} lat - Lat of the map
+	 * @param {*} lng - Lng of the map
+	 * @param {*} isReverse - which indicate that's reverse geocoding or not
+	 * @param {*} obj - which indicate if the container is an object or not
+	 * @param {*} container - which indicate if the container is an html element
+	 * @param {*} isForm  - which indicate if the container is inside a form
+	 */
 	static loadGeocoding(
 		lat,
 		lng,
@@ -51,6 +70,12 @@ class MyMap {
 			});
 	}
 
+	/**
+	 *
+	 * @param {object} thisMap - Map object create from Google Maps Api
+	 * @param {object} boundsLocation - center of the google maps (lat and lng)
+	 * @param {object} limite - lat and lng of the current viewport
+	 */
 	static addRestaurantFromNearbySearch(thisMap, boundsLocation, limite) {
 		const nearbySearchRestaurant = new google.maps.places.PlacesService(thisMap.newMap);
 		const request = {
@@ -98,7 +123,6 @@ class MyMap {
 				thisFront.enableScrollContent();
 				thisFront.displayContainerCommentRestaurant();
 
-				// setTimeout(() => {
 				const restaurantsFront = document.querySelectorAll('.list-restaurants .restaurant');
 				let restaurantFrontId;
 
@@ -111,11 +135,15 @@ class MyMap {
 						);
 					});
 				});
-				// }, 4000);
 			}
 		});
 	}
 
+	/**
+	 * Display details and reviews of the restaurant
+	 * @param {object} thisMap - Map object create from Google Maps Api
+	 * @param {string} restaurantId - Id of restaurant where to display reviews
+	 */
 	static addReviewsRestaurantFromSearchDetails(thisMap, restaurantId) {
 		const searchDetailsRestaurant = new google.maps.places.PlacesService(thisMap);
 		const thisFront = new Front(restaurantId);
@@ -157,6 +185,10 @@ class MyMap {
 		});
 	}
 
+	/**
+	 * Create a google maps api
+	 * @return {object} - New object of google maps api
+	 */
 	createMap() {
 		this.newMap = new google.maps.Map(this.mapElement, {
 			zoom: 14,
@@ -175,6 +207,16 @@ class MyMap {
 		return this.newMap;
 	}
 
+	/**
+	 * Add marker from the google maps object
+	 * @param {object} map - Map object create from Google Maps Api
+	 * @param {object} latLng
+	 * @param {string} title
+	 * @param {number} stars
+	 * @param {array} arrayOfAllMarkers
+	 * @param {boolean} isAdd
+	 * @return {array} - Array of all markers
+	 */
 	static addMarker(map, latLng, title, stars, arrayOfAllMarkers, isAdd = false) {
 		const marker = new google.maps.Marker({
 			position: latLng,
@@ -195,6 +237,12 @@ class MyMap {
 		return arrayOfAllMarkers;
 	}
 
+	/**
+	 * Use street view api from the google maps to get image of restaurant
+	 * @param {number} lat
+	 * @param {number} lng
+	 * @param {HTMLElement} container
+	 */
 	static getImgStreetView(lat, lng, container) {
 		const location = `${lat}, ${lng}`;
 		const params = {
@@ -208,6 +256,10 @@ class MyMap {
 		container.style.backgroundImage = `url("${urlImg}")`;
 	}
 
+	/**
+	 * Get average ratings and number of comment of each restaurant and add it of restaurant object
+	 * @return {object} - Restaurant object with new value (average rating and nb rating)
+	 */
 	static getAverageStars() {
 		// average stars
 		restaurants.forEach((restaurant) => {
@@ -233,29 +285,52 @@ class MyMap {
 		});
 	}
 
+	/**
+	 * Set the all marker inside objet of google maps
+	 * @param {object} map - Map object create from Google Maps Api
+	 * @param {array} arrayOfAllMarkers - Array of all markers
+	 */
 	static setMapOnAll(map, arrayOfAllMarkers) {
 		arrayOfAllMarkers.forEach((marker) => {
 			marker.setMap(map);
 		});
 	}
 
+	/**
+	 * clear the all markers inside object of google maps
+	 * @param {array} arrayOfAllMarkers - Array of all markers
+	 */
 	static clearMarkers(arrayOfAllMarkers) {
 		MyMap.setMapOnAll(null, arrayOfAllMarkers);
 		arrayOfAllMarkers.splice(0, arrayOfAllMarkers.length);
 	}
 
+	/**
+	 * delete all markers from array of all markers
+	 * @param {array} arrayOfAllMarkers - Array of all markers
+	 */
 	static deleteMarkers(arrayOfAllMarkers) {
 		MyMap.clearMarkers(arrayOfAllMarkers);
 		arrayOfAllMarkers = [];
 		return arrayOfAllMarkers;
 	}
 
+	/**
+	 * Delete restaurant data inside json file
+	 * @return {array} - Empty file with only brackets of array
+	 */
 	deleteRestaurantsData() {
 		while (restaurants.length > 0) {
 			restaurants.pop();
 		}
 	}
 
+	/**
+	 * Filter marker of google map with differents filters (limite of the map, reviews)
+	 * @param {*} listeRestaurants
+	 * @param {object} map - Map object create from Google Maps Api
+	 * @param {*} limiteMap
+	 */
 	static filterMarker(listeRestaurants, map, limiteMap) {
 		MyMap.deleteMarkers(map.allMarkers);
 		for (const restaurant of listeRestaurants) {
@@ -289,6 +364,10 @@ class MyMap {
 		Front.changeColorMarkerOnHover(map.allMarkers);
 	}
 
+	/**
+	 * Controller method which display all markers of the maps under conditions
+	 * @return {map} - Map with all markers displayed
+	 */
 	boundsChanged() {
 		const containerControl = document.querySelector('.control');
 		const thisMap = this;
@@ -330,6 +409,10 @@ class MyMap {
 		}
 	}
 
+	/**
+	 * Display modal add restaurant when right clicking inside the google map
+	 * @return {modal} - Display modal add restaurant
+	 */
 	displayModalAddRestaurant() {
 		const map = this.newMap;
 		const bg = document.querySelector('.bg');
@@ -442,6 +525,13 @@ class MyMap {
 		});
 	}
 
+	/**
+	 * Add restaurant after clicking of submit button from the modal add restaurant
+	 * @param {object} map - Map object create from Google Maps Api
+	 * @param {number} latClick - lat position of the right click
+	 * @param {number} lngClick - lng position of the right click
+	 * @param {*} arrayOfAllMarkers - array of all markers
+	 */
 	static addRestaurant(map, latClick, lngClick, arrayOfAllMarkers) {
 		const modalAddRestaurant = document.querySelector('.modal-add-restaurant');
 

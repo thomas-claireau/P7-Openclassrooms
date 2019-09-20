@@ -1,6 +1,10 @@
 import restaurants from '../assets/data/restaurants.json';
 
 class Front {
+	/**
+	 * Display background opacity. When clicking on the background, application start
+	 * @return {HTMLElement} - Application
+	 */
 	interactionMap() {
 		const myMap = document.querySelector('.container-map');
 		const sectionLogo = document.querySelector('.logo');
@@ -18,6 +22,14 @@ class Front {
 		}
 	}
 
+	/**
+	 * Display restaurant's informations on the left column of the application
+	 * @param {string} restaurantName - Name of the restaurant
+	 * @param {number} restaurantStars - Rating of the restaurant
+	 * @param {string} restaurantAddresse - Address of the restaurant
+	 * @param {number} restaurantLat - Lat position of the restaurant
+	 * @param {number} restaurantLng - Lng position of the restaurant
+	 */
 	static displayRestaurant(
 		restaurantName,
 		restaurantStars,
@@ -83,6 +95,10 @@ class Front {
 		containerRestaurants.appendChild(containerRestaurant);
 	}
 
+	/**
+	 * Clear content of the left column after changes
+	 * @return {HTMLElement} - Empty left column
+	 */
 	reloadContentRestaurant() {
 		const containerRestaurants = document.querySelector(
 			'.container-map .control .list-restaurants'
@@ -90,6 +106,10 @@ class Front {
 		containerRestaurants.innerHTML = '';
 	}
 
+	/**
+	 * Enable scroll content of restaurant when height of content exceeds 500px of height
+	 * @return {HTMLElement} - Left column content with class scrolled
+	 */
 	enableScrollContent() {
 		const containerListRestaurants = document.querySelector('.list-restaurants');
 
@@ -104,6 +124,10 @@ class Front {
 		}
 	}
 
+	/**
+	 * Change design of marker when mouseover each restaurant container (on the left column)
+	 * @param {array} arrayOfMarkers - Array of all markers on the map
+	 */
 	static changeColorMarkerOnHover(arrayOfMarkers) {
 		const listrestaurants = document.querySelector('.list-restaurants');
 
@@ -138,6 +162,10 @@ class Front {
 		}
 	}
 
+	/**
+	 * Display comments inside the container of restaurant
+	 * @return {HTMLElement} - Comments of the restaurant clicking
+	 */
 	displayCommentRestaurant() {
 		const dataRestaurants = restaurants;
 		const containerControl = document.querySelector('.container-map .control');
@@ -298,6 +326,10 @@ class Front {
 		}
 	}
 
+	/**
+	 * Enable scroll content of the list of comments when height exceeds 400px of height
+	 * @return {HTMLElement} - List comments content with class scrolled-comment
+	 */
 	enableScrollComment() {
 		const containerComments = document.querySelector('.comments-restaurant');
 
@@ -310,6 +342,10 @@ class Front {
 		}
 	}
 
+	/**
+	 * Back to the list of the restaurants when clicking button back
+	 * @return {HTMLElement} - List of the restaurant inside the left column content
+	 */
 	backToList() {
 		const control = document.querySelector('.control');
 		const containerListRestaurants = document.querySelector('.list-restaurants');

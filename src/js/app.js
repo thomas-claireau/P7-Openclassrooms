@@ -19,7 +19,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		newMap.loadGoogleMapsApi().then(function() {
 			newMap.createMap();
 			newMap.boundsChanged();
-			// charger getBounds seulement au début de l'intéraction de l'utilisateur avec la carte
+
 			const bgMap = document.querySelector('.container-map .bg');
 			bgMap.addEventListener('click', function() {
 				newMap.displayModalAddRestaurant();

@@ -1,4 +1,4 @@
-import restaurants from '../assets/data/restaurants.json';
+import { MyMap } from './myMap';
 
 class Front {
 	/**
@@ -7,6 +7,7 @@ class Front {
 	 */
 	constructor(restaurantIdClick) {
 		this.restaurantIdClick = restaurantIdClick;
+		this.restaurants;
 	}
 
 	/**
@@ -51,7 +52,6 @@ class Front {
 		);
 
 		// container of each restaurant
-		const containerRestaurantExist = document.querySelector('.restaurant');
 
 		const containerRestaurant = document.createElement('div');
 		containerRestaurant.classList.add('restaurant');
@@ -93,10 +93,8 @@ class Front {
 		// right column inside container (flexbox)
 		const rightColumnContent = document.createElement('div');
 
-		import('./myMap').then((MyMap) => {
-			MyMap.MyMap.getImgStreetView(restaurantLat, restaurantLng, rightColumnContent);
-			rightColumnContent.classList.add('right');
-		});
+		MyMap.getImgStreetView(restaurantLat, restaurantLng, rightColumnContent);
+		rightColumnContent.classList.add('right');
 
 		leftColumnContent.appendChild(nameRestaurant);
 		leftColumnContent.appendChild(stars);
@@ -123,7 +121,7 @@ class Front {
 	 * Hide content restaurant on the left column when comment of a restaurant display
 	 * @return {HTMLElement} - Left column content of restaurant hide
 	 */
-	hideContentRestaurantWhenCommentsDisplay() {
+	static hideContentRestaurantWhenCommentsDisplay() {
 		const containerRestaurants = document.querySelector(
 			'.container-map .control .list-restaurants'
 		);
@@ -188,19 +186,17 @@ class Front {
 	 * Display container which contains details of the restaurant (include comments)
 	 * @return {HTMLElement} - Container which include details of the restaurant clicking
 	 */
-	displayContainerCommentRestaurant() {
-		const dataRestaurants = restaurants;
+	static displayContainerCommentRestaurant() {
 		const containerControl = document.querySelector('.container-map .control');
 		const listeRestaurants = document.querySelector('.list-restaurants');
 
 		if (listeRestaurants) {
 			const restaurants = document.querySelectorAll('.restaurant');
-			const thisFront = this;
 
 			restaurants.forEach((restaurant) => {
 				restaurant.addEventListener('click', () => {
 					containerControl.classList.add('comment');
-					thisFront.hideContentRestaurantWhenCommentsDisplay();
+					Front.hideContentRestaurantWhenCommentsDisplay();
 				});
 			});
 		}
@@ -211,13 +207,11 @@ class Front {
 	 * @return {HTMLElement} - Comments of the restaurant clicking
 	 */
 	displayCommentRestaurant() {
-		const dataRestaurants = restaurants;
 		const containerControl = document.querySelector('.container-map .control');
-		const listeRestaurants = document.querySelector('.list-restaurants');
 		const thisFront = this;
 		const restaurantId = this.restaurantIdClick;
 
-		dataRestaurants.forEach((dataRestaurant) => {
+		this.restaurants.forEach((dataRestaurant) => {
 			if (restaurantId === dataRestaurant.restaurantName) {
 				const latRestaurant = dataRestaurant.lat;
 				const lngRestaurant = dataRestaurant.lng;
@@ -248,13 +242,7 @@ class Front {
 				const containerImgRestaurant = document.createElement('div');
 				containerImgRestaurant.classList.add('img-restaurant');
 
-				import('./myMap').then((MyMap) => {
-					MyMap.MyMap.getImgStreetView(
-						latRestaurant,
-						lngRestaurant,
-						containerImgRestaurant
-					);
-				});
+				MyMap.getImgStreetView(latRestaurant, lngRestaurant, containerImgRestaurant);
 
 				// name restaurant
 				const containerTitleRestaurant = document.createElement('div');
@@ -413,7 +401,7 @@ class Front {
 
 		btnAddComment.addEventListener('click', () => {
 			const idRestaurant = btnAddComment.getAttribute('id-restaurant');
-			restaurants.forEach((restaurant) => {
+			this.restaurants.forEach((restaurant) => {
 				if (restaurant.restaurantName === idRestaurant) {
 					const nameRestaurant = restaurant.restaurantName;
 					const restaurantLat = restaurant.lat;
@@ -516,9 +504,7 @@ class Front {
 					rightColumn.classList.add('right-column');
 
 					// get image street view
-					import('./myMap').then((MyMap) => {
-						MyMap.MyMap.getImgStreetView(restaurantLat, restaurantLng, rightColumn);
-					});
+					MyMap.getImgStreetView(restaurantLat, restaurantLng, rightColumn);
 
 					modalAddComment.appendChild(leftColumn);
 					modalAddComment.appendChild(rightColumn);
@@ -589,7 +575,7 @@ class Front {
 	 * @return {HTMLElement} - new comment on the list
 	 */
 	addCommentFromModal() {
-		const dataRestaurants = restaurants;
+		const dataRestaurants = this.restaurants;
 		const modalAddComment = document.querySelector('.modal-add-comment');
 
 		if (modalAddComment) {
@@ -612,6 +598,7 @@ class Front {
 								user: nameValue,
 								stars: Number(noteValue),
 								comment: commentValue,
+								type: 'add',
 							};
 
 							allComments.push(addCommentObj);
@@ -659,34 +646,32 @@ class Front {
 					containerComment.appendChild(commentText);
 					containerCommentsRestaurant.appendChild(containerComment);
 
-					import('./myMap').then((MyMap) => {
-						MyMap.MyMap.getAverageStars(restaurants, noteValue);
+					MyMap.getAverageStars(dataRestaurants);
 
-						const averageRatings = document.querySelector('.average-ratings');
+					const averageRatings = document.querySelector('.average-ratings');
 
-						if (averageRatings) {
-							const textAverage = averageRatings.querySelector('.average');
-							const stars = averageRatings.querySelectorAll('span');
-							const nbRatings = averageRatings.querySelector('.nb-ratings');
+					if (averageRatings) {
+						const textAverage = averageRatings.querySelector('.average');
+						const stars = averageRatings.querySelectorAll('span');
+						const nbRatings = averageRatings.querySelector('.nb-ratings');
 
-							dataRestaurants.forEach((restaurant) => {
-								if (restaurant.restaurantName === idRestaurantTarget) {
-									textAverage.textContent = restaurant.averageRatings;
+						dataRestaurants.forEach((restaurant) => {
+							if (restaurant.restaurantName === idRestaurantTarget) {
+								textAverage.textContent = restaurant.averageRatings;
 
-									stars.forEach((star, key) => {
-										let i = key;
-										if (i <= restaurant.averageRatings) {
-											star.classList.add('active');
-										} else {
-											star.classList.remove('active');
-										}
-									});
+								stars.forEach((star, key) => {
+									let i = key;
+									if (i <= restaurant.averageRatings) {
+										star.classList.add('active');
+									} else {
+										star.classList.remove('active');
+									}
+								});
 
-									nbRatings.textContent = `${restaurant.nbRatings} avis`;
-								}
-							});
-						}
-					});
+								nbRatings.textContent = `${restaurant.nbRatings} avis`;
+							}
+						});
+					}
 
 					modalAddComment.remove();
 

@@ -18,10 +18,10 @@ window.addEventListener('DOMContentLoaded', () => {
 		const newMap = new MyMap(mapElement, lat, lng);
 		newMap.loadGoogleMapsApi().then(function() {
 			newMap.createMap();
-			// load getBounds only at the beginning of the user interaction with the map
+			newMap.boundsChanged();
+
 			const bgMap = document.querySelector('.container-map .bg');
 			bgMap.addEventListener('click', function() {
-				newMap.boundsChanged();
 				newMap.displayModalAddRestaurant();
 			});
 		});

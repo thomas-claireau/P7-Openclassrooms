@@ -1,6 +1,5 @@
 import loadGoogleMapsApi from 'load-google-maps-api';
 import keyData from '../assets/data/key.json';
-import restaurants from '../assets/data/restaurants.json';
 import { Front } from './front.js';
 
 class MyMap {
@@ -17,6 +16,7 @@ class MyMap {
 		this.lat = lat;
 		this.lng = lng;
 		this.dataPlaces;
+		this.restaurants = [];
 	}
 
 	/**
@@ -30,11 +30,11 @@ class MyMap {
 	/**
 	 * Use a Geocoding (and reverse geocoding) from Google Maps Api
 	 * @param {number} lat - Lat of the map
-	 * @param {*} lng - Lng of the map
-	 * @param {*} isReverse - which indicate that's reverse geocoding or not
-	 * @param {*} obj - which indicate if the container is an object or not
-	 * @param {*} container - which indicate if the container is an html element
-	 * @param {*} isForm  - which indicate if the container is inside a form
+	 * @param {number} lng - Lng of the map
+	 * @param {boolean} isReverse - which indicate that's reverse geocoding or not
+	 * @param {object} obj - which indicate if the container is an object or not
+	 * @param {HTMLElement} container - which indicate if the container is an html element
+	 * @param {boolean} isForm  - which indicate if the container is inside a form
 	 */
 	static loadGeocoding(
 		lat,
@@ -72,11 +72,12 @@ class MyMap {
 
 	/**
 	 *
+	 * @param {object} restaurants - Data of restaurants
 	 * @param {object} thisMap - Map object create from Google Maps Api
 	 * @param {object} boundsLocation - center of the google maps (lat and lng)
 	 * @param {object} limite - lat and lng of the current viewport
 	 */
-	static addRestaurantFromNearbySearch(thisMap, boundsLocation, limite) {
+	static addRestaurantFromNearbySearch(restaurants, thisMap, boundsLocation, limite) {
 		const nearbySearchRestaurant = new google.maps.places.PlacesService(thisMap.newMap);
 		const request = {
 			location: boundsLocation,
@@ -85,7 +86,6 @@ class MyMap {
 			fields: ['rating'],
 		};
 		const thisFront = new Front();
-		const arrayOfMarker = this.allMarkers;
 		nearbySearchRestaurant.nearbySearch(request, (results) => {
 			let nameRestaurant,
 				addressRestaurant,
@@ -121,7 +121,7 @@ class MyMap {
 
 				MyMap.filterMarker(restaurants, thisMap, limite);
 				thisFront.enableScrollContent();
-				thisFront.displayContainerCommentRestaurant();
+				Front.displayContainerCommentRestaurant();
 
 				const restaurantsFront = document.querySelectorAll('.list-restaurants .restaurant');
 				let restaurantFrontId;
@@ -130,6 +130,7 @@ class MyMap {
 					restaurantFront.addEventListener('click', () => {
 						restaurantFrontId = restaurantFront.dataset.id;
 						MyMap.addReviewsRestaurantFromSearchDetails(
+							thisMap,
 							thisMap.newMap,
 							restaurantFrontId
 						);
@@ -141,15 +142,24 @@ class MyMap {
 
 	/**
 	 * Display details and reviews of the restaurant
-	 * @param {object} thisMap - Map object create from Google Maps Api
+	 * @param {object} thisMap - Instance of Map
+	 * @param {object} newMap - Map object create from Google Maps Api
 	 * @param {string} restaurantId - Id of restaurant where to display reviews
 	 */
-	static addReviewsRestaurantFromSearchDetails(thisMap, restaurantId) {
-		const searchDetailsRestaurant = new google.maps.places.PlacesService(thisMap);
+	static addReviewsRestaurantFromSearchDetails(thisMap, newMap, restaurantId) {
+		const searchDetailsRestaurant = new google.maps.places.PlacesService(newMap);
 		const thisFront = new Front(restaurantId);
 
-		restaurants.forEach((restaurant) => {
+		thisMap.restaurants.forEach((restaurant) => {
 			if (restaurantId === restaurant.restaurantName) {
+				if (restaurant.ratings.length > 0) {
+					restaurant.ratings.forEach((rating, key) => {
+						if (rating.type === 'init') {
+							delete restaurant.ratings[key];
+						}
+					});
+				}
+
 				const request = {
 					placeId: restaurant.placeId,
 					fields: ['name', 'rating', 'reviews'],
@@ -170,15 +180,18 @@ class MyMap {
 										user: userReview,
 										stars: starsReview,
 										comment: commentReview,
+										type: 'init',
 									};
 
 									restaurant.averageRatings = averageRatings;
 									restaurant.nbRatings = place.reviews.length;
+
 									restaurant.ratings.push(objAddReview);
 								});
 							}
 						}
 					}
+					thisFront.restaurants = thisMap.restaurants;
 					thisFront.displayCommentRestaurant();
 				});
 			}
@@ -210,11 +223,11 @@ class MyMap {
 	/**
 	 * Add marker from the google maps object
 	 * @param {object} map - Map object create from Google Maps Api
-	 * @param {object} latLng
-	 * @param {string} title
-	 * @param {number} stars
-	 * @param {array} arrayOfAllMarkers
-	 * @param {boolean} isAdd
+	 * @param {object} latLng - position of marker
+	 * @param {string} title - title of marker
+	 * @param {number} stars - averageRatings of restaurant's marker
+	 * @param {array} arrayOfAllMarkers - list of all markers
+	 * @param {boolean} isAdd - if marker is adding by user
 	 * @return {array} - Array of all markers
 	 */
 	static addMarker(map, latLng, title, stars, arrayOfAllMarkers, isAdd = false) {
@@ -239,9 +252,9 @@ class MyMap {
 
 	/**
 	 * Use street view api from the google maps to get image of restaurant
-	 * @param {number} lat
-	 * @param {number} lng
-	 * @param {HTMLElement} container
+	 * @param {number} lat - latitude position
+	 * @param {number} lng - longitude position
+	 * @param {HTMLElement} container - container who receive image
 	 */
 	static getImgStreetView(lat, lng, container) {
 		const location = `${lat}, ${lng}`;
@@ -258,9 +271,10 @@ class MyMap {
 
 	/**
 	 * Get average ratings and number of comment of each restaurant and add it of restaurant object
+	 * @param {object} restaurants - data of restaurants
 	 * @return {object} - Restaurant object with new value (average rating and nb rating)
 	 */
-	static getAverageStars() {
+	static getAverageStars(restaurants) {
 		// average stars
 		restaurants.forEach((restaurant) => {
 			let averageRatingRestaurant = 0;
@@ -281,7 +295,6 @@ class MyMap {
 
 			restaurant.averageRatings = averageRatingRestaurant;
 			restaurant.nbRatings = nbRatings;
-			restaurant.type = 'add';
 		});
 	}
 
@@ -320,16 +333,20 @@ class MyMap {
 	 * @return {array} - Empty file with only brackets of array
 	 */
 	deleteRestaurantsData() {
-		while (restaurants.length > 0) {
-			restaurants.pop();
+		let restaurantsAdd = this.restaurants.filter((restaurant) => restaurant.type === 'add');
+
+		while (this.restaurants.length > 0) {
+			this.restaurants.pop();
 		}
+
+		this.restaurants = restaurantsAdd.concat(this.restaurants);
 	}
 
 	/**
 	 * Filter marker of google map with differents filters (limite of the map, reviews)
-	 * @param {*} listeRestaurants
+	 * @param {*} listeRestaurants - data of restaurants
 	 * @param {object} map - Map object create from Google Maps Api
-	 * @param {*} limiteMap
+	 * @param {*} limiteMap - limite viewport of the google map
 	 */
 	static filterMarker(listeRestaurants, map, limiteMap) {
 		MyMap.deleteMarkers(map.allMarkers);
@@ -374,22 +391,25 @@ class MyMap {
 		const thisFront = new Front();
 		const arrayOfMarker = this.allMarkers;
 		let limite;
-		const listEventsMap = ['dragend', 'zoom_changed'];
+		let centerLatLng;
 
-		listEventsMap.forEach((event) => {
-			google.maps.event.addListener(thisMap.newMap, event, function() {
-				if (!containerControl.classList.contains('comment')) {
-					limite = thisMap.newMap.getBounds();
-					const centerLat = limite.getCenter().lat();
-					const centerLng = limite.getCenter().lng();
-					const centerLatLng = new google.maps.LatLng(centerLat, centerLng);
-					thisMap.deleteRestaurantsData();
-					MyMap.addRestaurantFromNearbySearch(thisMap, centerLatLng, limite);
-					thisFront.reloadContentRestaurant();
-					thisFront.enableScrollContent();
-					thisFront.displayContainerCommentRestaurant();
-				}
-			});
+		google.maps.event.addListener(thisMap.newMap, 'idle', function() {
+			if (!containerControl.classList.contains('comment')) {
+				limite = thisMap.newMap.getBounds();
+				const centerLat = limite.getCenter().lat();
+				const centerLng = limite.getCenter().lng();
+				centerLatLng = new google.maps.LatLng(centerLat, centerLng);
+				thisMap.deleteRestaurantsData();
+				MyMap.addRestaurantFromNearbySearch(
+					thisMap.restaurants,
+					thisMap,
+					centerLatLng,
+					limite
+				);
+				thisFront.reloadContentRestaurant();
+				thisFront.enableScrollContent();
+				Front.displayContainerCommentRestaurant();
+			}
 		});
 
 		const rangeStars = document.querySelector('input#stars');
@@ -399,11 +419,16 @@ class MyMap {
 			rangeStars.oninput = () => {
 				if (!containerControl.classList.contains('comment')) {
 					outputStars.textContent = rangeStars.value;
+					thisMap.deleteRestaurantsData();
+					MyMap.addRestaurantFromNearbySearch(
+						thisMap.restaurants,
+						thisMap,
+						centerLatLng,
+						limite
+					);
 					thisFront.reloadContentRestaurant();
-					MyMap.filterMarker(restaurants, thisMap, limite);
 					thisFront.enableScrollContent();
-					Front.changeColorMarkerOnHover(arrayOfMarker);
-					thisFront.displayContainerCommentRestaurant();
+					Front.displayContainerCommentRestaurant();
 				}
 			};
 		}
@@ -521,33 +546,37 @@ class MyMap {
 				});
 			});
 
-			MyMap.addRestaurant(thisMap.newMap, latClick, lngClick, thisMap.allMarkers);
+			MyMap.addRestaurant(thisMap, thisMap.newMap, latClick, lngClick, thisMap.allMarkers);
 		});
 	}
 
 	/**
 	 * Add restaurant after clicking of submit button from the modal add restaurant
+	 * @param {object} thisMap - Instance of map
 	 * @param {object} map - Map object create from Google Maps Api
 	 * @param {number} latClick - lat position of the right click
 	 * @param {number} lngClick - lng position of the right click
 	 * @param {*} arrayOfAllMarkers - array of all markers
 	 */
-	static addRestaurant(map, latClick, lngClick, arrayOfAllMarkers) {
+	static addRestaurant(thisMap, map, latClick, lngClick, arrayOfAllMarkers) {
 		const modalAddRestaurant = document.querySelector('.modal-add-restaurant');
 
 		if (modalAddRestaurant) {
-			const inputNameRestaurant = modalAddRestaurant.querySelector('input#name-restaurant');
-			const inputAddressRestaurant = modalAddRestaurant.querySelector(
-				'input#address-restaurant'
-			);
 			const btnSubmit = modalAddRestaurant.querySelector('input[type="submit"]');
 
 			btnSubmit.addEventListener('click', (e) => {
+				const inputNameRestaurant = modalAddRestaurant.querySelector(
+					'input#name-restaurant'
+				);
+				const inputAddressRestaurant = modalAddRestaurant.querySelector(
+					'input#address-restaurant'
+				);
 				if (inputNameRestaurant.value !== '' && inputAddressRestaurant.value !== '') {
 					e.preventDefault();
 
 					const nameRestaurant = inputNameRestaurant.value;
 					const addressRestaurant = inputAddressRestaurant.value;
+					const placeId = inputAddressRestaurant.dataset.placeId;
 					const latRestaurant = latClick;
 					const lngRestaurant = lngClick;
 					const latLngRestaurant = { lat: latRestaurant, lng: lngRestaurant };
@@ -561,10 +590,11 @@ class MyMap {
 						averageRatings: averageRatingsDefault,
 						nbRatings: 0,
 						ratings: [],
+						placeId: placeId,
 						type: 'add',
 					};
 
-					restaurants.push(jsonDataRestaurant);
+					thisMap.restaurants.push(jsonDataRestaurant);
 
 					MyMap.addMarker(
 						map,
@@ -573,6 +603,14 @@ class MyMap {
 						averageRatingsDefault,
 						arrayOfAllMarkers,
 						true
+					);
+
+					Front.displayRestaurant(
+						nameRestaurant,
+						averageRatingsDefault,
+						addressRestaurant,
+						latRestaurant,
+						lngRestaurant
 					);
 
 					modalAddRestaurant.remove();

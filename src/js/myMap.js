@@ -330,9 +330,11 @@ class MyMap {
 	 * @return {array} - Empty file with only brackets of array
 	 */
 	deleteRestaurantsData() {
+		console.log(restaurants);
 		while (restaurants.length > 0) {
 			restaurants.pop();
 		}
+		console.log(restaurants);
 	}
 
 	/**
@@ -384,22 +386,19 @@ class MyMap {
 		const thisFront = new Front();
 		const arrayOfMarker = this.allMarkers;
 		let limite;
-		const listEventsMap = ['dragend', 'zoom_changed'];
 
-		listEventsMap.forEach((event) => {
-			google.maps.event.addListener(thisMap.newMap, event, function() {
-				if (!containerControl.classList.contains('comment')) {
-					limite = thisMap.newMap.getBounds();
-					const centerLat = limite.getCenter().lat();
-					const centerLng = limite.getCenter().lng();
-					const centerLatLng = new google.maps.LatLng(centerLat, centerLng);
-					thisMap.deleteRestaurantsData();
-					MyMap.addRestaurantFromNearbySearch(thisMap, centerLatLng, limite);
-					thisFront.reloadContentRestaurant();
-					thisFront.enableScrollContent();
-					thisFront.displayContainerCommentRestaurant();
-				}
-			});
+		google.maps.event.addListener(thisMap.newMap, 'idle', function() {
+			if (!containerControl.classList.contains('comment')) {
+				limite = thisMap.newMap.getBounds();
+				const centerLat = limite.getCenter().lat();
+				const centerLng = limite.getCenter().lng();
+				const centerLatLng = new google.maps.LatLng(centerLat, centerLng);
+				thisMap.deleteRestaurantsData();
+				MyMap.addRestaurantFromNearbySearch(thisMap, centerLatLng, limite);
+				thisFront.reloadContentRestaurant();
+				thisFront.enableScrollContent();
+				thisFront.displayContainerCommentRestaurant();
+			}
 		});
 
 		const rangeStars = document.querySelector('input#stars');
@@ -583,6 +582,14 @@ class MyMap {
 						averageRatingsDefault,
 						arrayOfAllMarkers,
 						true
+					);
+
+					Front.displayRestaurant(
+						nameRestaurant,
+						averageRatingsDefault,
+						addressRestaurant,
+						latRestaurant,
+						lngRestaurant
 					);
 
 					modalAddRestaurant.remove();

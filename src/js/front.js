@@ -1,4 +1,3 @@
-import restaurants from '../assets/data/restaurants.json';
 import { MyMap } from './myMap';
 
 class Front {

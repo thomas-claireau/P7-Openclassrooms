@@ -150,6 +150,14 @@ class MyMap {
 
 		restaurants.forEach((restaurant) => {
 			if (restaurantId === restaurant.restaurantName) {
+				if (restaurant.ratings.length > 0) {
+					restaurant.ratings.forEach((rating, key) => {
+						if (rating.type === 'init') {
+							delete restaurant.ratings[key];
+						}
+					});
+				}
+
 				const request = {
 					placeId: restaurant.placeId,
 					fields: ['name', 'rating', 'reviews'],
@@ -170,10 +178,12 @@ class MyMap {
 										user: userReview,
 										stars: starsReview,
 										comment: commentReview,
+										type: 'init',
 									};
 
 									restaurant.averageRatings = averageRatings;
 									restaurant.nbRatings = place.reviews.length;
+
 									restaurant.ratings.push(objAddReview);
 								});
 							}

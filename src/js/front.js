@@ -207,18 +207,6 @@ class Front {
 	}
 
 	/**
-	 * Reload comment of each restaurant in HTML
-	 * @param {number} restaurantId - If of restaurant visited
-	 */
-	static reloadCommentRestaurant(restaurantId) {
-		restaurants.forEach((restaurant) => {
-			if (restaurantId === restaurant.restaurantName) {
-				restaurant.ratings = [];
-			}
-		});
-	}
-
-	/**
 	 * Display comments inside the container of restaurant
 	 * @return {HTMLElement} - Comments of the restaurant clicking
 	 */
@@ -251,7 +239,6 @@ class Front {
 
 				btnBack.addEventListener('click', () => {
 					thisFront.backToList();
-					Front.reloadCommentRestaurant(restaurantId);
 				});
 
 				const containerInfRestaurant = document.createElement('div');
@@ -625,6 +612,7 @@ class Front {
 								user: nameValue,
 								stars: Number(noteValue),
 								comment: commentValue,
+								type: 'add',
 							};
 
 							allComments.push(addCommentObj);

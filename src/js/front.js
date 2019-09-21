@@ -52,7 +52,6 @@ class Front {
 		);
 
 		// container of each restaurant
-		const containerRestaurantExist = document.querySelector('.restaurant');
 
 		const containerRestaurant = document.createElement('div');
 		containerRestaurant.classList.add('restaurant');
@@ -187,13 +186,12 @@ class Front {
 	 * Display container which contains details of the restaurant (include comments)
 	 * @return {HTMLElement} - Container which include details of the restaurant clicking
 	 */
-	static displayContainerCommentRestaurant(restaurants) {
+	static displayContainerCommentRestaurant() {
 		const containerControl = document.querySelector('.container-map .control');
 		const listeRestaurants = document.querySelector('.list-restaurants');
 
 		if (listeRestaurants) {
 			const restaurants = document.querySelectorAll('.restaurant');
-			const thisFront = this;
 
 			restaurants.forEach((restaurant) => {
 				restaurant.addEventListener('click', () => {
@@ -210,11 +208,8 @@ class Front {
 	 */
 	displayCommentRestaurant() {
 		const containerControl = document.querySelector('.container-map .control');
-		const listeRestaurants = document.querySelector('.list-restaurants');
 		const thisFront = this;
 		const restaurantId = this.restaurantIdClick;
-
-		console.log(this.restaurants);
 
 		this.restaurants.forEach((dataRestaurant) => {
 			if (restaurantId === dataRestaurant.restaurantName) {
@@ -404,7 +399,6 @@ class Front {
 		const btnAddComment = document.querySelector('.container-add-comment .add-comment');
 		const bg = document.querySelector('.bg');
 
-		// if (btnAddComment) {
 		btnAddComment.addEventListener('click', () => {
 			const idRestaurant = btnAddComment.getAttribute('id-restaurant');
 			this.restaurants.forEach((restaurant) => {
@@ -528,7 +522,6 @@ class Front {
 			this.updateNoteChoice();
 			this.addCommentFromModal();
 		});
-		// }
 	}
 
 	/**

@@ -30,11 +30,11 @@ class MyMap {
 	/**
 	 * Use a Geocoding (and reverse geocoding) from Google Maps Api
 	 * @param {number} lat - Lat of the map
-	 * @param {*} lng - Lng of the map
-	 * @param {*} isReverse - which indicate that's reverse geocoding or not
-	 * @param {*} obj - which indicate if the container is an object or not
-	 * @param {*} container - which indicate if the container is an html element
-	 * @param {*} isForm  - which indicate if the container is inside a form
+	 * @param {number} lng - Lng of the map
+	 * @param {boolean} isReverse - which indicate that's reverse geocoding or not
+	 * @param {object} obj - which indicate if the container is an object or not
+	 * @param {HTMLElement} container - which indicate if the container is an html element
+	 * @param {boolean} isForm  - which indicate if the container is inside a form
 	 */
 	static loadGeocoding(
 		lat,
@@ -72,6 +72,7 @@ class MyMap {
 
 	/**
 	 *
+	 * @param {object} restaurants - Data of restaurants
 	 * @param {object} thisMap - Map object create from Google Maps Api
 	 * @param {object} boundsLocation - center of the google maps (lat and lng)
 	 * @param {object} limite - lat and lng of the current viewport
@@ -85,7 +86,6 @@ class MyMap {
 			fields: ['rating'],
 		};
 		const thisFront = new Front();
-		const arrayOfMarker = this.allMarkers;
 		nearbySearchRestaurant.nearbySearch(request, (results) => {
 			let nameRestaurant,
 				addressRestaurant,
@@ -121,7 +121,7 @@ class MyMap {
 
 				MyMap.filterMarker(restaurants, thisMap, limite);
 				thisFront.enableScrollContent();
-				Front.displayContainerCommentRestaurant(restaurants);
+				Front.displayContainerCommentRestaurant();
 
 				const restaurantsFront = document.querySelectorAll('.list-restaurants .restaurant');
 				let restaurantFrontId;
@@ -142,6 +142,7 @@ class MyMap {
 
 	/**
 	 * Display details and reviews of the restaurant
+	 * @param {object} thisMap - Instance of Map
 	 * @param {object} newMap - Map object create from Google Maps Api
 	 * @param {string} restaurantId - Id of restaurant where to display reviews
 	 */
@@ -222,11 +223,11 @@ class MyMap {
 	/**
 	 * Add marker from the google maps object
 	 * @param {object} map - Map object create from Google Maps Api
-	 * @param {object} latLng
-	 * @param {string} title
-	 * @param {number} stars
-	 * @param {array} arrayOfAllMarkers
-	 * @param {boolean} isAdd
+	 * @param {object} latLng - position of marker
+	 * @param {string} title - title of marker
+	 * @param {number} stars - averageRatings of restaurant's marker
+	 * @param {array} arrayOfAllMarkers - list of all markers
+	 * @param {boolean} isAdd - if marker is adding by user
 	 * @return {array} - Array of all markers
 	 */
 	static addMarker(map, latLng, title, stars, arrayOfAllMarkers, isAdd = false) {
@@ -251,9 +252,9 @@ class MyMap {
 
 	/**
 	 * Use street view api from the google maps to get image of restaurant
-	 * @param {number} lat
-	 * @param {number} lng
-	 * @param {HTMLElement} container
+	 * @param {number} lat - latitude position
+	 * @param {number} lng - longitude position
+	 * @param {HTMLElement} container - container who receive image
 	 */
 	static getImgStreetView(lat, lng, container) {
 		const location = `${lat}, ${lng}`;
@@ -270,6 +271,7 @@ class MyMap {
 
 	/**
 	 * Get average ratings and number of comment of each restaurant and add it of restaurant object
+	 * @param {object} restaurants - data of restaurants
 	 * @return {object} - Restaurant object with new value (average rating and nb rating)
 	 */
 	static getAverageStars(restaurants) {
@@ -342,9 +344,9 @@ class MyMap {
 
 	/**
 	 * Filter marker of google map with differents filters (limite of the map, reviews)
-	 * @param {*} listeRestaurants
+	 * @param {*} listeRestaurants - data of restaurants
 	 * @param {object} map - Map object create from Google Maps Api
-	 * @param {*} limiteMap
+	 * @param {*} limiteMap - limite viewport of the google map
 	 */
 	static filterMarker(listeRestaurants, map, limiteMap) {
 		MyMap.deleteMarkers(map.allMarkers);
@@ -406,7 +408,7 @@ class MyMap {
 				);
 				thisFront.reloadContentRestaurant();
 				thisFront.enableScrollContent();
-				Front.displayContainerCommentRestaurant(thisMap.restaurants);
+				Front.displayContainerCommentRestaurant();
 			}
 		});
 
@@ -426,7 +428,7 @@ class MyMap {
 					);
 					thisFront.reloadContentRestaurant();
 					thisFront.enableScrollContent();
-					Front.displayContainerCommentRestaurant(thisMap.restaurants);
+					Front.displayContainerCommentRestaurant();
 				}
 			};
 		}
@@ -550,6 +552,7 @@ class MyMap {
 
 	/**
 	 * Add restaurant after clicking of submit button from the modal add restaurant
+	 * @param {object} thisMap - Instance of map
 	 * @param {object} map - Map object create from Google Maps Api
 	 * @param {number} latClick - lat position of the right click
 	 * @param {number} lngClick - lng position of the right click

@@ -189,7 +189,6 @@ class Front {
 	 * @return {HTMLElement} - Container which include details of the restaurant clicking
 	 */
 	static displayContainerCommentRestaurant(restaurants) {
-		this.restaurants = restaurants;
 		const containerControl = document.querySelector('.container-map .control');
 		const listeRestaurants = document.querySelector('.list-restaurants');
 
@@ -215,6 +214,8 @@ class Front {
 		const listeRestaurants = document.querySelector('.list-restaurants');
 		const thisFront = this;
 		const restaurantId = this.restaurantIdClick;
+
+		console.log(this.restaurants);
 
 		this.restaurants.forEach((dataRestaurant) => {
 			if (restaurantId === dataRestaurant.restaurantName) {

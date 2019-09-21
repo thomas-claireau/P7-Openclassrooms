@@ -390,13 +390,14 @@ class MyMap {
 		const thisFront = new Front();
 		const arrayOfMarker = this.allMarkers;
 		let limite;
+		let centerLatLng;
 
 		google.maps.event.addListener(thisMap.newMap, 'idle', function() {
 			if (!containerControl.classList.contains('comment')) {
 				limite = thisMap.newMap.getBounds();
 				const centerLat = limite.getCenter().lat();
 				const centerLng = limite.getCenter().lng();
-				const centerLatLng = new google.maps.LatLng(centerLat, centerLng);
+				centerLatLng = new google.maps.LatLng(centerLat, centerLng);
 				thisMap.deleteRestaurantsData();
 				MyMap.addRestaurantFromNearbySearch(
 					thisMap.restaurants,
@@ -417,10 +418,15 @@ class MyMap {
 			rangeStars.oninput = () => {
 				if (!containerControl.classList.contains('comment')) {
 					outputStars.textContent = rangeStars.value;
+					thisMap.deleteRestaurantsData();
+					MyMap.addRestaurantFromNearbySearch(
+						thisMap.restaurants,
+						thisMap,
+						centerLatLng,
+						limite
+					);
 					thisFront.reloadContentRestaurant();
-					MyMap.filterMarker(thisMap.restaurants, thisMap, limite);
 					thisFront.enableScrollContent();
-					Front.changeColorMarkerOnHover(arrayOfMarker);
 					Front.displayContainerCommentRestaurant(thisMap.restaurants);
 				}
 			};

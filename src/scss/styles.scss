@@ -458,33 +458,6 @@ body {
 						}
 					}
 
-					.output-stars {
-						display: flex;
-						justify-content: center;
-						align-content: center;
-						align-items: center;
-						background-color: #fff;
-						padding: 5px 8px;
-						border-radius: 8px;
-						position: relative;
-						margin-left: 17px;
-
-						img {
-							width: 15px;
-							height: 15px;
-							margin-left: 6px;
-						}
-
-						&:before {
-							content: '\A';
-							border-style: solid;
-							border-width: 10px 15px 10px 0;
-							border-color: transparent #fff transparent transparent;
-							position: absolute;
-							left: -8px;
-						}
-					}
-
 					@media screen and (max-width: $break-tablet) {
 						justify-content: center;
 						margin-top: 0;

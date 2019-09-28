@@ -352,29 +352,32 @@ class MyMap {
 		MyMap.deleteMarkers(map.allMarkers);
 		for (const restaurant of listeRestaurants) {
 			const latLngRestaurant = { lat: restaurant.lat, lng: restaurant.lng };
-			const rangeStars = document.querySelector('input#stars').value;
+			const rangeStarsLeft = document.querySelector('input.range.left').value;
+			const rangeStarsRight = document.querySelector('input.range.right').value;
 			const restaurantStars = restaurant.averageRatings;
 
-			if (
-				limiteMap.contains(latLngRestaurant) &&
-				restaurantStars >= 0 &&
-				restaurantStars <= rangeStars
-			) {
-				MyMap.addMarker(
-					map.newMap,
-					latLngRestaurant,
-					restaurant.restaurantName,
-					restaurant.averageRatings,
-					map.allMarkers
-				);
+			if (rangeStarsLeft || rangeStarsRight) {
+				if (
+					limiteMap.contains(latLngRestaurant) &&
+					restaurantStars >= rangeStarsLeft &&
+					restaurantStars <= rangeStarsRight
+				) {
+					MyMap.addMarker(
+						map.newMap,
+						latLngRestaurant,
+						restaurant.restaurantName,
+						restaurant.averageRatings,
+						map.allMarkers
+					);
 
-				Front.displayRestaurant(
-					restaurant.restaurantName,
-					restaurant.averageRatings,
-					restaurant.address,
-					restaurant.lat,
-					restaurant.lng
-				);
+					Front.displayRestaurant(
+						restaurant.restaurantName,
+						restaurant.averageRatings,
+						restaurant.address,
+						restaurant.lat,
+						restaurant.lng
+					);
+				}
 			}
 		}
 
@@ -412,25 +415,68 @@ class MyMap {
 			}
 		});
 
-		const rangeStars = document.querySelector('input#stars');
-		const outputStars = document.querySelector('.output-stars .nb');
+		const rangeStars = document.querySelectorAll('.container-range input.range');
+		const rangeStarsLeft = document.querySelector('.container-range input.range.left');
+		const rangeStarsRight = document.querySelector('.container-range input.range.right');
+		const outputStarsLeft = document.querySelector('.container-range .output-stars .nb .left');
+		const outputStarsRight = document.querySelector(
+			'.container-range .output-stars .nb .right'
+		);
 
 		if (rangeStars) {
-			rangeStars.oninput = () => {
-				if (!containerControl.classList.contains('comment')) {
-					outputStars.textContent = rangeStars.value;
-					thisMap.deleteRestaurantsData();
-					MyMap.addRestaurantFromNearbySearch(
-						thisMap.restaurants,
-						thisMap,
-						centerLatLng,
-						limite
-					);
-					thisFront.reloadContentRestaurant();
-					thisFront.enableScrollContent();
-					Front.displayContainerCommentRestaurant();
+			function updateRange(range, event) {
+				if (rangeStarsLeft.value <= rangeStarsRight.value) {
+					if (range.classList.contains('left')) {
+						outputStarsLeft.textContent = range.value;
+					} else {
+						outputStarsRight.textContent = range.value;
+					}
+				} else {
+					const currentRange = event.currentTarget;
+
+					if (currentRange.classList.contains('left')) {
+						currentRange.value = rangeStarsRight.value;
+					} else {
+						currentRange.value = rangeStarsLeft.value;
+					}
 				}
-			};
+			}
+			rangeStars.forEach((range) => {
+				range.oninput = (e) => {
+					if (!containerControl.classList.contains('comment')) {
+						updateRange(range, e);
+
+						if (rangeStarsLeft.value === '5') {
+							rangeStarsLeft.classList.add('up');
+						} else {
+							rangeStarsLeft.classList.remove('up');
+						}
+
+						if (rangeStarsRight.value === '1') {
+							rangeStarsRight.classList.add('up');
+						} else {
+							rangeStarsRight.classList.remove('up');
+						}
+					}
+				};
+
+				range.onchange = (e) => {
+					if (!containerControl.classList.contains('comment')) {
+						updateRange(range, e);
+
+						thisMap.deleteRestaurantsData();
+						MyMap.addRestaurantFromNearbySearch(
+							thisMap.restaurants,
+							thisMap,
+							centerLatLng,
+							limite
+						);
+						thisFront.reloadContentRestaurant();
+						thisFront.enableScrollContent();
+						Front.displayContainerCommentRestaurant();
+					}
+				};
+			});
 		}
 	}
 

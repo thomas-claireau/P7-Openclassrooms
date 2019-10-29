@@ -87,3 +87,32 @@ Pour l'instant, il n'y a pas beaucoup de restaurants et pas beaucoup d'avis. Heu
 Vous utiliserez la search api pour trouver des restaurants dans la zone affichée.
 
 Lisez bien la documentation pour savoir comment accéder aux données de Google Places et n'hésitez pas à faire autant de recherches Google que nécessaire quand vous butez sur un problème.
+
+### ✔️ Projet validé
+
+Commentaires de l'évaluateur :
+
+1. Évaluation globale du travail réalisé par l’étudiant (en spécifiant les critères non-validés si le projet est à retravailler) :
+
+Un très bon projet dans son ensemble. Le rendu est soigné, tout comme le code et la présentation
+
+2. Évaluation des livrables selon les critères du projet :
+
+Le code est de bonne qualité, développé en ES6 avec la présence du processus de transpilation en ES5. Il n'ya pas l'usage de libraires externes, tout est fait en vanilla JS
+
+3. Évaluation de la présentation orale et sa conformité aux attentes :
+
+Une présentation orale complète avec un timing globalement bon. Tout est bien présenté. La présentation du code en même temps que le rendu et le support est une très bonne idée. Attention à ne pas être trop rapide dans le ton de voix
+
+4. Évaluation des nouvelles compétences acquises par l'étudiant :
+
+Développer une Single Page Application (SPA) en JavaScript
+Intéragir avec une API en JavaScript
+Rendre compatible du code ES6 en ES5
+5. Points positifs (au moins 1) :
+
+Un code propre en ES6
+La présence du processus de transpilation
+6. Axes d'amélioration (au moins 1) :
+
+Le responsive est à améliorer bien que présent

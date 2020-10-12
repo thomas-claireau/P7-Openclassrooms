@@ -116,8 +116,3 @@ La présence du processus de transpilation
 6. Axes d'amélioration (au moins 1) :
 
 Le responsive est à améliorer bien que présent
-
-
-### 🎬 Cliquez sur l'image ci-dessous pour voir la vidéo de soutenance 👇
-
-[![Regarder la vidéo de soutenance](https://img.youtube.com/vi/dbv1vxErEjw/maxresdefault.jpg)](https://youtu.be/dbv1vxErEjw)
